@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        Dashborad - Studivia
+    </title>
+    <!-- css link -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+</head>
+
+<body id="dash">
+    <!-- Header -->
+    <section id="header" class="logged-header">
+        <logo >Studivia</logo>
+        <div class="header-textbox small-semi">
+            <p class=" header-textitem"><a class="small-semi" href="dashboard.html">Dashboard</a></p>
+            <!-- 2 different classes because of color issue caused by a tag -->
+            <p class="header-textitem"><a class="small-semi" href="study_material.html">Study material</a></p>
+            <p class="header-textitem"><a class="small-semi" href="my-docs.html">My Docs</a></p>
+            <p class="header-textitem"><a class="small-semi" href=#>Rankings</a></p>
+            <!-- <p class="header-textitem"><a class="small-semi" href=#>Contact Us</a></p> -->
+        </div>
+        <div class="header-right">
+            <form class="search-form sidebar-search" action="/action_page.php">
+                <input type="text" placeholder="Search GD Goenka" name="search" class="search-box">
+                <button class="search-btn header-icon" type="submit"><img src="images/icons/search.svg" alt=""></button>
+            </form>
+            <div class="header-icon-set">
+                <a href="#"><img src="images/icons/bell.svg" alt=""></a>
+                <a href="cart.html"><img src="images/icons/cart.svg" alt=""></a>
+                <a href="#"><img src="images/icons/profile.svg" alt=""></a>
+            </div>
+            <button type="button" class="header-btn" onclick="location.href='sell-docs.html'">Sell Docs</button>
+        </div>
+    </section>
+
+    <!-- Sub-header -->
+    <section id="sub-header">
+        <div class="sub-h-tbox">
+            <div class="dropdown">
+                <a class="sub-tbox-item">All Subjects</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">BTech</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">Hotel Mgmt.</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">Chemistry</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">Business</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero -->
+    <section id="dash-hero">
+        <div class="dash-hero-main">
+            <img src="images/blog-post-dash-h.png" alt="">
+            <div class="dash-hero-text">
+                <h1>Amily's Dashboard</h1>
+                <form class="search-form main-search" action="/action_page.php">
+                    <input type="text" placeholder="Search Notebank" name="search" class="search-box">
+                    <button class="search-btn" id="search-icon" type="submit"><img src="images/icons/search-hero.svg"
+                            alt=""></button>
+                </form>
+                <p class="smallest-text"><a class="link" href="#">Not able find document ?</a> Let us search for you.
+                    Result within 2 hrs.</p>
+            </div>
+            <img src="images/statistics-dash-h.png" alt="">
+        </div>
+    </section>
+
+    <!-- Imp Data -->
+    <section id="impd">
+        <div class="impd">
+            <div class="white-btn" onclick="location.href='my-docs.html'">
+                <div class="img">hi</div>
+                <!-- <img src="" alt=""> -->
+                <div class="big-text">Saved</div>
+                <h3>15</h3>
+            </div>
+            <div class="white-btn" onclick="location.href='my-docs-upload.html'">
+                <!-- <img src="" alt=""> -->
+                <div class="big-text">Uploaded</div>
+                <h3>15</h3>
+            </div>
+            <div class="white-btn">
+                <!-- <img src="" alt=""> -->
+                <div class="big-text">Earnings</div>
+                <h3>15</h3>
+            </div>
+            <div class="white-btn">
+                <!-- <img src="" alt=""> -->
+                <div class="big-text">Followers</div>
+                <h3>15</h3>
+            </div>
+            <div class="white-btn">
+                <!-- <img src="" alt=""> -->
+                <div class="big-text">Following</div>
+                <h3>15</h3>
+            </div>
+            <div class="white-btn" onclick="location.href='cart.html'">
+                <!-- <img src="" alt=""> -->
+                <div class="big-text">Cart</div>
+                <h3>15</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Everything below imp data -->
+    <section id="dash-content">
+        <!-- Docs Area -->
+        <div id="docs-area">
+            <!-- My Docs -->
+            <div class="dash-mydocs">
+                <div class="heading">
+                    <h3>My Docs</h3>
+                    <a class="small-semi" href="#">View your documents</a>
+                </div>
+                <div class="pdf-boxes pdf-hover">
+                    <div class="pdfs">
+                        <div class="mydocs-pdf-bg">
+                            <img src="images/IMG_1188.JPG" alt="">
+                        </div>
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                    <div class="pdfs">
+                        <div class="mydocs-pdf-bg">
+                            <img src="images/IMG_1188.JPG" alt="">
+                        </div>
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                    <div class="pdfs">
+                        <div class="mydocs-pdf-bg">
+                            <img src="images/IMG_1188.JPG" alt="">
+                        </div>
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                    <div class="pdfs">
+                        <div class="mydocs-pdf-bg">
+                            <img src="images/IMG_1188.JPG" alt="">
+                        </div>
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                    <div class="pdfs">
+                        <div class="mydocs-pdf-bg">
+                            <img src="images/IMG_1188.JPG" alt="">
+                        </div>
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                </div>
+                <div class="scroll">
+                    <div class="scroll-bar"></div>
+                </div>
+            </div>
+            <!-- Recently Viewed -->
+            <div class="dash-recent">
+                <div class="heading">
+                    <h3>Recently Viewed</h3>
+                    <a class="small-semi" href="#">View All</a>
+                </div>
+                <div class="pdf-boxes pdf-hover pdfs">
+                    <div class="n-pdf-bg">
+                        <img src="images/IMG_1188.JPG" alt="">
+
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="small-semi">₹256</div>
+                        <div class="rating">
+                            <div class="stars"></div>
+                            <a class="smallest-text" href="#">9,125</a>
+                        </div>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                    <div class="n-pdf-bg">
+                        <img src="images/IMG_1188.JPG" alt="">
+
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="small-semi">₹256</div>
+                        <div class="rating">
+                            <div class="stars"></div>
+                            <a class="smallest-text" href="#">9,125</a>
+                        </div>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                    <div class="n-pdf-bg">
+                        <img src="images/IMG_1188.JPG" alt="">
+
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="small-semi">₹256</div>
+                        <div class="rating">
+                            <div class="stars"></div>
+                            <a class="smallest-text" href="#">9,125</a>
+                        </div>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                    <div class="n-pdf-bg">
+                        <img src="images/IMG_1188.JPG" alt="">
+
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="small-semi">₹256</div>
+                        <div class="rating">
+                            <div class="stars"></div>
+                            <a class="smallest-text" href="#">9,125</a>
+                        </div>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                    <div class="n-pdf-bg">
+                        <img src="images/IMG_1188.JPG" alt="">
+
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;">Course</tags>
+                            <tags style="color: #FF6889;">Sem</tags>
+                            <tags style="color: #FF9C28;">Subject</tags>
+                            <tags style="color: #60CD83;">Topic</tags>
+                        </div>
+                        <p>Counting 1-100 with spellings</p>
+                        <div class="small-semi">₹256</div>
+                        <div class="rating">
+                            <div class="stars"></div>
+                            <a class="smallest-text" href="#">9,125</a>
+                        </div>
+                        <div class="smallest-h">12 page</div>
+
+                    </div>
+
+                </div>
+                <div class="scroll">
+                    <div class="scroll-bar"></div>
+                </div>
+            </div>
+            <!-- Top Universities -->
+            <div class="dash-topuniv">
+                <div class="heading">
+                    <h3>Top Universities</h3>
+                    <a class="small-semi" href="#">View All</a>
+                </div>
+                <div class="pdf-boxes pdf-hover pdfs">
+                    <div class="univ">
+                        <img src="images/iit kharagpur.png" alt="">
+                        <p>IIT Kharagpur</p>
+
+                        <div class="total-docs">
+                            <div class="smallest-text">15,890</div>
+                            <div class="smallest-text">Documents</div>
+                        </div>
+                    </div>
+                    <div class="univ">
+                        <img src="images/iit kharagpur.png" alt="">
+                        <p>IIT Kharagpur</p>
+
+                        <div class="total-docs">
+                            <div class="smallest-text">15,890</div>
+                            <div class="smallest-text">Documents</div>
+                        </div>
+                    </div>
+                    <div class="univ">
+                        <img src="images/iit kharagpur.png" alt="">
+                        <p>IIT Kharagpur</p>
+
+                        <div class="total-docs">
+                            <div class="smallest-text">15,890</div>
+                            <div class="smallest-text">Documents</div>
+                        </div>
+                    </div>
+                    <div class="univ">
+                        <img src="images/iit kharagpur.png" alt="">
+                        <p>IIT Kharagpur</p>
+
+                        <div class="total-docs">
+                            <div class="smallest-text">15,890</div>
+                            <div class="smallest-text">Documents</div>
+                        </div>
+                    </div>
+                    <div class="univ">
+                        <img src="images/iit kharagpur.png" alt="">
+                        <p>IIT Kharagpur</p>
+
+                        <div class="total-docs">
+                            <div class="smallest-text">15,890</div>
+                            <div class="smallest-text">Documents</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="scroll">
+                    <div class="scroll-bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="dash-sidebar ">
+            <!-- why was this not being considered when it was id? -->
+
+            <!-- Recommended -->
+            <div class="dash-recom dash-sidebar-boxes">
+                <div class="sidebar-heading">Recommended by toppers and teachers </div>
+                <!-- why not make this a tag insted of class? -->
+
+                <div class="dash-select">
+                    <div class="">
+                        <input list="subjects" placeholder="COURSE" name="subject" class="select-box select-course">
+                        <datalist id="subjects">
+                            <option value="COA">Computer Organisation and Architecture</option>
+                            <option value="Maths">Mathematics</option>
+                            <option value="French">French</option>
+                            <option value="C++">C++</option>
+                        </datalist>
+                    </div>
+                    <div class="">
+                        <input list="subjects" placeholder="SUBJECT" name="subject" class="select-box select-subject">
+                        <datalist id="subjects">
+                            <option value="COA">Computer Organisation and Architecture</option>
+                            <option value="Maths">Mathematics</option>
+                            <option value="French">French</option>
+                            <option value="C++">C++</option>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="recom-books pdf-hover">
+                    <div class="book-open book-bg">
+                        <div class="book-text">
+                            <h4>1</h4>
+                            <div class="mid-text">
+                                <p>Computer system archi. by morris mano </p>
+                                <div class="small-semi">Recommended By</div>
+                                <div class="total-votes">
+                                    <div class="total-docs">
+                                        <div class="smallest-text">15,890</div>
+                                        <div class="smallest-text">Students</div>
+                                    </div>
+                                    <div class="total-docs">
+                                        <div class="smallest-text">2,456</div>
+                                        <div class="smallest-text">Teachers</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="images/icons/down-arrow.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="book-closed book-text book-bg">
+                        <div class="book-text">
+                            <h4>2</h4>
+                            <div class="mid-text">
+                                <p>Computer system archi. by morris mano </p>
+                            </div>
+                            <img src="images/icons/down-arrow.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="book-closed book-text book-bg">
+                        <div class="book-text">
+                            <h4>3</h4>
+                            <div class="mid-text">
+                                <p>Computer system archi. by morris mano </p>
+                            </div>
+                            <img src="images/icons/down-arrow.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="book-closed book-text book-bg">
+                        <div class="book-text">
+                            <h4>4</h4>
+                            <div class="mid-text">
+                                <p>Computer system archi. by morris mano </p>
+                            </div>
+                            <img src="images/icons/down-arrow.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="book-closed book-text book-bg">
+                        <div class="book-text">
+                            <h4>5</h4>
+                            <div class="mid-text">
+                                <p>Computer system archi. by morris mano </p>
+                            </div>
+                            <img src="images/icons/down-arrow.svg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your University Study Material -->
+            <div class="dash-your-univ dash-sidebar-boxes">
+                <div class="sidebar-heading">GD Goenka University Study Materials</div>
+                <form class="search-form sidebar-search" action="/action_page.php">
+                    <input type="text" placeholder="Search GD Goenka" name="search" class="search-box">
+                    <button class="search-btn" type="submit"></button>
+                </form>
+                <div class="sidebar-pdfbox pdf-hover">
+                    <div class="sidebar-pdf">
+                        <img src="images/IMG_1188.JPG" alt="">
+                        <div class="pdf-text">
+                            <div class="tag-box">
+                                <tags style="color: #6463C1 ;">Course</tags>
+                                <tags style="color: #FF6889;">Sem</tags>
+                                <tags style="color: #FF9C28;">Subject</tags>
+                                <tags style="color: #60CD83;">Topic</tags>
+                            </div>
+                            <p><a href=""> Counting 1-100 with. aa just checking width.........</a></p>
+                            <div class="rating">
+                                <div class="stars">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                </div>
+                                <a class="smallest-text" href="#">9,125</a>
+                            </div>
+                            <div class="link">12 page</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-pdf">
+                        <img src="images/IMG_1188.JPG" alt="">
+                        <div class="pdf-text">
+                            <div class="tag-box">
+                                <tags style="color: #6463C1 ;">Course</tags>
+                                <tags style="color: #FF6889;">Sem</tags>
+                                <tags style="color: #FF9C28;">Subject</tags>
+                                <tags style="color: #60CD83;">Topic</tags>
+                            </div>
+                            <p><a href=""> Counting 1-100 with. aa just checking width.........</a></p>
+                            <div class="rating">
+                                <div class="stars">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                </div>
+                                <a class="smallest-text" href="#">9,125</a>
+                            </div>
+                            <div class="link">12 page</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-pdf">
+                        <img src="images/IMG_1188.JPG" alt="">
+                        <div class="pdf-text">
+                            <div class="tag-box">
+                                <tags style="color: #6463C1 ;">Course</tags>
+                                <tags style="color: #FF6889;">Sem</tags>
+                                <tags style="color: #FF9C28;">Subject</tags>
+                                <tags style="color: #60CD83;">Topic</tags>
+                            </div>
+                            <p><a href=""> Counting 1-100 with. aa just checking width.........</a></p>
+                            <div class="rating">
+                                <div class="stars">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                </div>
+                                <a class="smallest-text" href="#">9,125</a>
+                            </div>
+                            <div class="link">12 page</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-pdf">
+                        <img src="images/IMG_1188.JPG" alt="">
+                        <div class="pdf-text">
+                            <div class="tag-box">
+                                <tags style="color: #6463C1 ;">Course</tags>
+                                <tags style="color: #FF6889;">Sem</tags>
+                                <tags style="color: #FF9C28;">Subject</tags>
+                                <tags style="color: #60CD83;">Topic</tags>
+                            </div>
+                            <p><a href=""> Counting 1-100 with. aa just checking width.........</a></p>
+                            <div class="rating">
+                                <div class="stars">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                </div>
+                                <a class="smallest-text" href="#">9,125</a>
+                            </div>
+                            <div class="link">12 page</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="read-more"> -->
+                <button class="read-more">View All</button>
+                <!-- </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to top -->
+    <section id="back-to-top">
+        <button class="back-top-btn" onclick="backTop()">back to top</button>
+    </section>
+
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src="JS/index.js" charset="utf-8">
+    </script>
+</body>
+
+</html>

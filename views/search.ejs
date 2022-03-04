@@ -1,0 +1,241 @@
+<%- include('./partials/header'); %>
+
+    <!-- Search Results Hero -->
+    <section id="result-hero">
+        <div class="mat-hero-text result-hero-text">
+            <h1>Search Results</h1>
+            <div class="result-form">
+                <form class="search-form main-search result-input" id="searchPage" action="/search" method="post">
+                    <div class="mat-input">
+                        <h4>BTECH-CSE</h4>
+                    </div>
+                    <input type="text" placeholder="Search notebank by university, tag or file name" name="searchInput"
+                        class="search-box">
+                    <button class="search-btn" id="search-icon" type="submit" form="searchPage"
+                        ><img src="images/icons/search-hero.svg"
+                            alt=""></button>
+                    <!-- this button is temporary for now. it will be created using js -->
+                </form>
+                <button class="filter-btn main-search">Filter</button>
+            </div>
+            <p class="smallest-text"><a class="link" href="#">Not able find document ?</a> Let us search for you.
+                Result within 2 hrs.</p>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section id="results">
+        <!-- heading -->
+        <div class="results-heading">
+            <div class="total-results">
+                <h3>"<%=heading%>"</h3>
+                <div class="smallest-text"><%=totalResults%> Result(s)</div>
+            </div>
+        </div>
+        <!-- filter-tags -->
+        <!-- <div class="filter-tag-box">
+            <div class="filter-tag-bg">
+                <div class="smallest-h">GD Goenka</div>
+            </div>
+            <div class="filter-tag-bg">
+                <div class="smallest-h">Notes</div>
+            </div>
+        </div> -->
+        <!-- result docs -->
+        <div id="grid-docs">
+            <div class="pdfs d-grid">
+                <% docsHtml.forEach((item)=>{%>
+                    <div class="n-pdf-bg pdf-with-user">
+                        <div class="doc-desc-link g-c-c d-none semi-10 ">
+                            <a href="/doc-desc">View Document</a>
+                        </div>
+                        <div class="hover-ctas f-r-c">
+                            <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                    height="16px"></button>
+                            <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                    class="hover-save-doc-img" alt="" height="16px"></button>
+                            <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                    class="hover-add-cart-img" alt="" height="16px"></button>
+                        </div>
+                        <div class="pdf-img">
+                            <img src="images/IMG_1188.JPG" alt="" height="120px">
+                        </div>
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;"><%= item.Topic%></tags>
+                            <tags style="color: #FF6889;"><%= item.Doc_Type%></tags>
+                            <tags style="color: #FF9C28;"><%= item.Subject.substring(0,3) %></tags>
+                            <tags style="color: #60CD83;"><%= item.Topic%></tags>
+                        </div>
+                        <a class="desc-link">
+                            <div class="d-none"><%= item.DocId%></div>
+                            <p><%= item.DocName%></p></a>
+                        <div class="smallest-text college"><%= item.University %> 
+                            <%if (item.Username!=null){%>
+                                <span>|</span>
+                            <%}%>
+                            <span class="user"><%= item.Username%></span>
+                        </div>
+                        <div class="small-semi">₹ <%= item.Price %></div>
+                        <div class="rating">
+                            <div class="stars">
+                                <img src="images/icons/star.svg" alt="">
+                                <img src="images/icons/star.svg" alt="">
+                                <img src="images/icons/star.svg" alt="">
+                                <img src="images/icons/star.svg" alt="">
+                                <img src="images/icons/star.svg" alt="">
+                            </div>
+                            <a class="smallest-text" href="#">9,125</a>
+                        </div>
+                        <div class="smallest-h">12 page</div>
+                    </div>
+                <%}) %> 
+            </div>
+            <!-- <button class="sidebar-heading read-more">Read More</button> -->
+        </div>
+        <!-- add-bar -->
+        <div class="add-bar mat-item f-r-c-sb">
+            <div class="big-text">Purchase or subscribe to <div class="sidebar-heading">download and unlock</div> all
+                pages.</div>
+            <div class="add-bar-cta f-r-c">
+                <button class="buynow-cta">BUY NOW</button>
+                <button class="subscribe-cta">SUBSCRIBE</button>
+            </div>
+        </div>
+        <!-- Recently Viewed -->
+        <div class="mat-item dash-recent mat-width">
+            <div class="heading">
+                <h3>Recently Viewed</h3>
+                <a class="small-semi" href="#">View All</a>
+            </div>
+            <div class="pdf-boxes pdfs scroll">
+                <div class="n-pdf-bg">
+                    <img src="images/IMG_1188.JPG" alt="">
+
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars"></div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg">
+                    <img src="images/IMG_1188.JPG" alt="">
+
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars"></div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg">
+                    <img src="images/IMG_1188.JPG" alt="">
+
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars"></div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg">
+                    <img src="images/IMG_1188.JPG" alt="">
+
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars"></div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg">
+                    <img src="images/IMG_1188.JPG" alt="">
+
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars"></div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+
+                </div>
+                <div class="n-pdf-bg">
+                    <img src="images/IMG_1188.JPG" alt="">
+
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars"></div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+
+                </div>
+                <div class="n-pdf-bg">
+                    <img src="images/IMG_1188.JPG" alt="">
+
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars"></div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+<%- include('./partials/footer'); %>
+</body>
+
+</html>

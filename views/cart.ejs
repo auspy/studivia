@@ -1,0 +1,216 @@
+<%- include('./partials/header'); %>
+
+<section class="g-c-c m-t-40">
+    <div class="cart-content f-r-fs">
+        <div class="left-cart m-r-20">
+            <div class="cart m-b-20">
+                <div class="regu-28 m-b-15">Shopping cart</div>
+                <div class="cart-items">
+                    <% cartArrHtml.forEach((item)=>{ %>
+                    <div class="cart-item f-r-c-sb">
+                        <div class="f-r-fs">
+                            <input type="checkbox" id="cartCheckBox1" name="cartItem" value="yes" class="cartCheckBox">
+                            <img src="images/IMG_1188.JPG" alt="">
+                            <div class="cart-item-info f-c-fs m-l-10">
+                                <div class="desc-link">
+                                    <div class="d-none"><%= item[0].DocId%></div>
+                                    <p><%= item[0].DocName%></p></div>
+                                <div class="f-r-c">
+                                    <div class="doc-info doc-info-headings">
+                                        <div class="semi-10">Course</div>
+                                        <div class="semi-10">Year</div>
+                                        <div class="semi-10">Subject</div>
+                                        <div class="semi-10">Doc type</div>
+                                        <div class="semi-10">Topic</div>
+                                        <div class="semi-10">Pages</div>
+                                        <div class="semi-10">University</div>
+                                        <div class="semi-10">Owner</div>
+                                    </div>
+                                    <div class="doc-info doc-info-details c-para-text">
+                                        <div class="regu-12"><%= item[0].Course%></div>
+                                        <div class="regu-12"><%= item[0].year%></div>
+                                        <div class="regu-12"><%= item[0].Subject%></div>
+                                        <div class="regu-12"><%= item[0].Doc_Type%></div>
+                                        <div class="regu-12"><%= item[0].Topic%></div>
+                                        <div class="regu-12">12</div>
+                                        <div class="regu-12"><%= item[0].University%></div>
+                                        <div class="regu-12"><%= item[0].Username%></div>
+                                    </div>
+                                </div>
+                                <div class="ctas m-t-10">
+                                    <button class="link save-for-later">Save for later</button>
+                                    <p>|</p>
+                                    <a href="study_material.html" class="link">See more like this</a>
+                                    <p>|</p>
+                                    <button class="link delete-cart">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="cart-item-price">₹ <%= item[0].Price%></h4>
+                    </div>
+                    <%}) %>
+                </div>
+                <div class="empty-cart">
+                    <p class="m-t-10 c-para-text">Check for saved items below or <a href="study_material.html">continue
+                            shopping</a>.</p>
+                </div>
+                <div class="subtotal f-r-c-sb">
+                    <div class="f-r-c">
+                        <p>Subtotal (<p class="cart-item-num"><%= cartArrHtml.length%></p> items) :</p>
+                    </div>
+                    <h4 class="order-total">₹ </h4>
+                </div>
+            </div>
+            <div class="saved-cart">
+                <h3>Saved Documents</h3>
+                <!-- concealed rating from saved docs because it is now unnecessary as we already made customer save/choose/like the doc. customer already understands docs' value so ratings' role is complete-->
+                <div class="saved-cart-pdf-box pdf-hover pdfs m-t-15">
+                    <% savedArrHtml.forEach((item)=>{ %>
+                    <div class="n-pdf-bg pdf-with-user saved-cart-pdf">
+                        <div class="pdf-img">
+                            <img src="images/IMG_1188.JPG" alt=""></div>
+                        <div class="tag-box">
+                            <tags style="color: #6463C1 ;"><%= item[0].Course%></tags>
+                            <tags style="color: #FF6889;"><%= item[0].Doc_Type%></tags>
+                            <tags style="color: #FF9C28;"><%= item[0].Subject%></tags>
+                            <tags style="color: #60CD83;"><%= item[0].Topic%></tags>
+                        </div>
+                        <a class="desc-link">
+                            <div class="d-none"><%= item[0].DocId%></div>
+                            <p><%= item[0].DocName%></p></a>
+                        <div class="smallest-text college"><%= item[0].University%> 
+                            <%if (item[0].Username!=null){%>
+                                <span>|</span>
+                            <%}%>
+                            <span class="user"><%= item[0].Username%></span>
+                        </div>
+                        <div class="small-semi">₹ <%= item[0].Price%></div>
+                        <div class="smallest-h">12 page</div>
+                        <div class="f-c-c">
+                            <button class="move-to-cart-button regu-12">Move To Cart</button>
+                            <a href="study_material.html" class="link">See more like this</a>
+                            <button class="link delete">Delete</button>
+                        </div>
+                    </div>
+                    <%}) %>
+                </div>
+            </div>
+        </div>
+        <div class="right-cart">
+            <div class="total-cost m-b-20">
+                <div class="subtotal f-r-c-sb">
+                    <div class="f-r-c">
+                        <p>Subtotal (<p class="cart-item-num"><%= cartArrHtml.length%></p> items) :</p>
+                    </div>
+                    <h4 class="order-total">₹ 768</h4>
+                </div>
+                <button class="buynow-cta m-t-15" id="cart-proceed-cta" onclick="readyForCheckout()" >PROCEED TO BUY</button>
+            </div>
+            <div class="related-docs f-c-fs">
+                <div class="semi-16-c m-b-15">Related Documents</div>
+                <div class="sidebar-pdfbox pdf-hover">
+                    <div class="sidebar-pdf">
+                        <img src="images/IMG_1188.JPG" alt="">
+                        <div class="pdf-text">
+                            <div class="tag-box">
+                                <tags style="color: #6463C1 ;">Course</tags>
+                                <tags style="color: #FF6889;">type</tags>
+                                <tags style="color: #FF9C28;">Subject</tags>
+                                <tags style="color: #60CD83;">Topic</tags>
+                            </div>
+                            <p><a href=""> Counting 1-100 with. aa just checking width.........</a></p>
+                            <div class="rating">
+                                <div class="stars">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                </div>
+                                <a class="smallest-text" href="#">9,125</a>
+                            </div>
+                            <div class="link">12 page</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-pdf">
+                        <img src="images/IMG_1188.JPG" alt="">
+                        <div class="pdf-text">
+                            <div class="tag-box">
+                                <tags style="color: #6463C1 ;">Course</tags>
+                                <tags style="color: #FF6889;">type</tags>
+                                <tags style="color: #FF9C28;">Subject</tags>
+                                <tags style="color: #60CD83;">Topic</tags>
+                            </div>
+                            <p><a href=""> Counting 1-100 with. aa just checking width.........</a></p>
+                            <div class="rating">
+                                <div class="stars">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                </div>
+                                <a class="smallest-text" href="#">9,125</a>
+                            </div>
+                            <div class="link">12 page</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-pdf">
+                        <img src="images/IMG_1188.JPG" alt="">
+                        <div class="pdf-text">
+                            <div class="tag-box">
+                                <tags style="color: #6463C1 ;">Course</tags>
+                                <tags style="color: #FF6889;">type</tags>
+                                <tags style="color: #FF9C28;">Subject</tags>
+                                <tags style="color: #60CD83;">Topic</tags>
+                            </div>
+                            <p><a href=""> Counting 1-100 with. aa just checking width.........</a></p>
+                            <div class="rating">
+                                <div class="stars">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                </div>
+                                <a class="smallest-text" href="#">9,125</a>
+                            </div>
+                            <div class="link">12 page</div>
+                        </div>
+                    </div>
+                    <div class="sidebar-pdf">
+                        <img src="images/IMG_1188.JPG" alt="">
+                        <div class="pdf-text">
+                            <div class="tag-box">
+                                <tags style="color: #6463C1 ;">Course</tags>
+                                <tags style="color: #FF6889;">type</tags>
+                                <tags style="color: #FF9C28;">Subject</tags>
+                                <tags style="color: #60CD83;">Topic</tags>
+                            </div>
+                            <p><a href=""> Counting 1-100 with. aa just checking width.........</a></p>
+                            <div class="rating">
+                                <div class="stars">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                    <img src="images/icons/star.svg" alt="">
+                                </div>
+                                <a class="smallest-text" href="#">9,125</a>
+                            </div>
+                            <div class="link">12 page</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="semi-14 read-more m-t-20 m-left">More <img src="images/icons/more-down-arrow.svg"
+                        alt=""></button>
+            </div>
+        </div>
+    </div>
+</section>
+<%- include('./partials/footer',{page: 'cart'}); %>
+<script src="JS/cart.js" charset="utf-8">
+</script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<%- include('./partials/header-login'); %>
+
+<div style="height: 90vh;" class="g-c-c">
+    <form action="/register" method="post" id="register-form" class="f-c-c">
+        <logo class="c-heading">Studivia</logo>
+        <input type="text" placeholder="First Name" class="basic-bg-border m-t-40" name="firstName" required="required" pattern="[A-Za-z]{1,20}" title="Can only contain characters(a-z or A-Z)">
+        <input type="text" placeholder="Last Name" class="basic-bg-border m-t-10" name="lastName" required="required" pattern="[A-Za-z]{1,20}" title="Can only contain characters(a-z or A-Z)">
+        <input type="text" placeholder="Username" class="basic-bg-border m-t-10" name="username" required="required" maxlength="50">
+        <input type="email" placeholder="Email" class="basic-bg-border m-t-10" name="userMail" required="required">
+        <span class="error"></span>
+        <!-- <input type="password" placeholder="Create Password" class="basic-bg-border m-t-10" name="userPassTry"> -->
+        <input type="password" placeholder="Password" class="basic-bg-border m-t-10" name="userPass" required="required" title="Password must be of atleast 8 digits and contain atleast 1 digit(0-9), lowercase character(a-z), uppercase character(A-Z) and a special character">
+        <input type="text" placeholder="University" class="basic-bg-border m-t-10" name="userUniv" required="required" pattern="[A-Za-z]{1,40}" title="Can only contain characters(a-z or A-Z)">
+        <input type="text" placeholder="Course" class="basic-bg-border m-t-10" name="userCourse" required="required" pattern="[A-Za-z]{1,20}" title="Can only contain characters(a-z or A-Z)">
+        <label for="userGradYear" class="regu-12  m-t-10">Graduation Year</label>
+        <input type="month" placeholder="Graduation Year" class="basic-bg-border" name="userGradYear" required="required" min="2000-01" max="2030-12">
+        <input type="submit" placeholder="Register" class="m-t-10">
+    </form>
+    <div class="regu-12">Already registered? <a href="/login.html" class="link">Login</a></div>
+</div>
+
+<script src="JS/login.js" charset="utf-8">
+</script>
+<%- include('./partials/footer-login'); %>

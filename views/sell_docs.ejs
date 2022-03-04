@@ -1,0 +1,182 @@
+<% if(loginStatusHtml == true){ %>
+<%- include('./partials/header-sellDocs'); %>
+<% }else{%>
+<%- include('./partials/header-sellDocs-before'); %>
+<%} %>
+
+<!-- Step-1 Fill Details -->
+<section id="step-x">
+    <div class="step-1-box">
+        <%if (loginStatusHtml == true){%>
+             <h3>fill details and Upload your study documents</h3>
+             <form action="/sell-docs.html" class="step-form" id="uploadDocDetails" method="post">
+                <div class="form-left">
+                    <div class="name form-item">
+                        <label for="name" class="smallest-h">File Name</label>
+                        <div class="for-instruc">
+                            <input type="text" placeholder="File Name" name="name" class="search-box" required="required">
+                            <div class="step not-selected">
+                                <a href="sell-docs.html">
+                                    <div class="step-num tip">
+                                        <div class="bg-1">
+                                            <div class="bg-2">
+                                                <div class="smallest-h">!</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="university form-item">
+                        <div class="smallest-h">University</div>
+                        <div class="for-instruc">
+                            <input type="text" placeholder="University name" name="university" class="search-box" required="required">
+                            <div class="step not-selected">
+                                <a href="sell-docs.html">
+                                    <div class="step-num tip">
+                                        <div class="bg-1">
+                                            <div class="bg-2">
+                                                <div class="smallest-h">!</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-2-item">
+                        <div class="doc-type-name form-item">
+                            <div class="smallest-h">Document Type</div>
+                            <select name="docType" class="search-box" form="uploadDocDetails">
+                                <option>Notes</option>
+                                <option>Question Paper</option>
+                                <option>Assignment</option>
+                            </select>
+                        </div>
+                        <div class="lang-name form-item">
+                            <div class="smallest-h">Language</div>
+                            <select name="langName" class="search-box" form="uploadDocDetails">
+                                <option>English</option>
+                                <option>Hindi</option>
+                                <option>Marathi</option>
+                                <option>Tamil</option>
+                                <option>Gujurati</option>
+                                <option>Bengali</option>
+                                <option>Punjabi</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-2-item">
+                        <div class="year form-item">
+                            <div class="smallest-h">Year of Creation</div>
+                            <input type="number" min="1900" max="2099" step="1" placeholder="Year" name="year"
+                                class="search-box" required="required">
+                        </div>
+                        <div class="sub-name form-item">
+                            <div class="smallest-h">Course</div>
+                            <input type="text" placeholder="Course" name="courseName" class="search-box" required="required">
+                        </div>
+                    </div>
+                    <div class="form-2-item">
+                        <div class="sub-name form-item">
+                            <div class="smallest-h">Subject</div>
+                            <input type="text" placeholder="Subject" name="subName" class="search-box" required="required">
+                        </div>
+                        <div class="year form-item">
+                            <div class="smallest-h">Topic</div>
+                            <input type="text" placeholder="Topic" name="topic" class="search-box" required="required">
+                        </div>
+                    </div>
+                    <div class="desc form-item">
+                        <div class="smallest-h">Description</div>
+                        <div class="for-instruc">
+                            <textarea name="desc" id="desc" class="search-box" placeholder="Description"
+                                style="height: 100px;"></textarea>
+                            <div class="step not-selected">
+                                <a href="sell-docs.html">
+                                    <div class="step-num tip">
+                                        <div class="bg-1">
+                                            <div class="bg-2">
+                                                <div class="smallest-h">!</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- <div class="tags-name form-item">
+                                <div class="smallest-h">Tags</div>
+                                <div class="for-instruc">
+                                    <input list="subjects" placeholder="Tags" name="tags" class="search-box">
+                                    <div class="step not-selected">
+                                        <a href="sell-docs.html">
+                                            <div class="step-num tip">
+                                                <div class="bg-1">
+                                                    <div class="bg-2">
+                                                        <div class="smallest-h">!</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div> -->
+                </div>
+                <div class="form-right">
+                    <div class="up-docs-name form-item">
+                        <div class="smallest-h">Upload Documents</div>
+                        <div class="for-instruc">
+                            <input type="file" placeholder="Drag and drop file(s) here" name="upDocs" accept=".png, .pdf, .jpeg, .jpg" id="upDocs" class="search-box" multiple>
+                            <div class="step not-selected">
+                                <a href="sell-docs.html">
+                                    <div class="step-num tip">
+                                        <div class="bg-1">
+                                            <div class="bg-2">
+                                                <div class="smallest-h">!</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="up-docs-size">
+                            <div class="current-size size">
+                                <div class="smallest-text">Current size:</div>
+                                <div class="link">12 MB</div>
+                                <img src="images/icons/tick.svg" alt="">
+                            </div>
+                            <div class="max-up-size size">
+                                <div class="smallest-text">Max upload size:</div>
+                                <div class="link">12 MB</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-2-item form-2-item-r">
+                        <div class="set-price form-item">
+                            <div class="smallest-h">Price</div>
+                            <input type="number" placeholder="Price" name="setPrice" class="search-box" required="required">
+                        </div>
+                        <div class="earn-per form-item">
+                            <div class="smallest-h">Earnings Per Download</div>
+                            <input type="number" placeholder="Earnings" name="earnPer" class="search-box">
+                        </div>
+                    </div>
+                    <img src="images/uploading.svg" alt="">
+                </div>
+            </form>
+        </div>
+        <div class="ctas">
+            <button class="simple-blue-button m-left">save as draft <img src="images/icons/save-as-draft.svg"
+                    alt=""></button>
+            <button id="continue-btn" form="uploadDocDetails" type="submit" value="Submit"
+                class="not-selected-button m-left">Continue <img src="images/icons/arrow.svg" alt=""></button>
+        </div>
+        <%}else{%>
+            <h3><a href="/login.html">Login</a> to start earning!</h3>
+            <% }%>
+
+</section>
+
+<%- include('./partials/footer-sellDocs'); %>

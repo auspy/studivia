@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        Study Material - Studivia
+    </title>
+    <!-- css link -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+</head>
+
+<body id="mat">
+    <!-- Header -->
+    <section id="header" class="logged-header">
+        <a href="index.html">
+            <logo>Studivia</logo>
+        </a>
+        <div class="header-textbox small-semi">
+            <p class=" header-textitem"><a class="small-semi" href="dashboard.html">Dashboard</a></p>
+            <!-- 2 different classes because of color issue caused by a tag -->
+            <p class="header-textitem"><a class="small-semi" href="study_material.html">Study material</a></p>
+            <p class="header-textitem"><a class="small-semi" href="my-docs.html">My Docs</a></p>
+            <p class="header-textitem"><a class="small-semi" href="rankings.html">Rankings</a></p>
+            <p class="header-textitem"><a class="small-semi" href="contact-us.html">Contact Us</a></p>
+        </div>
+        <div class="header-right">
+            <form class="search-form sidebar-search" action="/action_page.php">
+                <input type="text" placeholder="Search GD Goenka" name="search" class="search-box">
+                <button class="search-btn header-icon" type="submit"><img src="images/icons/search.svg" alt=""></button>
+            </form>
+            <div class="header-icon-set">
+                <a href="#"><img src="images/icons/bell.svg" alt=""></a>
+                <a href="cart.html"><img src="images/icons/cart.svg" alt=""></a>
+                <a href="#"><img src="images/icons/profile.svg" alt=""></a>
+            </div>
+            <button type="button" class="header-btn" onclick="location.href='sell-docs.html'">Sell Docs</button>
+        </div>
+    </section>
+
+    <!-- Sub-header -->
+    <section id="sub-header">
+        <div class="sub-h-tbox">
+            <div class="dropdown">
+                <a class="sub-tbox-item">All Subjects</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">BTech</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">Hotel Mgmt.</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">Chemistry</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">Business</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="mat">
+        <!-- Study Material Hero -->
+        <section id="mat-hero" class="mat-item mat-hero">
+            <div class="mat-hero-text">
+                <h2>Find notes, solved papers and more...</h2>
+                <p>From notes used by toppers to test papers made by renowned professors. </p>
+                <form class="search-form main-search" action="/action_page.php">
+                    <div class="mat-input">
+                        <input list="subjects" placeholder="SUBJECT" name="subject">
+                        <datalist id="subjects">
+                            <option value="COA">Computer Organisation and Architecture</option>
+                            <option value="Maths">Mathematics</option>
+                            <option value="French">French</option>
+                            <option value="C++">C++</option>
+                        </datalist>
+                    </div>
+                    <input type="text" placeholder="Search notebank by university, tag or file name" name="search"
+                        class="search-box">
+                    <button class="search-btn" id="search-icon" type="button"
+                        onclick="location.href='search-result.html'"><img src="images/icons/search-hero.svg"
+                            alt=""></button>
+                    <!-- this button is temporary for now. it will be created using js -->
+                </form>
+                <p class="smallest-text"><a class="link" href="#">Not able find document ?</a> Let us search for you.
+                    Result within 2 hrs.</p>
+            </div>
+            <img src="images/search-engines-mat-hero.png" alt="">
+        </section>
+
+        <section id="add-bar" class="mat-item g-c-c r-300-144-100">
+            <div class="add-bar f-r-c-sb">
+                <div class="big-text">Purchase or subscribe to <div class="sidebar-heading">download and unlock</div>
+                    all
+                    pages.</div>
+                <div class="add-bar-cta f-r-c">
+                    <button class="buynow-cta">BUY NOW</button>
+                    <button class="subscribe-cta">SUBSCRIBE</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subjects -->
+        <section id="mat-subjects" class="mat-item">
+            <div class="heading">
+                <div class="f-r-fe">
+                    <h3>Top documents from branch_name</h3>
+                    <a class="small-semi" href="#">View All</a>
+                </div>
+                <div class="arrows f-r-c">
+                    <button class="left-arrow m-r-20"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="left-arrow-img"></button>
+                    <button class="right-arrow"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="right-arrow-img"></button>
+                </div>
+            </div>
+            <div class="pdf-subjects-box scroll">
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Topics -->
+        <section id="mat-subjects" class="mat-item">
+            <div class="heading">
+                <div class="f-r-fe">
+                    <h3>Top documents from branch_name</h3>
+                    <a class="small-semi" href="#">View All</a>
+                </div>
+                <div class="arrows f-r-c">
+                    <button class="left-arrow m-r-20"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="left-arrow-img"></button>
+                    <button class="right-arrow"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="right-arrow-img"></button>
+                </div>
+            </div>
+            <div class="pdf-subjects-box scroll">
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="pdf-subjects">
+                    <div class="small-semi">Computer Organisation and architecture</div>
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top documents from branch_name -->
+        <section id="mat-latest-docs" class="mat-item mat-latest-docs dash-recent mat-width">
+            <div class="heading">
+                <div class="f-r-fe">
+                    <h3>Top documents from branch_name</h3>
+                    <a class="small-semi" href="#">View All</a>
+                </div>
+                <div class="arrows f-r-c">
+                    <button class="left-arrow m-r-20"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="left-arrow-img"></button>
+                    <button class="right-arrow"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="right-arrow-img"></button>
+                </div>
+            </div>
+            <div class="pdf-boxes pdf-hover pdfs scroll">
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <!-- <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div> -->
+            </div>
+        </section>
+
+        <!-- Top Universities -->
+        <section class="dash-topuniv mat-width mat-item">
+            <div class="heading">
+                <div class="f-r-fe">
+                    <h3>Top documents from branch_name</h3>
+                    <a class="small-semi" href="#">View All</a>
+                </div>
+                <div class="arrows f-r-c">
+                    <button class="left-arrow m-r-20"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="left-arrow-img"></button>
+                    <button class="right-arrow"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="right-arrow-img"></button>
+                </div>
+            </div>
+            <div class="pdf-boxes pdf-hover pdfs scroll">
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+                <div class="univ">
+                    <div class="img-frame"><img src="images/iit kharagpur.png" alt=""></div>
+                    <p>IIT Kharagpur</p>
+
+                    <div class="total-docs">
+                        <div class="smallest-text">15,890</div>
+                        <div class="smallest-text">Documents</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GD Gooenka university study material -->
+        <section id="mat-top-docs" class="mat-item dash-recent mat-width">
+            <div class="heading">
+                <div class="f-r-fe">
+                    <h3>Top documents from branch_name</h3>
+                    <a class="small-semi" href="#">View All</a>
+                </div>
+                <div class="arrows f-r-c">
+                    <button class="left-arrow m-r-20"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="left-arrow-img"></button>
+                    <button class="right-arrow"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="right-arrow-img"></button>
+                </div>
+            </div>
+            <div class="pdf-boxes pdf-hover pdfs scroll">
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recently Viewed -->
+        <section id="mat-top-docs" class="mat-item dash-recent mat-width">
+            <div class="heading">
+                <div class="f-r-fe">
+                    <h3>Top documents from branch_name</h3>
+                    <a class="small-semi" href="#">View All</a>
+                </div>
+                <div class="arrows f-r-c">
+                    <button class="left-arrow m-r-20"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="left-arrow-img"></button>
+                    <button class="right-arrow"><img src="images/icons/more-down-arrow.svg" alt=""
+                            class="right-arrow-img"></button>
+                </div>
+            </div>
+            <div class="pdf-boxes pdf-hover pdfs scroll">
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+                <div class="n-pdf-bg pdf-with-user">
+                    <div class="hover-ctas f-r-c">
+                        <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                                height="16px"></button>
+                        <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                                class="hover-save-doc-img" alt="" height="16px"></button>
+                        <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                                class="hover-add-cart-img" alt="" height="16px"></button>
+                    </div>
+                    <div class="pdf-img">
+                        <img src="images/IMG_1188.JPG" alt="" height="120px">
+                    </div>
+                    <div class="tag-box">
+                        <tags style="color: #6463C1 ;">Course</tags>
+                        <tags style="color: #FF6889;">Sem</tags>
+                        <tags style="color: #FF9C28;">Subject</tags>
+                        <tags style="color: #60CD83;">Topic</tags>
+                    </div>
+                    <p>Counting 1-100 with spellings</p>
+                    <div class="smallest-text college">IIT Mumbai <span>|</span>
+                        <span class="user">Jayesh</span>
+                    </div>
+                    <div class="small-semi">₹256</div>
+                    <div class="rating">
+                        <div class="stars">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                            <img src="images/icons/star.svg" alt="">
+                        </div>
+                        <a class="smallest-text" href="#">9,125</a>
+                    </div>
+                    <div class="smallest-h">12 page</div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Back to top -->
+    <section id="back-to-top">
+        <button class="back-top-btn" onclick="backTop()">back to top</button>
+    </section>
+
+
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js">
+    </script> -->
+
+    <!-- JavaScript -->
+    <script src="JS/index.js" charset="utf-8">
+    </script>
+    <script src="JS/server.js" charset="utf-8">
+    </script>
+
+</body>
+
+</html>
