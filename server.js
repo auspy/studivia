@@ -23,6 +23,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 })) // url encoded is used to get information from html forms
 
+
+
 // CREATE CONNECTION
 // sql code: karne_kya_he kispe_karna_he uska_nam_kya_he usme_kya_kya_hoga
 var con = mysql.createConnection({
@@ -214,8 +216,13 @@ app.post('/login.html', passport.authenticate('local', {
         res.redirect('/dashboard.html')
     });
 
-// // // LISTEN, SERVER START // // //
-app.listen(3000, () => {
+// // // LISTEN, SERVER START, PORT // // //
+let port = process.env.PORT
+if(port == null || port ==""){
+    port = 3000
+}
+
+app.listen(port, () => {
     console.log('server started yes')
 })
 
@@ -224,12 +231,12 @@ app.listen(3000, () => {
 // need to think of the naming convention of url
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/html/index.html')
+    res.sendFile(__dirname + '/public/html/index.html')
 })
 
 app.get('/index.html', function (req, res) {
     req.flash('message', 'Success!!');
-    res.sendFile(__dirname + '/html/index.html')
+    res.sendFile(__dirname + '/public/html/index.html')
 })
 
 app.get('/student_reviews.html', function (req, res) {
@@ -237,7 +244,7 @@ app.get('/student_reviews.html', function (req, res) {
 })
 
 app.get('/rankings.html', function (req, res) {
-    res.sendFile(__dirname + '/html/rankings.html')
+    res.sendFile(__dirname + '/public/html/rankings.html')
 })
 
 app.get('/sell-docs.html', function (req, res) {
@@ -260,7 +267,7 @@ app.get('/pricing.html', function (req, res) {
 
 app.get('/dashboard.html', function (req, res) {
     if (req.isAuthenticated()) {
-        res.sendFile(__dirname + '/html/dashboard.html')
+        res.sendFile(__dirname + '/public/html/dashboard.html')
         loginStatus = true
     } else {
         res.redirect('/login.html')
