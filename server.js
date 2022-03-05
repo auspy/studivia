@@ -13,6 +13,7 @@ const Connection = require("mysql/lib/Connection")
 const flash = require('connect-flash');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 // INITIALIZATION
 const app = express()
@@ -118,6 +119,36 @@ passport.deserializeUser(function (user, cb) {
     return cb(null, user);
 });
 
+// // // GOOGLE OAUTH // // //
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/studivia"
+    // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+
+    let sql = "SELECT * FROM docsledger WHERE userId = "+profile.id
+    let name = profile.displayName.split(" ")
+    let firstName = name[0]
+    let lastName = name[1]
+    con.query(sql,(err,users)=>{
+        if (err) {
+            return cb(err);
+        }
+        if(!users.length){
+            let insertUser = "INSERT INTO docsledger(userId,firstName,lastName) VALUES("+con.escape(profile.id)+","+con.escape(firstName)+","+con.escape(lastName)+")"
+            con.query(insertUser,(err)=>{
+                console.log('added new user');
+            })
+        } else{
+            return cb(null, users, req.flash('message', 'welcome'))
+        }
+    })
+  }
+));
+
+
 // // // REGISTER PAGE/ SIGN UP PAGE/SETUP MAIL CHIMP // // //
 
 app.post('/register', (req, res, next) => {
@@ -215,7 +246,7 @@ app.post('/login.html', passport.authenticate('local', {
     });
 
 // // // LISTEN, SERVER START // // //
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
     console.log('server started yes')
 })
 
@@ -226,6 +257,17 @@ app.listen(3000, () => {
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/html/index.html')
 })
+
+app.get('/auth/google',(res,req)=>{
+    passport.authenticate('google', { scope: ['profile'] });
+})
+
+app.get('/auth/google/studivia', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/dashboard.html');
+  });
 
 app.get('/index.html', function (req, res) {
     req.flash('message', 'Success!!');
@@ -614,6 +656,6 @@ app.post('/search', (req, res) => {
      con.query(sql, (err, docs) => {
         if (err) throw err;
         console.log(docs[0]);
-        res.render('search',{docsHtml:docs, heading:req.body.searchInput, totalResults:words.length})
+        res.render('search',{docsHtml:docs, heading:req.body.searchInput, totalResults:docs.length})
     })
 })

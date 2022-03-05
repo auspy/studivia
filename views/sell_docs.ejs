@@ -1,5 +1,5 @@
 <% if(loginStatusHtml == true){ %>
-<%- include('./partials/header-sellDocs'); %>
+<%- include('./partials/header-sellDocs',{step1 : "selected",step2 : "not-selected",step3:"not-selected"}); %>
 <% }else{%>
 <%- include('./partials/header-sellDocs-before'); %>
 <%} %>
@@ -14,7 +14,7 @@
                     <div class="name form-item">
                         <label for="name" class="smallest-h">File Name</label>
                         <div class="for-instruc">
-                            <input type="text" placeholder="File Name" name="name" class="search-box" required="required">
+                            <input type="text" placeholder="File Name" name="name" class="search-box" required="required" maxlength="50" title="Write document name within 50 characters">
                             <div class="step not-selected">
                                 <a href="sell-docs.html">
                                     <div class="step-num tip">
@@ -31,7 +31,7 @@
                     <div class="university form-item">
                         <div class="smallest-h">University</div>
                         <div class="for-instruc">
-                            <input type="text" placeholder="University name" name="university" class="search-box" required="required">
+                            <input type="text" placeholder="University name" name="university" pattern="[A-Za-z]{1,40}" maxlength="40" title="Use only characters and enter university the document belongs to or the university you study in" class="search-box" required="required">
                             <div class="step not-selected">
                                 <a href="sell-docs.html">
                                     <div class="step-num tip">
@@ -71,28 +71,28 @@
                         <div class="year form-item">
                             <div class="smallest-h">Year of Creation</div>
                             <input type="number" min="1900" max="2099" step="1" placeholder="Year" name="year"
-                                class="search-box" required="required">
+                             class="search-box" required="required" title="Document creation year">
                         </div>
                         <div class="sub-name form-item">
                             <div class="smallest-h">Course</div>
-                            <input type="text" placeholder="Course" name="courseName" class="search-box" required="required">
+                            <input type="text" placeholder="Course" name="courseName" class="search-box" required="required" pattern="[A-Za-z]{1,25}" maxlength="25" title="Course the document belongs to">
                         </div>
                     </div>
                     <div class="form-2-item">
                         <div class="sub-name form-item">
                             <div class="smallest-h">Subject</div>
-                            <input type="text" placeholder="Subject" name="subName" class="search-box" required="required">
+                            <input type="text" placeholder="Subject" name="subName" class="search-box" required="required" pattern="[A-Za-z]{1,25}" maxlength="25" title="Subject the document belongs to">
                         </div>
                         <div class="year form-item">
                             <div class="smallest-h">Topic</div>
-                            <input type="text" placeholder="Topic" name="topic" class="search-box" required="required">
+                            <input type="text" placeholder="Topic" name="topic" class="search-box" required="required"  pattern="[A-Za-z]{1,50}" maxlength="50" title="Document topic">
                         </div>
                     </div>
                     <div class="desc form-item">
                         <div class="smallest-h">Description</div>
                         <div class="for-instruc">
                             <textarea name="desc" id="desc" class="search-box" placeholder="Description"
-                                style="height: 100px;"></textarea>
+                                style="height: 100px;" maxlength="250" title="Write description about document. it will help you rank better and user understand your document better."></textarea>
                             <div class="step not-selected">
                                 <a href="sell-docs.html">
                                     <div class="step-num tip">
@@ -149,14 +149,14 @@
                             </div>
                             <div class="max-up-size size">
                                 <div class="smallest-text">Max upload size:</div>
-                                <div class="link">12 MB</div>
+                                <div class="link">50 MB</div>
                             </div>
                         </div>
                     </div>
                     <div class="form-2-item form-2-item-r">
                         <div class="set-price form-item">
                             <div class="smallest-h">Price</div>
-                            <input type="number" placeholder="Price" name="setPrice" class="search-box" required="required">
+                            <input type="number" placeholder="Price" name="setPrice" class="search-box" required="required" maxlength="6">
                         </div>
                         <div class="earn-per form-item">
                             <div class="smallest-h">Earnings Per Download</div>
@@ -179,4 +179,6 @@
 
 </section>
 
+<script src="JS/sell-docs.js" charset="utf-8">
+</script>
 <%- include('./partials/footer-sellDocs'); %>

@@ -431,25 +431,7 @@ function docsSavedUpload() {
 // }
 
 // let continueNum = 0 // no use
-// // // // SELL DOCS - CONTINUE // // //
-// function continueSell(btn_id,step_num){
-//     // to hide current step and show next one
-//     var continueBtn = document.getElementById(btn_id)
-//     continueBtn.parentElement.parentElement.getElementsByClassName('step-1-box')[step_num-1].classList.toggle('d-none')
-//     continueBtn.parentElement.parentElement.getElementsByClassName('step-1-box')[step_num].classList.toggle('d-none')
-//     continueBtn.classList.toggle('d-none')
 
-//     // to hide current button number and show next
-//     document.getElementsByClassName('step')[step_num-1].classList.toggle('not-selected')
-//     document.getElementsByClassName('step')[step_num].classList.toggle('not-selected')
-
-//     // to hide cuurent button and show next
-//     if (btn_id == 'continue-btn'){
-//         document.getElementById('continue-btn-1').classList.toggle('d-none')
-//     } else if(btn_id == 'continue-btn-1'){
-//         document.getElementById('send-veri').classList.toggle('d-none')
-//     }
-// }
 
 function onceFunc(func) {
     let called = false;

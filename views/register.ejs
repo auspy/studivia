@@ -13,10 +13,11 @@
         <input type="text" placeholder="University" class="basic-bg-border m-t-10" name="userUniv" required="required" pattern="[A-Za-z]{1,40}" title="Can only contain characters(a-z or A-Z)">
         <input type="text" placeholder="Course" class="basic-bg-border m-t-10" name="userCourse" required="required" pattern="[A-Za-z]{1,20}" title="Can only contain characters(a-z or A-Z)">
         <label for="userGradYear" class="regu-12  m-t-10">Graduation Year</label>
-        <input type="month" placeholder="Graduation Year" class="basic-bg-border" name="userGradYear" required="required" min="2000-01" max="2030-12">
+        <input type="number" min="1900" max="2030" step="1" class="basic-bg-border search-box" name="userGradYear" placeholder="Graduation Year" required="required">
         <input type="submit" placeholder="Register" class="m-t-10">
     </form>
-    <div class="regu-12">Already registered? <a href="/login.html" class="link">Login</a></div>
+    <a class="blue-button m-t-20" href="/auth/google" role="button">Register using google</a>
+    <div class="regu-12 m-t-20">Already registered? <a href="/login.html" class="link">Login</a></div>
 </div>
 
 <script src="JS/login.js" charset="utf-8">
