@@ -533,26 +533,3 @@ function addToSavCar(btnCollection, url) {
 //     })
     
 // }
-
-// // // FIREBASE SDK // // //
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDR5-AZGB4DNS1ioG-oXSC20GJAZ1ZMU28",
-  authDomain: "studivia.firebaseapp.com",
-  projectId: "studivia",
-  storageBucket: "studivia.appspot.com",
-  messagingSenderId: "868142590027",
-  appId: "1:868142590027:web:89d109cba46fbcd14e05ce",
-  measurementId: "G-38WJK321J6"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
