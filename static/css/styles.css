@@ -32,7 +32,7 @@
 /* common-snippets */
 /* new shortforms for these snippets: .g-c-c for grid,center,center. .f-r-fs for flex,row,flexStart 
 c-heading for color heading, bg-f9 for background color #f9f9f9*/
-.savedDocs{
+.savedDocs {
     display: grid;
 }
 
@@ -49,7 +49,9 @@ c-heading for color heading, bg-f9 for background color #f9f9f9*/
 .left-arrow,
 .right-arrow,
 .hover-zoom,
-.btn-bg, .doc-desc-link ,.basic-bg-border{
+.btn-bg,
+.doc-desc-link,
+.basic-bg-border {
     background: #FFFFFF;
     border-radius: 5px;
     box-sizing: border-box;
@@ -58,7 +60,9 @@ c-heading for color heading, bg-f9 for background color #f9f9f9*/
 .pdf-page,
 .ques-desc-heading,
 .ques-desc,
-.move-to-cart-button, .doc-desc-link,.basic-bg-border {
+.move-to-cart-button,
+.doc-desc-link,
+.basic-bg-border {
     border: 1px solid #DFDFDF;
 }
 
@@ -211,6 +215,10 @@ button {
     margin-left: 10px;
 }
 
+.m-l-20 {
+    margin-left: 20px;
+}
+
 .m-b-10 {
     margin-bottom: 10px;
 }
@@ -337,7 +345,11 @@ button:hover {
 
 }
 
-#benefits p,#sell p,#why p ,#testi p,#contact p  {
+#benefits p,
+#sell p,
+#why p,
+#testi p,
+#contact p {
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
@@ -463,7 +475,7 @@ h4,
     text-transform: capitalize;
 }
 
-.small-semi{
+.small-semi {
     font-weight: 600;
     font-size: 14px;
     line-height: 21px;
@@ -506,7 +518,7 @@ logo {
     margin: 16px 40px 16px 120px;
 }
 
-#register logo{
+#register logo {
     margin: 0%;
 }
 
@@ -2088,7 +2100,7 @@ button {
 }
 
 .not-selected {
-    color: var(--search-bar-text); 
+    color: var(--search-bar-text);
 }
 
 
@@ -2142,7 +2154,7 @@ button {
     color: var(--headings);
 }
 
-#below-hero .back-top-btn{
+#below-hero .back-top-btn {
     margin: 60px auto;
 }
 
@@ -2556,15 +2568,15 @@ button {
     border-radius: 0;
 }
 
-.ques-desc button{
+.ques-desc button {
     background: none;
 }
 
-.down-arrow{
+.down-arrow {
     padding: 5px;
 }
 
-.ques-desc > .c-para-text{
+.ques-desc>.c-para-text {
     max-width: 292px;
     margin-top: 10px;
     display: none;
@@ -2591,11 +2603,12 @@ button {
 
 }
 
-.desc-link > p:hover{
+.desc-link>p:hover {
     cursor: pointer;
 }
 
-.btn-bg:hover > button , .desc-btn-bg-clicked > button{
+.btn-bg:hover>button,
+.desc-btn-bg-clicked>button {
     height: 31px;
     width: 31px;
     background: white;
@@ -2621,7 +2634,10 @@ button {
 
 /* new text - after click i.e, adding to cart or saved docs */
 
-.btn-bg:hover .docs-desc-bookmark-hover:after,.btn-bg:hover .docs-desc-cart-hover:after,.desc-btn-clicked:after,.desc-btn-clicked:after {
+.btn-bg:hover .docs-desc-bookmark-hover:after,
+.btn-bg:hover .docs-desc-cart-hover:after,
+.desc-btn-clicked:after,
+.desc-btn-clicked:after {
     color: white;
     position: absolute;
     height: 20px;
@@ -2641,15 +2657,17 @@ button {
     content: 'Add To Cart';
 }
 
-.desc-btn-clicked:after,.desc-btn-clicked:after {
+.desc-btn-clicked:after,
+.desc-btn-clicked:after {
     content: 'Added';
 }
 
-.btn-bg:hover .desc-btn-clicked::after{
+.btn-bg:hover .desc-btn-clicked::after {
     content: 'Remove';
 }
 
-.btn-bg:hover , .desc-btn-bg-clicked{
+.btn-bg:hover,
+.desc-btn-bg-clicked {
     background: #569AFF;
     height: 32px;
     width: 154px;
@@ -2712,7 +2730,8 @@ button {
 
 /* CART ITEM */
 
-.cart-item, .cart > .subtotal {
+.cart-item,
+.cart>.subtotal {
     padding: 20px 0;
     border-top: 1px solid var(--border);
 }
@@ -2756,7 +2775,7 @@ button {
     margin: 0 3px;
 }
 
-.cart > .subtotal {
+.cart>.subtotal {
     padding-bottom: 0;
 }
 
@@ -2903,27 +2922,74 @@ z-index: 1;
 
 /* DISPLAY */
 
-.d-none, .home-testi-hidden, .savedDocs-hidden{
+.d-none,
+.home-testi-hidden,
+.savedDocs-hidden {
     display: none;
 }
 
-.d-flex{
+.d-flex {
     display: flex;
 }
 
-.d-block{
+.d-block {
     display: block;
 }
 
-.d-grid{
+.d-grid {
     display: grid;
 }
 
 /* hover button for study material doc-desc-link */
-.doc-desc-link{
+.doc-desc-link {
     position: absolute;
     top: 130px;
     left: 55px;
-    /* background: var(--border); */
     padding: 7px;
+}
+
+/* ERROR AND SUCCESS */
+
+.error, .success{
+    position: fixed;
+    top: 120px;
+    left: calc(50% - 1200px/2 + 846px);
+    box-shadow: 0px 25px 35px rgba(0, 0, 0, 0.2);
+}
+
+.error-box, .success-box {
+    border-radius: 5px 0px 0px 5px;
+    height: 46px;
+    color: white;
+    padding: 15px 12px;
+    box-sizing: border-box;
+}
+
+.error-box{
+    background: linear-gradient(180deg, #FF5C45 0%, #FF563E 100%);
+}
+
+.success-box{
+    background: #60CD83;
+}
+
+.error-bg, .success-bg{
+    height: 46px;
+    padding: 13px 20px;
+    box-sizing: border-box;
+    border-radius: 0px 5px 5px 0px;
+    color: var(--para-text);
+    border: 0.5px solid #FF5C45;
+}
+
+.error-bg{
+    background: #FFF3E9;
+}
+
+.succes-bg{
+    background: #FBFFFC;
+}
+
+.error button, .success button{
+    background: none;
 }

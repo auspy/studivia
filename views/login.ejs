@@ -10,5 +10,17 @@
     <a class="blue-button" href="/auth/google"  role="button">Login using google</a>
     <div class="regu-12">Not a registered user? <a href="/register" class="link">Create new account</a></div>
 </div>
+<%if(errorHtml != ''){%>
+<div class="error f-r-c ">
+    <div class="error-box f-r-c">
+        <img src="images/icons/error.svg" alt="">
+        <h4 class="m-l-10">Error</h4>
+    </div>
+    <div class="error-bg f-r-c "><p><%=errorHtml%></p>
+    <button><img src="images/icons/no.svg" alt="" class="m-l-20 error-btn-img"></div></button>
+</div>
+<%}%>
 
+<script src="JS/login.js" charset="utf-8">
+</script>
 <%- include('./partials/footer-login'); %>

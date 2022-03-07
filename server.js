@@ -64,7 +64,7 @@ var loginStatus = false
 
 // // // AUTHENTICATION // // //
 
-var currentUser
+var currentUser, errorMsg = ''
 var savedArr = [],
     uploadArr = [],
     cartArr = []
@@ -81,32 +81,39 @@ passport.use('local', new LocalStrategy({
             return cb(err);
         }
         if (!user.length) {
-            return cb(null, false, req.flash('message', 'no such username found'));
-        }
-        bcrypt.compare(userPass, user[0].password, function (err, result) {
-            if (result === false) {
-                return cb(null, false, req.flash('signupMessage', 'incorrect pass'));
-            }
-        });
-        var mailChar = /@/
-        if (mailChar.test(String(username))) {
-            currentUser = user[0].uid
+            errorMsg = 'Wrong username or password'
+            console.log('error', errorMsg)
+            return cb(null, false);
+        } else if (userPass) {
+            bcrypt.compare(userPass, user[0].password, function (err, result) {
+                console.log('Wrong password');
+                if (result === false) {
+                    errorMsg = 'Wrong password'
+                    return cb(null, false);
+                }
+            });
         } else {
-            currentUser = username
+            var mailChar = /@/
+            if (mailChar.test(String(username))) {
+                currentUser = user[0].uid
+            } else {
+                currentUser = username
+            }
+            // reset the arrays so that current user docs can be filled
+            savedArr = []
+            uploadArr = []
+            cartArr = []
+            findDocs()
+            findDocs('uploaded') // to load upload docs of current user on login
+            findDocs('cart')
+            loginStatus = true
+
+            req.session.regenerate((err) => {}) // to regenrate session
+
+            return cb(null, user[0], req.flash('message', 'welcome'));
         }
-        // reset the arrays so that current user docs can be filled
-        savedArr = []
-        uploadArr = []
-        cartArr = []
-        findDocs()
-        findDocs('uploaded') // to load upload docs of current user on login
-        findDocs('cart')
-        loginStatus = true
-
-        req.session.regenerate((err) => {}) // to regenrate session
-
-        return cb(null, user[0], req.flash('message', 'welcome'));
     });
+
 }));
 
 passport.serializeUser(function (user, cb) {
@@ -232,8 +239,10 @@ app.get('/register', (req, res, next) => {
 // // // LOGIN // // //
 
 app.get('/login.html', function (req, res, next) {
+    console.log('login', errorMsg)
     res.render('login', {
-        page: 'Login'
+        page: 'Login',
+        errorHtml: errorMsg
     })
 })
 
@@ -322,6 +331,7 @@ app.get('/checkout.html', function (req, res) {
 
 app.get('/logout', (req, res) => {
     loginStatus = false
+    errorMsg = ''
     req.logout()
     req.session.destroy((err) => {})
     res.redirect('/')
@@ -631,9 +641,9 @@ app.post('/toCheckout', (req, res) => {
 // // // SEARCH // // //
 
 app.get('/search-result.html', function (req, res) {
-    if(req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         res.render('search')
-    } else{
+    } else {
         res.redirect('/login.html')
     }
 })
@@ -651,11 +661,15 @@ app.post('/search', (req, res) => {
         for (let i = 1; i < words.length; i++) {
             let addToSql = " OR docname LIKE " + pre + words[i] + post
             sql = sql + addToSql
-        } 
-    } 
-     con.query(sql, (err, docs) => {
+        }
+    }
+    con.query(sql, (err, docs) => {
         if (err) throw err;
         console.log(docs[0]);
-        res.render('search',{docsHtml:docs, heading:req.body.searchInput, totalResults:docs.length})
+        res.render('search', {
+            docsHtml: docs,
+            heading: req.body.searchInput,
+            totalResults: docs.length
+        })
     })
 })
