@@ -12,6 +12,7 @@ var LocalStrategy = require('passport-local').Strategy;
 const Connection = require("mysql/lib/Connection")
 const flash = require('connect-flash');
 const bcrypt = require('bcrypt');
+const e = require('connect-flash');
 const saltRounds = 10;
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -86,31 +87,31 @@ passport.use('local', new LocalStrategy({
             return cb(null, false);
         } else if (userPass) {
             bcrypt.compare(userPass, user[0].password, function (err, result) {
-                console.log('Wrong password');
                 if (result === false) {
+                    console.log('Wrong password');
                     errorMsg = 'Wrong password'
                     return cb(null, false);
+                } else {
+                    var mailChar = /@/
+                    if (mailChar.test(String(username))) {
+                        currentUser = user[0].uid
+                    } else {
+                        currentUser = username
+                    }
+                    // reset the arrays so that current user docs can be filled
+                    savedArr = []
+                    uploadArr = []
+                    cartArr = []
+                    findDocs()
+                    findDocs('uploaded') // to load upload docs of current user on login
+                    findDocs('cart')
+                    loginStatus = true
+            
+                    req.session.regenerate((err) => {}) // to regenrate session
+            
+                    return cb(null, user[0], req.flash('message', 'welcome'));
                 }
             });
-        } else {
-            var mailChar = /@/
-            if (mailChar.test(String(username))) {
-                currentUser = user[0].uid
-            } else {
-                currentUser = username
-            }
-            // reset the arrays so that current user docs can be filled
-            savedArr = []
-            uploadArr = []
-            cartArr = []
-            findDocs()
-            findDocs('uploaded') // to load upload docs of current user on login
-            findDocs('cart')
-            loginStatus = true
-
-            req.session.regenerate((err) => {}) // to regenrate session
-
-            return cb(null, user[0], req.flash('message', 'welcome'));
         }
     });
 
@@ -128,31 +129,32 @@ passport.deserializeUser(function (user, cb) {
 
 // // // GOOGLE OAUTH // // //
 passport.use(new GoogleStrategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/studivia"
-    // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-  },
-  function(accessToken, refreshToken, profile, cb) {
+        clientID: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        callbackURL: "http://localhost:3000/auth/google/studivia"
+        // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+    },
+    function (accessToken, refreshToken, profile, cb) {
 
-    let sql = "SELECT * FROM docsledger WHERE userId = "+profile.id
-    let name = profile.displayName.split(" ")
-    let firstName = name[0]
-    let lastName = name[1]
-    con.query(sql,(err,users)=>{
-        if (err) {
-            return cb(err);
-        }
-        if(!users.length){
-            let insertUser = "INSERT INTO docsledger(userId,firstName,lastName) VALUES("+con.escape(profile.id)+","+con.escape(firstName)+","+con.escape(lastName)+")"
-            con.query(insertUser,(err)=>{
-                console.log('added new user');
-            })
-        } else{
+        let sql = "SELECT * FROM docsledger WHERE userId = " + profile.id
+        let name = profile.displayName.split(" ")
+        let firstName = name[0]
+        let lastName = name[1]
+        con.query(sql, (err, users) => {
+            if (err) {
+                console.log('google error');
+                return cb(err);
+            }
+            if (!users.length) {
+                let insertUser = "INSERT INTO docsledger(userId,firstName,lastName) VALUES(" + con.escape(profile.id) + "," + con.escape(firstName) + "," + con.escape(lastName) + ")"
+                con.query(insertUser, (err) => {
+                    console.log('added new user');
+                })
+            }
+            console.log('welcome, from google');
             return cb(null, users, req.flash('message', 'welcome'))
-        }
-    })
-  }
+        })
+    }
 ));
 
 
@@ -239,7 +241,6 @@ app.get('/register', (req, res, next) => {
 // // // LOGIN // // //
 
 app.get('/login.html', function (req, res, next) {
-    console.log('login', errorMsg)
     res.render('login', {
         page: 'Login',
         errorHtml: errorMsg
@@ -267,16 +268,20 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/html/index.html')
 })
 
-app.get('/auth/google',(res,req)=>{
-    passport.authenticate('google', { scope: ['profile'] });
+app.get('/auth/google', (res, req) => {
+    passport.authenticate('google', {
+        scope: ['profile']
+    });
 })
 
-app.get('/auth/google/studivia', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/dashboard.html');
-  });
+app.get('/auth/google/studivia',
+    passport.authenticate('google', {
+        failureRedirect: '/login'
+    }),
+    function (req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/dashboard.html');
+    });
 
 app.get('/index.html', function (req, res) {
     req.flash('message', 'Success!!');

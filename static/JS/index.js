@@ -516,3 +516,15 @@ function addToSavCar(btnCollection, url) {
     
 // }
 
+// // // FILTER BUTTON // // //
+var myDocsFilter = document.getElementById('my-docs-filter')
+var filterBtns = document.getElementsByClassName('filter-btn')
+
+for (let i = 0; i < filterBtns.length; i++) {
+    filterBtns[i].addEventListener('click',(event)=>{
+        event.target.classList.toggle('filter-clicked')
+        event.target.classList.toggle('main-search')
+        document.getElementById('filter').classList.toggle('d-none')
+    })
+
+}

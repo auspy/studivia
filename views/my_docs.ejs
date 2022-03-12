@@ -13,9 +13,64 @@
                         alt=""></button>
                 <!-- this button is temporary for now. it will be created using js -->
             </form>
-            <button class="filter-btn main-search">Filter</button>
+            <button class="filter-btn main-search" id="my-docs-filter">Filter</button>
         </div>
     </div>
+</section>
+<section id="filter" class="g-c-c m-b-30 d-none">
+    <form action="" id="filter-form" class="f-r-c">
+        <div class="filter-item f-c-fs">
+            <label for="keywords" class="medi-10">Keywords</label>
+            <input type="text" name="keywords" placeholder="Search user or university"
+                class="basic-bg-border m-t-5 filter-item-box">
+        </div>
+        <div class="filter-item f-c-fs">
+            <label for="langName" class="medi-10">Language</label>
+            <select name="langName" class="basic-bg-border m-t-5 filter-item-box" form="filter-form">
+                <option>All Languages</option>
+                <option>English</option>
+                <option>Hindi</option>
+                <option>Marathi</option>
+                <option>Tamil</option>
+                <option>Gujurati</option>
+                <option>Bengali</option>
+                <option>Punjabi</option>
+            </select>
+        </div>
+        <div class="filter-item f-c-fs">
+            <label for="subjects" class="medi-10">Subjects</label>
+                <input list="subjects" placeholder="Search subjects" name="subject" class="basic-bg-border m-t-5 filter-item-box">
+                <datalist id="subjects">
+                    <option value="COA">Computer Organisation and Architecture</option>
+                    <option value="Maths">Mathematics</option>
+                    <option value="French">French</option>
+                    <option value="C++">C++</option>
+                </datalist>
+        </div>
+        <div class="filter-item f-c-fs">
+            <label for="courses" class="medi-10">Courses</label>
+                <input list="courses" placeholder="Search courses" name="courses" class="basic-bg-border m-t-5 filter-item-box">
+                <datalist id="courses">
+                    <option value="COA">Computer Organisation and Architecture</option>
+                    <option value="Maths">Mathematics</option>
+                    <option value="French">French</option>
+                    <option value="C++">C++</option>
+                </datalist>
+        </div>
+        <div class="filter-item f-c-fs">
+            <label for="sort" class="medi-10">Sort</label>
+            <select name="sort" class="basic-bg-border m-t-5 filter-item-box filter-sort" form="filter-form">
+                <option>Newest First</option>
+                <option>English</option>
+                <option>Hindi</option>
+                <option>Marathi</option>
+                <option>Tamil</option>
+                <option>Gujurati</option>
+                <option>Bengali</option>
+                <option>Punjabi</option>
+            </select>
+        </div>
+    </form>
 </section>
 
 <!-- docs type -->
@@ -28,8 +83,9 @@
 
 <!-- result docs -->
 <section id="grid-docs">
-    <div class="pdfs pdf-hover savedDocs">
-        <%infoList.forEach((item) =>{%>
+    <div class="pdf-hover savedDocs">
+        <div class="pdfs">
+            <%infoList.forEach((item) =>{%>
             <div class="n-pdf-bg pdf-with-user">
                 <div class="doc-desc-link g-c-c d-none semi-10 ">
                     <a href="/doc-desc">View Document</a>
@@ -37,8 +93,8 @@
                 <div class="hover-ctas f-r-c">
                     <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
                             height="16px"></button>
-                    <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
-                            class="hover-save-doc-img" alt="" height="16px"></button>
+                    <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg" class="hover-save-doc-img"
+                            alt="" height="16px"></button>
                     <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
                             class="hover-add-cart-img" alt="" height="16px"></button>
                 </div>
@@ -53,12 +109,13 @@
                 </div>
                 <a class="desc-link">
                     <div class="d-none"><%= item[0].DocId%></div>
-                    <p><%= item[0].DocName%></p></a>
-                <div class="smallest-text college"><%= item[0].University %> 
+                    <p><%= item[0].DocName%></p>
+                </a>
+                <div class="smallest-text college"><%= item[0].University %>
                     <%if (item[0].Username!=null){%>
-                        <span>|</span>
+                    <span>|</span>
                     <%}%>
-                    <span class="user"><%= item[0].Username%></span>
+                        <span class="user"><%= item[0].Username%></span>
                 </div>
                 <div class="small-semi">₹ <%= item[0].Price %></div>
                 <div class="rating">
@@ -73,56 +130,58 @@
                 </div>
                 <div class="smallest-h">12 page</div>
             </div>
-        <%})%>
+            <%})%>
+        </div>
     </div>
     <div id="uploadDocs" class="pdfs pdf-hover">
         <%infoList1.forEach((item) =>{%>
-            <div class="n-pdf-bg pdf-with-user uploadDocs d-none">
-                <div class="doc-desc-link g-c-c d-none semi-10 ">
-                    <a href="/doc-desc">View Document</a>
-                </div>
-                <div class="hover-ctas f-r-c">
-                    <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
-                            height="16px"></button>
-                    <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
-                            class="hover-save-doc-img" alt="" height="16px"></button>
-                    <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
-                            class="hover-add-cart-img" alt="" height="16px"></button>
-                </div>
-                <div class="pdf-img">
-                    <img src="images/IMG_1188.JPG" alt="" height="120px">
-                </div>
-                <div class="tag-box">
-                    <tags style="color: #6463C1 ;"><%= item[0].Topic%></tags>
-                    <tags style="color: #FF6889;"><%= item[0].Doc_Type%></tags>
-                    <tags style="color: #FF9C28;"><%= item[0].Subject.substring(0,3) %></tags>
-                    <tags style="color: #60CD83;"><%= item[0].Topic%></tags>
-                </div>
-                <a class="desc-link">
-                    <div class="d-none"><%= item[0].DocId%></div>
-                    <p><%= item[0].DocName%></p></a>
-                <div class="smallest-text college"><%= item[0].University %> 
-                    <%if (item[0].Username!=null){%>
-                        <span>|</span>
-                    <%}%>
-                    <span class="user"><%= item[0].Username%></span>
-                </div>
-                <div class="small-semi">₹ <%= item[0].Price %></div>
-                <div class="rating">
-                    <div class="stars">
-                        <img src="images/icons/star.svg" alt="">
-                        <img src="images/icons/star.svg" alt="">
-                        <img src="images/icons/star.svg" alt="">
-                        <img src="images/icons/star.svg" alt="">
-                        <img src="images/icons/star.svg" alt="">
-                    </div>
-                    <a class="smallest-text" href="#">9,125</a>
-                </div>
-                <div class="smallest-h">12 page</div>
+        <div class="n-pdf-bg pdf-with-user uploadDocs d-none">
+            <div class="doc-desc-link g-c-c d-none semi-10 ">
+                <a href="/doc-desc">View Document</a>
             </div>
+            <div class="hover-ctas f-r-c">
+                <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                        height="16px"></button>
+                <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg" class="hover-save-doc-img"
+                        alt="" height="16px"></button>
+                <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg" class="hover-add-cart-img"
+                        alt="" height="16px"></button>
+            </div>
+            <div class="pdf-img">
+                <img src="images/IMG_1188.JPG" alt="" height="120px">
+            </div>
+            <div class="tag-box">
+                <tags style="color: #6463C1 ;"><%= item[0].Topic%></tags>
+                <tags style="color: #FF6889;"><%= item[0].Doc_Type%></tags>
+                <tags style="color: #FF9C28;"><%= item[0].Subject.substring(0,3) %></tags>
+                <tags style="color: #60CD83;"><%= item[0].Topic%></tags>
+            </div>
+            <a class="desc-link">
+                <div class="d-none"><%= item[0].DocId%></div>
+                <p><%= item[0].DocName%></p>
+            </a>
+            <div class="smallest-text college"><%= item[0].University %>
+                <%if (item[0].Username!=null){%>
+                <span>|</span>
+                <%}%>
+                    <span class="user"><%= item[0].Username%></span>
+            </div>
+            <div class="small-semi">₹ <%= item[0].Price %></div>
+            <div class="rating">
+                <div class="stars">
+                    <img src="images/icons/star.svg" alt="">
+                    <img src="images/icons/star.svg" alt="">
+                    <img src="images/icons/star.svg" alt="">
+                    <img src="images/icons/star.svg" alt="">
+                    <img src="images/icons/star.svg" alt="">
+                </div>
+                <a class="smallest-text" href="#">9,125</a>
+            </div>
+            <div class="smallest-h">12 page</div>
+        </div>
         <%})%>
     </div>
-    <button class="sidebar-heading read-more" onclick="readMore('savedDocs-hidden','block')">Read More</button>
+    <!-- <button class="sidebar-heading read-more" onclick="readMore('savedDocs-hidden','block')">Read More</button> -->
 </section>
 
 <%- include('./partials/footer'); %>
