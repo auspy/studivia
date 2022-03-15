@@ -51,7 +51,7 @@ c-heading for color heading, bg-f9 for background color #f9f9f9*/
 .hover-zoom,
 .btn-bg,
 .doc-desc-link,
-.basic-bg-border {
+.basic-bg-border,.post,.create-post,.post button {
     background: #FFFFFF;
     border-radius: 5px;
     box-sizing: border-box;
@@ -223,7 +223,8 @@ button {
     margin-bottom: 10px;
 }
 
-.m-t-20 {
+.m-t-20,
+.left-sidebar-item {
     margin-top: 20px;
 }
 
@@ -245,6 +246,10 @@ button {
 
 .m-t-40 {
     margin-top: 40px;
+}
+
+.m-t-30 {
+    margin-top: 30px;
 }
 
 .m-b-20 {
@@ -396,14 +401,23 @@ button:hover {
 }
 
 p,
-.semi-14 {
+.semi-14,
+.medi-14,.semi-12,.regu-14 {
     font-size: 14px;
     line-height: 21px;
     text-transform: none;
     font-weight: normal;
 }
 
-.semi-14 {
+.semi-12{
+    font-size: 12px;
+}
+
+.medi-14 {
+    font-weight: 500;
+}
+
+.semi-14,.semi-12 {
     font-weight: 600;
 }
 
@@ -599,6 +613,14 @@ logo {
     align-items: center;
 }
 
+#dash .header-right{
+    right: 30px;
+}
+
+#dash logo{
+    margin-left: 30px;
+}
+
 .header-btn {
     height: 38px;
     width: 134px;
@@ -613,7 +635,6 @@ logo {
 }
 
 .header-textitem:nth-of-type(4) {
-
     margin-right: 0;
 }
 
@@ -642,6 +663,7 @@ logo {
 #sub-header {
     position: relative;
     /* top: 65px; */
+    z-index: 1;
     height: 45px;
     width: 100%;
     min-width: 1440px;
@@ -1157,7 +1179,87 @@ isse hum rlative ko use karke uska top decide kar skte he. flex method saves som
 
 /* Dash-HERO */
 
-#dash-hero {
+hr {
+    border: 0.5px solid #DFDFDF;
+    box-sizing: border-box;
+    box-shadow: 4px 0px 20px rgba(0, 0, 0, 0.1);
+    transform: matrix(1, 0, 0, -1, 0, 0);
+}
+
+.dash-left-sidebar hr {
+    width: 279px;
+}
+
+.dash-left-sidebar,.left-sidebar-item {
+    width: 238px;
+}
+
+.dash-left-sidebar{
+    position: fixed;
+    left: 20px;
+    top: 140px;
+}
+
+.left-sidebar-item>.f-r-c>img{
+    height: 28px;
+    margin-right: 2px;
+}
+
+/* FEED */
+#feed{
+padding-top: 140px;
+}
+
+.post-box, .post-img-box,.post-img-box>img{
+    width: 669px;
+    overflow: hidden;
+}
+
+.post-img-box{
+    border-top: 1px solid #DFDFDF;
+    border-bottom: 1px solid #DFDFDF;
+height: 484px;
+
+}
+
+.post,.create-post{
+    width: 669px;
+box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.comment > .semi-12,.comment > .f-r-c-sb >.smallest-text, .create-post .smallest-text{
+    color: var(--search-bar-text);
+}
+.comment > hr{
+width: 629px;
+}
+
+.create-post textarea,.create-post hr{
+    width: 629px;
+}
+
+.create-post button, .post button{
+    filter: none;
+    border: none;
+    border-radius: 20px;
+}
+
+.create-post button{
+    padding: 4px 10px;
+}
+
+.post textarea{
+    width: 600px;
+min-height: 15px;
+}
+
+.post textarea,.create-post textarea{
+border: none;
+resize: none;
+overflow: hidden;
+}
+
+/* #dash-hero {
     height: 324px;
 }
 
@@ -1180,7 +1282,7 @@ isse hum rlative ko use karke uska top decide kar skte he. flex method saves som
 
 .dash-hero-text p {
     text-align: left;
-}
+} */
 
 /* search form */
 .main-search .search-box {
@@ -1278,7 +1380,7 @@ isse hum rlative ko use karke uska top decide kar skte he. flex method saves som
     align-items: center;
 }
 
-.white-btn:hover {
+.white-btn:hover, .image-upload > label:hover {
     opacity: 0.75;
     cursor: pointer;
 }
@@ -2930,6 +3032,10 @@ z-index: 1;
 
 /* DISPLAY */
 
+.p-fixed, #dash #header,#dash #sub-header{
+    position: fixed;
+}
+
 .d-none,
 .home-testi-hidden,
 .savedDocs-hidden {
@@ -3031,11 +3137,11 @@ z-index: 1;
     margin-right: 15px;
 }
 
-select{
+select {
     color: var(--para-text);
     /* color: var(--search-bar-text); */
 }
 
-.filter-sort{
+.filter-sort {
     width: 125px;
 }

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        Study Material - Studivia
+    </title>
+    <!-- css link -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+</head>
+
+<body id="dash">
+    <!-- Header -->
+    <section id="header" class="logged-header" style="top: 0;">
+        <logo>Studivia</logo>
+        <div class="header-textbox small-semi">
+            <p class=" header-textitem"><a class="small-semi" href="dashboard.html">Dashboard</a></p>
+            <!-- 2 different classes because of color issue caused by a tag -->
+            <p class="header-textitem"><a class="small-semi" href="study_material.html">Study material</a></p>
+            <p class="header-textitem"><a class="small-semi" href="my-docs.html">My Docs</a></p>
+            <p class="header-textitem"><a class="small-semi" href="rankings.html">Rankings</a></p>
+            <!-- <p class="header-textitem"><a class="small-semi" href="contact-us.html">Contact Us</a></p> -->
+        </div>
+        <div class="header-right">
+            <form class="search-form sidebar-search" action="/search" method="post">
+                <input type="text" placeholder="Search GD Goenka" name="searchInput" class="search-box">
+                <button class="search-btn header-icon" type="submit"><img src="images/icons/search.svg" alt=""></button>
+            </form>
+            <div class="header-icon-set f-r-c">
+                <a href="#"><img src="images/icons/bell.svg" alt=""></a>
+                <a href="cart.html"><img src="images/icons/cart.svg" alt=""></a>
+                <div class="dropdown">
+                    <a href="#"><img src="images/icons/profile.svg" alt=""></a>
+                    <div class="dropdown-content">
+                        <a href="/logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="header-btn" onclick="location.href='sell-docs.html'">Sell Docs</button>
+        </div>
+    </section>
+
+    <!-- Sub-header -->
+    <section id="sub-header" style="top: 65px;">
+        <div class="sub-h-tbox">
+            <div class="dropdown">
+                <a class="sub-tbox-item">All Subjects</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">BTech</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">Hotel Mgmt.</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">Chemistry</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="sub-tbox-item">Business</a>
+                <div class="dropdown-content">
+                    <a href="#">BTech</a>
+                    <a href="#">Hotel Mgmt.</a>
+                    <a href="#">Chemistry</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Left sidebar -->
+    <div class="dash-left-sidebar">
+        <div>
+            <div class="f-r-c">
+                <img src="images/icons/profile-img.svg" alt="" height="28px"
+                    style="margin: 0px 4.8px 0 2.8px;border: 1px solid #dfdfdf;border-radius: 20px;">
+                <div class="sidebar-heading m-l-10">Amily Winter</div>
+            </div>
+            <div class="f-r-c-sb left-sidebar-item">
+                <div class="f-r-c">
+                    <img src="images/icons/bookmark-dash.svg" alt="">
+                    <div class="medi-14 m-l-10">Saved</div>
+                </div>
+                <div class="medi-14">25</div>
+            </div>
+            <div class="f-r-c-sb left-sidebar-item">
+                <div class="f-r-c">
+                    <img src="images/icons/uploaded-dash.svg" alt="">
+                    <div class="medi-14 m-l-10">Uploaded</div>
+                </div>
+                <div class="medi-14">25</div>
+            </div>
+            <div class="f-r-c-sb left-sidebar-item">
+                <div class="f-r-c">
+                    <img src="images/icons/earn-dash.svg" alt="">
+                    <div class="medi-14 m-l-10">Earnings</div>
+                </div>
+                <div class="medi-14">25</div>
+            </div>
+            <div class="f-r-c-sb left-sidebar-item">
+                <div class="f-r-c">
+                    <img src="images/icons/followers-dash.svg" alt="">
+                    <div class="medi-14 m-l-10">Followers</div>
+                </div>
+                <div class="medi-14">25</div>
+            </div>
+            <div class="f-r-c-sb left-sidebar-item">
+                <div class="f-r-c">
+                    <img src="images/icons/following-dash.svg" alt="">
+                    <div class="medi-14 m-l-10">Following</div>
+                </div>
+                <div class="medi-14">25</div>
+            </div>
+            <div class="f-r-c-sb left-sidebar-item">
+                <div class="f-r-c">
+                    <img src="images/icons/cart-dash.svg" alt="">
+                    <div class="medi-14 m-l-10">Cart</div>
+                </div>
+                <div class="medi-14">25</div>
+            </div>
+        </div>
+        <hr class="m-t-30">
+    </div>
+
+    <!-- Feed -->
+    <div id="feed" class="g-c-c">
+        <div class="post-box f-c-c">
+            <div class="create-post">
+                <form action="/new-post" method="post" id="create-post-form">
+                    <textarea style="border: none;" class="m-t-15 m-l-20" placeholder="Create post..."
+                        name="postText"></textarea>
+                    <hr class="m-t-5 m-l-20">
+                    <div class="f-r-c-sb">
+                        <div class="image-upload">
+                            <label for="file-input">
+                                <img src="images/icons/attach-file-post.svg" alt="" class="m-t-10 m-b-10 m-l-20"/>
+                            </label>
+                            <input id="file-input" type="file" class="d-none"/>
+                          </div>
+                        <button type="submit" class="m-r-10 basic-bg-border" form="create-post-form">
+                            <div class="semi-12 m-r-10 c-heading">Post</div>
+                        <img src="images/icons/post.svg" alt="">
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="post m-t-20">
+                <div class="post-user f-r-c m-l-10 m-t-10">
+                    <img src="images/profile-img.png" alt="">
+                    <div class="f-c-fs m-l-10">
+                        <div class="semi-14">Username Here</div>
+                        <div class="smallest-text m-t-5">Noteika rating/ some kind of rating</div>
+                    </div>
+                </div>
+                <div class="post-img-box m-t-10">
+                    <img src="/images/IMG_1188.JPG" alt="">
+                </div>
+                <div class="post-ctas f-r-c-sb m-t-15">
+                    <div class="f-r-c">
+                        <button class="m-r-10 m-l-20" type="button"><img src="/images/icons/heart.svg" alt=""></button>
+                        <div class="small-semi m-r-20">231,123 likes</div>
+                        <button class="m-r-20" type="button"><img src="/images/icons/bookmark-post.svg" alt="" ></button>
+                        <button class="m-r-10" type="button"><img src="/images/icons/cart-post.svg" alt=""></button>
+                    </div>
+                    <div class="f-r-c">
+                        <button class="m-r-20" type="button"> <img src="/images/icons/doc-details.svg" alt=""></button>
+                        <!-- <div class="small-semi m-r-20">Doc Details</div> -->
+                        <button class="m-r-20" type="button"><img src="/images/icons/share.svg" alt=""></button>
+                    </div>
+                </div>
+                <div class="comment">
+                    <button class="semi-12 m-l-20 m-t-20" type="button">View all 124 comments</button>
+                    <div class="user-comment f-r-c m-t-10 m-l-20">
+                        <div class="link m-r-10">NameOfUser</div>
+                        <div class="smallest-text">Comment of user</div>
+                    </div>
+                    <hr class="m-t-15 m-l-20">
+                    <div class="f-r-c-sb">
+                        <form action="" method="post" id="comment-form"></form>
+                        <textarea name="comment" placeholder="Add a comment..." class="regu-14 c-heading m-t-10 m-b-10 m-l-20" form="comment-form"></textarea>
+                        <button class="m-r-20" type="submit" form="comment-form"><img src="images/icons/comment.svg" alt=""></button>
+                    </div>
+                </div>
+            </div>
+            <div class="post m-t-20">
+                <div class="post-user f-r-c m-l-10 m-t-10">
+                    <img src="images/profile-img.png" alt="">
+                    <div class="f-c-fs m-l-10">
+                        <div class="semi-14">Username Here</div>
+                        <div class="smallest-text m-t-5">Noteika rating/ some kind of rating</div>
+                    </div>
+                </div>
+                <div class="post-img-box m-t-10">
+                    <img src="/images/IMG_1188.JPG" alt="">
+                </div>
+                <div class="post-ctas f-r-c-sb m-t-15">
+                    <div class="f-r-c">
+                        <button class="m-r-10 m-l-20" type="button"><img src="/images/icons/heart.svg" alt=""></button>
+                        <div class="small-semi m-r-20">231,123 likes</div>
+                        <button class="m-r-20" type="button"><img src="/images/icons/bookmark-post.svg" alt="" ></button>
+                        <button class="m-r-10" type="button"><img src="/images/icons/cart-post.svg" alt=""></button>
+                    </div>
+                    <div class="f-r-c">
+                        <button class="m-r-20" type="button"> <img src="/images/icons/doc-details.svg" alt=""></button>
+                        <!-- <div class="small-semi m-r-20">Doc Details</div> -->
+                        <button class="m-r-20" type="button"><img src="/images/icons/share.svg" alt=""></button>
+                    </div>
+                </div>
+                <div class="comment">
+                    <button class="semi-12 m-l-20 m-t-20" type="button">View all 124 comments</button>
+                    <div class="user-comment f-r-c m-t-10 m-l-20">
+                        <div class="link m-r-10">NameOfUser</div>
+                        <div class="smallest-text">Comment of user</div>
+                    </div>
+                    <hr class="m-t-15 m-l-20">
+                    <div class="f-r-c-sb">
+                        <form action="" method="post" id="comment-form"></form>
+                        <textarea name="comment" placeholder="Add a comment..." class="regu-14 c-heading m-t-10 m-b-10 m-l-20" form="comment-form"></textarea>
+                        <button class="m-r-20" type="submit" form="comment-form"><img src="images/icons/comment.svg" alt=""></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right-sidebar -->
+    <div class="right-sidebar"> </div>
+
+    <%- include('./partials/footer-login'); %>

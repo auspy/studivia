@@ -106,9 +106,9 @@ passport.use('local', new LocalStrategy({
                     findDocs('uploaded') // to load upload docs of current user on login
                     findDocs('cart')
                     loginStatus = true
-            
+
                     req.session.regenerate((err) => {}) // to regenrate session
-            
+
                     return cb(null, user[0], req.flash('message', 'welcome'));
                 }
             });
@@ -191,8 +191,13 @@ app.post('/register', (req, res, next) => {
                 })
                 // to create new table for new user
                 let newUserTable = "CREATE TABLE " + username + "(docID varchar(16) PRIMARY KEY,saved BIT DEFAULT NULL,cart BIT DEFAULT NULL,uploaded BIT DEFAULT NULL,purchased BIT DEFAULT NULL,lastUpdated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)"
+                let userDynTable = "CREATE TABLE " + username + "Dyn( `followers` VARCHAR(1000) NOT NULL , `following` VARCHAR(1000) NOT NULL , `lastUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE = InnoDB;"
                 con.query(newUserTable, function (err) {
                     if (err) throw err;
+                })
+                con.query(userDynTable, function (err) {
+                    if (err) throw err;
+                    console.log("created dynamic table for", username);
                 })
             })
         }
@@ -316,7 +321,8 @@ app.get('/pricing.html', function (req, res) {
 
 app.get('/dashboard.html', function (req, res) {
     if (req.isAuthenticated()) {
-        res.sendFile(__dirname + '/html/dashboard.html')
+        // res.sendFile(__dirname + '/html/dashboard.html')
+        res.render('dashboard')
         loginStatus = true
     } else {
         res.redirect('/login.html')
@@ -677,4 +683,36 @@ app.post('/search', (req, res) => {
             totalResults: docs.length
         })
     })
+})
+
+// // // CREATE POST // // //
+
+app.post('/new-post', (req, res) => {
+    console.log(req.body);
+    console.log(currentUser);
+    // create postId
+    let sql = "SELECT firstname,userid FROM userLedger WHERE username =" + con.escape(currentUser)
+    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(currentUser) +"or username = " + con.escape(currentUser) // total posts by user
+    let totalPosts = "SELECT * FROM postledger"
+    con.query(sql, (err, user) => {
+        console.log(user,"user");
+        if (err) throw err;
+        con.query(userPosts, (err, posts) => {
+            if (err) throw err;
+            con.query(totalPosts, (err, tPosts) => {
+                if (err) throw err;
+                let digits = "0000" + String(posts.length)
+                let tPostDigits = "0000" + String(tPosts.length)
+                let postid = currentUser + String(user[0].firstname).substring(0,3) + digits.substring(digits.length - 4) + tPostDigits.substring(tPostDigits.length - 4)
+                console.log(postid);
+                // add post to post ledger
+                let addPost = "INSERT INTO postledger(username,userId,postId,content) VALUES("+con.escape(currentUser)+","+con.escape(user[0].userid)+","+con.escape(postid)+","+con.escape(req.body.postText)+")"
+                con.query(addPost,(err)=>{
+                    if (err) throw err;
+                    console.log(postid," add to postLedger");
+                })
+            })
+        })
+    })
+    res.redirect('/dashboard.html')
 })
