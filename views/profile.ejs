@@ -1,0 +1,30 @@
+<%- include('./partials/header'); %>
+
+<!-- will later have to change display to grid -->
+<div class="g-c-c m-t-40">
+    <% if(followStatusHtml == true){ %>
+    <button type="button" class="blue-button follow-btn">Follow</button>
+    <% }else{ %>
+    <button type="button" class="blue-button" id="follower-btn">Followers</button>
+    <button type="button" class="blue-button" id="following-btn">Following</button>
+    <div class="follow-box basic-bg-border d-none">
+        <% usersHtml.forEach((item)=>{ %>
+        <h3><%= item.username %> </h3>
+        <%}) %>
+    </div>
+    <div class="follow-box basic-bg-border d-none">
+        <% followerUsersHtml.forEach((item)=>{ %>
+        <h3><%= item.username %> </h3>
+        <%}) %>
+    </div>
+    <% } %> 
+    <div class="f-r-c m-t-30">
+        <% postsHtml.forEach((item)=>{ %>
+        <div class="pro-post g-c-c m-r-20">
+            <p class="c-para-text"><%=item.content%></p>
+        </div>
+        <%}) %>
+    </div>
+</div>
+<script src="JS/profile.js" charset="utf-8"></script>
+<%- include('./partials/footer-login'); %>

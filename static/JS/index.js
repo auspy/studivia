@@ -167,7 +167,7 @@ const hoverSaveDocBtns = document.getElementsByClassName('hover-save-doc-img'),
 // // // ON PAGE LOAD // // //
 // to make checkbox on cart page already checked
 
-window.onload = function (){ 
+window.onload = function () {
     zoom()
     quesBox()
     scrollLeft()
@@ -513,7 +513,7 @@ function addToSavCar(btnCollection, url) {
 //     searchBtns[i].addEventListener('click',(e)=>{
 
 //     })
-    
+
 // }
 
 // // // FILTER BUTTON // // //
@@ -521,10 +521,20 @@ var myDocsFilter = document.getElementById('my-docs-filter')
 var filterBtns = document.getElementsByClassName('filter-btn')
 
 for (let i = 0; i < filterBtns.length; i++) {
-    filterBtns[i].addEventListener('click',(event)=>{
+    filterBtns[i].addEventListener('click', (event) => {
         event.target.classList.toggle('filter-clicked')
         event.target.classList.toggle('main-search')
         document.getElementById('filter').classList.toggle('d-none')
     })
 
 }
+
+// // // PROFILE // // //
+var owner = document.getElementById("owner")
+owner.addEventListener('click', (e) => {
+    let data = {
+        "user": e.target.innerText
+    }
+    toFetch('/profile/user', data)
+})
+

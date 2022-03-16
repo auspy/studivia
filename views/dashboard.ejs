@@ -96,24 +96,24 @@
     <!-- Left sidebar -->
     <div class="dash-left-sidebar">
         <div>
-            <div class="f-r-c">
+            <a href="/profile" class="f-r-c dash-btn" id="my-pro-btn" >
                 <img src="images/icons/profile-img.svg" alt="" height="28px"
                     style="margin: 0px 4.8px 0 2.8px;border: 1px solid #dfdfdf;border-radius: 20px;">
-                <div class="sidebar-heading m-l-10">Amily Winter</div>
-            </div>
+                <div class="sidebar-heading m-l-10"><%=usernameHtml%></div>
+            </a>
             <div class="f-r-c-sb left-sidebar-item">
                 <div class="f-r-c">
                     <img src="images/icons/bookmark-dash.svg" alt="">
                     <div class="medi-14 m-l-10">Saved</div>
                 </div>
-                <div class="medi-14">25</div>
+                <div class="medi-14"><%=savedHtml%></div>
             </div>
             <div class="f-r-c-sb left-sidebar-item">
                 <div class="f-r-c">
                     <img src="images/icons/uploaded-dash.svg" alt="">
                     <div class="medi-14 m-l-10">Uploaded</div>
                 </div>
-                <div class="medi-14">25</div>
+                <div class="medi-14"><%=uploadHtml%></div>
             </div>
             <div class="f-r-c-sb left-sidebar-item">
                 <div class="f-r-c">
@@ -127,21 +127,28 @@
                     <img src="images/icons/followers-dash.svg" alt="">
                     <div class="medi-14 m-l-10">Followers</div>
                 </div>
-                <div class="medi-14">25</div>
+                <div class="medi-14"><%=followerHtml%></div>
             </div>
             <div class="f-r-c-sb left-sidebar-item">
                 <div class="f-r-c">
                     <img src="images/icons/following-dash.svg" alt="">
                     <div class="medi-14 m-l-10">Following</div>
                 </div>
-                <div class="medi-14">25</div>
+                <div class="medi-14"><%=followingHtml%></div>
             </div>
             <div class="f-r-c-sb left-sidebar-item">
                 <div class="f-r-c">
                     <img src="images/icons/cart-dash.svg" alt="">
                     <div class="medi-14 m-l-10">Cart</div>
                 </div>
-                <div class="medi-14">25</div>
+                <div class="medi-14"><%=cartHtml%></div>
+            </div>
+            <div class="f-r-c-sb left-sidebar-item">
+                <div class="f-r-c">
+                    <img src="images/icons/editing.png" alt="">
+                    <div class="medi-14 m-l-10">Posts</div>
+                </div>
+                <div class="medi-14"><%=postHtml%></div>
             </div>
         </div>
         <hr class="m-t-30">
@@ -251,4 +258,6 @@
     <!-- Right-sidebar -->
     <div class="right-sidebar"> </div>
 
+    <script src="JS/dashboard.js" charset="utf-8">
+    </script>
     <%- include('./partials/footer-login'); %>

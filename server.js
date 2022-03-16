@@ -106,6 +106,8 @@ passport.use('local', new LocalStrategy({
                     findDocs('uploaded') // to load upload docs of current user on login
                     findDocs('cart')
                     loginStatus = true
+                    followFunc('following')
+                    followFunc('follower')
 
                     req.session.regenerate((err) => {}) // to regenrate session
 
@@ -191,11 +193,11 @@ app.post('/register', (req, res, next) => {
                 })
                 // to create new table for new user
                 let newUserTable = "CREATE TABLE " + username + "(docID varchar(16) PRIMARY KEY,saved BIT DEFAULT NULL,cart BIT DEFAULT NULL,uploaded BIT DEFAULT NULL,purchased BIT DEFAULT NULL,lastUpdated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)"
-                let userDynTable = "CREATE TABLE " + username + "Dyn( `followers` VARCHAR(1000) NOT NULL , `following` VARCHAR(1000) NOT NULL , `lastUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE = InnoDB;"
+                let userFTable = "CREATE TABLE " + username + "F( `username` VARCHAR(16) NOT NULL , `follower` BOOLEAN NOT NULL DEFAULT FALSE , `following` BOOLEAN NOT NULL DEFAULT FALSE , `lastUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`username`)) ENGINE = InnoDB;"
                 con.query(newUserTable, function (err) {
                     if (err) throw err;
                 })
-                con.query(userDynTable, function (err) {
+                con.query(userFTable, function (err) {
                     if (err) throw err;
                     console.log("created dynamic table for", username);
                 })
@@ -321,14 +323,42 @@ app.get('/pricing.html', function (req, res) {
 
 app.get('/dashboard.html', function (req, res) {
     if (req.isAuthenticated()) {
-        // res.sendFile(__dirname + '/html/dashboard.html')
-        res.render('dashboard')
+        
+        let savedSql = "SELECT * FROM " + currentUser + " WHERE saved = 1"
+        let uploadSql = "SELECT * FROM " + currentUser + " WHERE uploaded = 1"
+        let cartSql = "SELECT * FROM " + currentUser + " WHERE cart = 1"
+        let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(currentUser) + "or username = " + con.escape(currentUser) // total posts by user
+
+        con.query(savedSql, (err, savedCount) => {
+            if (err) throw err;
+            // console.log('saved count',savedCount,'length',savedCount.length);
+            con.query(uploadSql, (err, uploadCount) => {
+                if (err) throw err;
+                con.query(cartSql, (err, cartCount) => {
+                    if (err) throw err;
+                    con.query(userPosts, (err, postCount) => {
+                        if (err) throw err;
+                        res.render('dashboard', {
+                            usernameHtml: currentUser,
+                            savedHtml: savedCount.length,
+                            uploadHtml: uploadCount.length,
+                            cartHtml: cartCount.length,
+                            postHtml: postCount.length,
+                            followerHtml: followFunc('follower'),
+                            followingHtml: followFunc('following')
+                        })
+                    })
+                })
+            })
+        })
         loginStatus = true
     } else {
         res.redirect('/login.html')
         loginStatus = false
     }
 })
+
+
 
 app.get('/contact-us.html', function (req, res) {
     res.render('contact')
@@ -692,10 +722,10 @@ app.post('/new-post', (req, res) => {
     console.log(currentUser);
     // create postId
     let sql = "SELECT firstname,userid FROM userLedger WHERE username =" + con.escape(currentUser)
-    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(currentUser) +"or username = " + con.escape(currentUser) // total posts by user
+    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(currentUser) + "or username = " + con.escape(currentUser) // total posts by user
     let totalPosts = "SELECT * FROM postledger"
     con.query(sql, (err, user) => {
-        console.log(user,"user");
+        console.log(user, "user");
         if (err) throw err;
         con.query(userPosts, (err, posts) => {
             if (err) throw err;
@@ -703,16 +733,109 @@ app.post('/new-post', (req, res) => {
                 if (err) throw err;
                 let digits = "0000" + String(posts.length)
                 let tPostDigits = "0000" + String(tPosts.length)
-                let postid = currentUser + String(user[0].firstname).substring(0,3) + digits.substring(digits.length - 4) + tPostDigits.substring(tPostDigits.length - 4)
+                let postid = currentUser.substring(0, 3).toUpperCase() + String(user[0].firstname).substring(0, 3).toUpperCase() + digits.substring(digits.length - 4) + tPostDigits.substring(tPostDigits.length - 4)
                 console.log(postid);
                 // add post to post ledger
-                let addPost = "INSERT INTO postledger(username,userId,postId,content) VALUES("+con.escape(currentUser)+","+con.escape(user[0].userid)+","+con.escape(postid)+","+con.escape(req.body.postText)+")"
-                con.query(addPost,(err)=>{
+                let addPost = "INSERT INTO postledger(username,userId,postId,content) VALUES(" + con.escape(currentUser) + "," + con.escape(user[0].userid) + "," + con.escape(postid) + "," + con.escape(req.body.postText) + ")"
+                con.query(addPost, (err) => {
                     if (err) throw err;
-                    console.log(postid," add to postLedger");
+                    console.log(postid, " add to postLedger");
                 })
             })
         })
     })
     res.redirect('/dashboard.html')
+})
+
+// // // PROFILE // // //
+var profileUser = currentUser,
+    followStatus = true,
+    followSql, followingUsers = [],followerUsers = []
+app.get("/profile", (req, res) => {
+    followFunc("follower")
+    followFunc("following")
+    if ((profileUser == currentUser) || (profileUser == currentUser.toUpperCase())) {
+        followStatus = false
+    } else {
+        followStatus = true
+    }
+    console.log("followStatus", followStatus, profileUser);
+    if (req.isAuthenticated()) {
+        let sql = "SELECT * FROM postledger WHERE username = " + con.escape(profileUser)
+        con.query(sql, (err, posts) => {
+            if (err) throw err;
+            console.log('posts', posts);
+            console.log("followingUsers",followingUsers);
+            res.render('profile', {
+                postsHtml: posts,
+                followStatusHtml: followStatus,
+                usersHtml: followingUsers,
+                followerUsersHtml: followerUsers
+            })
+        })
+    } else {
+        res.redirect('/login.html')
+    }
+})
+
+function followFunc(data){
+    // console.log("followFunc parameter and user",data,currentUser);
+    followSql = "SELECT username FROM " + currentUser + "F WHERE "+data+" = true;"
+    con.query(followSql, (err, users) => {
+        if (err) throw err;
+        if (data == "following") {
+            followingUsers = users
+            // console.log(currentUser, "is ",data, users);
+            // console.log("followingUsers.length",followingUsers.length);
+            return followingUsers
+        } else {
+            followerUsers = users
+            // console.log("followerUsers.length",followerUsers.length);
+            return followerUsers
+        }
+    })
+    if (data == "following") {
+        return followingUsers.length
+    } else {
+        return followerUsers.length
+    }
+}
+
+// SENDS USER WHOSE PROFILE WE NEED TO DISPLAY
+app.post('/profile/user', (req, res) => {
+    console.log("fetch from index", req.body);
+    profileUser = req.body.user.toUpperCase()
+    res.redirect('/profile')
+})
+
+// // // FOLLOW // // //
+
+app.post('/follow', (req, res) => {
+    let checkTable = "SELECT * FROM " + currentUser + "F WHERE username = " + con.escape(profileUser.toLowerCase())
+    con.query(checkTable, (err, users) => {
+        if (users.length) {
+            console.log("users.following", users);
+            if (users[0].following == 1) {
+                console.log("user already exists");
+                let sql = "UPDATE " + currentUser + "F SET following = false WHERE username = " + con.escape(profileUser.toLowerCase()) + ";"
+                con.query(sql, (err) => {
+                    if (err) throw err;
+                    console.log(sql, currentUser, "unfollowed", profileUser.toLowerCase());
+                })
+            } else {
+                console.log("user already exists");
+                let sql = "UPDATE " + currentUser + "F SET following = true WHERE username = " + con.escape(profileUser.toLowerCase()) + ";"
+                con.query(sql, (err) => {
+                    if (err) throw err;
+                    console.log(sql, currentUser, "followed", profileUser.toLowerCase());
+                })
+            }
+        } else {
+            let sql = "INSERT INTO " + currentUser + "F(username,following) VALUES(" + con.escape(profileUser.toLowerCase()) + ",true)"
+            con.query(sql, (err) => {
+                if (err) throw err;
+                console.log(currentUser, "followed", profileUser.toLowerCase());
+            })
+        }
+    })
 })

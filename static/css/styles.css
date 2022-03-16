@@ -51,7 +51,7 @@ c-heading for color heading, bg-f9 for background color #f9f9f9*/
 .hover-zoom,
 .btn-bg,
 .doc-desc-link,
-.basic-bg-border,.post,.create-post,.post button {
+.basic-bg-border,.post,.create-post,.post button, .dash-btn {
     background: #FFFFFF;
     border-radius: 5px;
     box-sizing: border-box;
@@ -1238,7 +1238,7 @@ width: 629px;
     width: 629px;
 }
 
-.create-post button, .post button{
+.create-post button, .post button,.dash-btn{
     filter: none;
     border: none;
     border-radius: 20px;
@@ -1251,6 +1251,19 @@ width: 629px;
 .post textarea{
     width: 600px;
 min-height: 15px;
+}
+
+.dash-btn{
+    color: var(--headings);
+    background: var(--bg-color);
+    padding: 10px 0;
+    width: 238px;
+    border-radius: 0;
+    justify-content: left;
+}
+
+.dash-btn:hover{
+    background: white;
 }
 
 .post textarea,.create-post textarea{
@@ -3144,4 +3157,28 @@ select {
 
 .filter-sort {
     width: 125px;
+}
+
+/* PROFILE */
+
+.pro-post{
+    background: #FFFFFF;
+box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
+border-radius: 5px;
+width: 359px;
+height: 247px;
+}
+
+.pro-post p{
+    overflow: hidden;
+    max-width: 247px;
+    max-height: 167px;
+}
+
+.follow-box{
+    position: fixed;
+    top: 200px;
+    left: 120px;
+    z-index: 2;
+    padding: 10px 20px;
 }
