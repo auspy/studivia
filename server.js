@@ -33,10 +33,16 @@ app.use(bodyParser.urlencoded({
 
 // CREATE CONNECTION
 // sql code: karne_kya_he kispe_karna_he uska_nam_kya_he usme_kya_kya_hoga
+// var con = mysql.createConnection({
+//     host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
+//     port: "3306",
+//     user: "auspy",
+//     password: "password",
+//     database: "studiviaDB"
+// })
 var con = mysql.createConnection({
-    host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
-    port: "3306",
-    user: "auspy",
+    host: "localhost",
+    user: "root",
     password: "password",
     database: "studiviaDB"
 })
@@ -101,10 +107,11 @@ passport.use('local', new LocalStrategy({
                 } else {
                     var mailChar = /@/
                     if (mailChar.test(String(username))) {
-                        currentUser = user[0].uid
+                        req.session["user"] = user[0].uid
                     } else {
-                        currentUser = username
-                    }
+                        req.session["user"] = username
+                        currentUser = req.session.user
+                    
                     // reset the arrays so that current user docs can be filled
                     savedArr = []
                     uploadArr = []
@@ -113,15 +120,15 @@ passport.use('local', new LocalStrategy({
                     findDocs('uploaded') // to load upload docs of current user on login
                     findDocs('cart')
                     loginStatus = true
-                    followFunc('follower')
-                    followFunc('following').then(() => {
-                        dashFunc()
-                    })
-
-
+                    console.log("req.session",req.session,"req.session.user",req.session.user);
+                    followFunc('follower',req.session.user)
+                    followFunc('following',req.session.user)
+                    dashFunc(req.session.user)
+                    
                     req.session.regenerate((err) => {}) // to regenrate session
 
                     return cb(null, user[0], req.flash('message', 'welcome'));
+                }
                 }
             });
         }
@@ -273,7 +280,7 @@ app.post('/login.html', passport.authenticate('local', {
         failureRedirect: '/login.html'
     }),
     function (req, res) {
-        console.log('in dash', currentUser);
+        console.log('in dash', req.session.user);
         return res.redirect('/dashboard.html')
     });
 
@@ -362,7 +369,7 @@ var userFeedPosts = [],userFeed
 //         resolve(userFeedPosts)
 //     })
 // }
-function feedPosts() {
+function feedPosts(user) {
     // gives all the posts of users our current user is following
     var feedSql = ''
     console.log("users i follow", followingUsers, followingUsers.length);
@@ -382,7 +389,7 @@ function feedPosts() {
             if (posts.length) {
                 userFeedPosts = posts // stores the posts needed to show on dashboard
                 console.log("posts added to feed");
-                likedStatus() // problem with this is that we have to reload page to get the data. maybe we can use async await to render page when this has finished processing
+                likedStatus(user) // problem with this is that we have to reload page to get the data. maybe we can use async await to render page when this has finished processing
                 displayComments() // display comments
             } else {
                 userFeedPosts = []
@@ -395,12 +402,12 @@ function feedPosts() {
 var postsLiked = {},
     postComments = {} // can later on merge as i get more understanding of json
 
-function likedStatus() {
+function likedStatus(user) {
     // takes all the posts being shown on feed and gives their like status in a dictionary type datatype
     postsLiked = {}
     // forms dictionary of postid: likedStatus
     for (let i = 0; i < userFeedPosts.length; i++) {
-        let checkLiked = "SELECT * FROM " + userFeedPosts[i].postId + " WHERE username =" + con.escape(currentUser)
+        let checkLiked = "SELECT * FROM " + userFeedPosts[i].postId + " WHERE username =" + con.escape(user)
         console.log("posts on feed", userFeedPosts[i]);
         console.log("id of posts on feed", userFeedPosts[i].postId);
 
@@ -442,7 +449,7 @@ function postStatusCount(postid, statusName) {
 
 var userComment = {}
 
-async function displayComments() {
+function displayComments() {
     // return new Promise((resolve,reject)=>{
     postComments = {}
     for (let i = 0; i < userFeedPosts.length; i++) {
@@ -475,11 +482,11 @@ async function displayComments() {
 
 const dashValues = {}
 
-function dashFunc() {
-    let savedSql = "SELECT * FROM " + currentUser + " WHERE saved = 1"
-    let uploadSql = "SELECT * FROM " + currentUser + " WHERE uploaded = 1"
-    let cartSql = "SELECT * FROM " + currentUser + " WHERE cart = 1"
-    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(currentUser) + "or username = " + con.escape(currentUser) // total posts by user
+function dashFunc(user=currentUser) {
+    let savedSql = "SELECT * FROM " + user + " WHERE saved = 1"
+    let uploadSql = "SELECT * FROM " + user + " WHERE uploaded = 1"
+    let cartSql = "SELECT * FROM " + user + " WHERE cart = 1"
+    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(user) + "or username = " + con.escape(user) // total posts by user
 
     con.query(savedSql, (err, savedCount) => {
         if (err) throw err;
@@ -505,7 +512,7 @@ function dashFunc() {
 
 app.get('/dashboard.html',(req, res) => {
     if (req.isAuthenticated()) {
-        feedPosts()
+        feedPosts(req.session.user)
             // console.log("userFeedPosts in dash", userFeedPosts);
             // if (userFeedPosts == []) {
             //     postComments = null
@@ -515,7 +522,7 @@ app.get('/dashboard.html',(req, res) => {
             // console.log("post comments in dash", postComments);
             // return res.send('nice')
             res.render('dashboard', {
-                usernameHtml: currentUser,
+                usernameHtml: req.session.user,
                 savedHtml: dashValues['saved'],
                 uploadHtml: dashValues['upload'],
                 cartHtml: dashValues['cart'],
@@ -596,8 +603,8 @@ app.post('/sell-docs.html', function (req, res) {
         latestDocId = docId
 
         // ADD DOC TO MAIN LEDGER AND NEWUSER TABLE
-        var addDocToLedger = "INSERT INTO docsLedger(DocName,username,DocId,University,Doc_Type,language,course,subject,topic,year,description,price) VALUES (" + con.escape(docName) + "," + con.escape(currentUser) + "," + con.escape(docId) + "," + con.escape(docUniv) + "," + con.escape(docType) + "," + con.escape(docLang) + "," + con.escape(docCour) + "," + con.escape(docSubj) + "," + con.escape(docTopic) + "," + con.escape(docYear) + "," + con.escape(docDesc) + "," + con.escape(docPrice) + ")"
-        var addToNewUser = "INSERT INTO " + currentUser + "(docID, uploaded) VALUES(" + con.escape(docId) + ", 1)"
+        var addDocToLedger = "INSERT INTO docsLedger(DocName,username,DocId,University,Doc_Type,language,course,subject,topic,year,description,price) VALUES (" + con.escape(docName) + "," + con.escape(req.session.user) + "," + con.escape(docId) + "," + con.escape(docUniv) + "," + con.escape(docType) + "," + con.escape(docLang) + "," + con.escape(docCour) + "," + con.escape(docSubj) + "," + con.escape(docTopic) + "," + con.escape(docYear) + "," + con.escape(docDesc) + "," + con.escape(docPrice) + ")"
+        var addToNewUser = "INSERT INTO " + req.session.user + "(docID, uploaded) VALUES(" + con.escape(docId) + ", 1)"
         con.query(addDocToLedger, function (err) {
             if (err) throw err;
             console.log('added name', docCount)
@@ -694,7 +701,7 @@ addToSavCarServer('/saveDoc', 'saved')
 function addToSavCarServer(url, savCar) {
     app.post(url, function (req, res) {
         // console.log(req.body.docid);
-        let idSearch = "SELECT saved,cart,uploaded,purchased FROM " + currentUser + " WHERE docid =" + con.escape(req.body.docid)
+        let idSearch = "SELECT saved,cart,uploaded,purchased FROM " + req.session.user + " WHERE docid =" + con.escape(req.body.docid)
         con.query(idSearch, (err, savedColValue) => {
             if (savedColValue != "") {
                 var savCarBothNull = savedColValue[0].saved == null && savedColValue[0].cart == null
@@ -715,7 +722,7 @@ function addToSavCarServer(url, savCar) {
                 // when ye id he hi nhi table me
                 // console.log('situation 1 and saved+cart value is', savedColValue[0]);
                 // console.log('will add', req.body.docid);
-                let sql = "INSERT INTO " + currentUser + "(docid," + savCar + ") VALUES(" + con.escape(req.body.docid) + ",1)"
+                let sql = "INSERT INTO " + req.session.user + "(docid," + savCar + ") VALUES(" + con.escape(req.body.docid) + ",1)"
                 con.query(sql, (err) => {
                     if (err) throw err;
                     console.log('inserted', req.body.docid, 'to findDocs')
@@ -723,19 +730,19 @@ function addToSavCarServer(url, savCar) {
             } else if ((savedColValue[0].saved != null && savedColValue[0].cart != null) || (onClickBothNull && upOrPurNotNull)) {
                 // when saved aur cart dono 1 he and button click hua. so, ab ek ko null karna he
                 if (req.body.extra == 'save-for-later') {
-                    let sql = "UPDATE " + currentUser + " SET cart = NULL WHERE docid =" + con.escape(req.body.docid)
+                    let sql = "UPDATE " + req.session.user + " SET cart = NULL WHERE docid =" + con.escape(req.body.docid)
                     con.query(sql, (err) => {
                         if (err) throw err;
                         console.log('updated null in cart for', req.body.docid, 'beacuse already in saved')
                     })
                 } else if (req.body.extra == 'move-to-cart') {
-                    let sql = "UPDATE " + currentUser + " SET saved = NULL WHERE docid =" + con.escape(req.body.docid)
+                    let sql = "UPDATE " + req.session.user + " SET saved = NULL WHERE docid =" + con.escape(req.body.docid)
                     con.query(sql, (err) => {
                         if (err) throw err;
                         console.log('updated null in saved for', req.body.docid, 'beacuse already in cart')
                     })
                 } else {
-                    let sql = "UPDATE " + currentUser + " SET " + savCar + " = NULL WHERE docid =" + con.escape(req.body.docid)
+                    let sql = "UPDATE " + req.session.user + " SET " + savCar + " = NULL WHERE docid =" + con.escape(req.body.docid)
                     con.query(sql, (err) => {
                         if (err) throw err;
                         console.log('updated null in ' + savCar + ' for', req.body.docid, 'for cart')
@@ -751,7 +758,7 @@ function addToSavCarServer(url, savCar) {
                 // console.log('condition 4', onClick1);
                 // console.log('situation 3 and saved+cart value is', savedColValue[0]);
                 if (req.body.extra == 'move-to-cart') {
-                    let sql = "UPDATE " + currentUser + " SET " + savCar + " = 1,saved = null WHERE docid =" + con.escape(req.body.docid)
+                    let sql = "UPDATE " + req.session.user + " SET " + savCar + " = 1,saved = null WHERE docid =" + con.escape(req.body.docid)
                     con.query(sql, (err) => {
                         if (err) throw err;
                         console.log('updated 1 in ' + savCar + 'for', req.body.docid, 'and removed this from saved')
@@ -759,23 +766,23 @@ function addToSavCarServer(url, savCar) {
 
                     })
                 } else if (req.body.extra == 'save-for-later') {
-                    let sql = "UPDATE " + currentUser + " SET " + savCar + " = 1, cart = null WHERE docid =" + con.escape(req.body.docid)
+                    let sql = "UPDATE " + req.session.user + " SET " + savCar + " = 1, cart = null WHERE docid =" + con.escape(req.body.docid)
                     con.query(sql, (err) => {
                         if (err) throw err;
                         console.log('updated 1 in ' + savCar + 'for', req.body.docid, 'and removed from cart')
                     })
                 } else {
-                    let sql = "UPDATE " + currentUser + " SET " + savCar + " = 1 WHERE docid =" + con.escape(req.body.docid)
+                    let sql = "UPDATE " + req.session.user + " SET " + savCar + " = 1 WHERE docid =" + con.escape(req.body.docid)
                     con.query(sql, (err) => {
                         if (err) throw err;
-                        console.log('updated 1 in ' + savCar + 'for', req.body.docid, 'in', currentUser)
+                        console.log('updated 1 in ' + savCar + 'for', req.body.docid, 'in', req.session.user)
                     })
                 }
                 findDocs()
                 findDocs('cart')
             } else if ((onClickBothNull || savCarBothNull) && (upPurBothNull)) {
                 // when is id me dono null ya phir jo 1 tha uska button click hua to ab wo bhi null he. lekin delete tabhi hoga agar uploaded and purchased dono null he
-                let sql = "DELETE FROM " + currentUser + " WHERE docid =" + con.escape(req.body.docid)
+                let sql = "DELETE FROM " + req.session.user + " WHERE docid =" + con.escape(req.body.docid)
                 // console.log('situation 4 and saved+cart value is', savedColValue[0]);
                 con.query(sql, (err) => {
                     if (err) throw err;
@@ -895,10 +902,10 @@ app.post('/search', (req, res) => {
 
 app.post('/new-post', (req, res) => {
     console.log(req.body);
-    console.log(currentUser);
+    console.log(req.session.user);
     // create postId
-    let sql = "SELECT firstname,userid FROM userLedger WHERE username =" + con.escape(currentUser)
-    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(currentUser) + "or username = " + con.escape(currentUser) // total posts by user
+    let sql = "SELECT firstname,userid FROM userLedger WHERE username =" + con.escape(req.session.user)
+    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(req.session.user) + "or username = " + con.escape(req.session.user) // total posts by user
     let totalPosts = "SELECT * FROM postledger"
     con.query(sql, (err, user) => {
         console.log(user, "user");
@@ -909,10 +916,10 @@ app.post('/new-post', (req, res) => {
                 if (err) throw err;
                 let digits = "0000" + String(posts.length)
                 let tPostDigits = "0000" + String(tPosts.length)
-                let postid = currentUser.substring(0, 3).toUpperCase() + String(user[0].firstname).substring(0, 3).toUpperCase() + digits.substring(digits.length - 4) + tPostDigits.substring(tPostDigits.length - 4)
+                let postid = req.session.user.substring(0, 3).toUpperCase() + String(user[0].firstname).substring(0, 3).toUpperCase() + digits.substring(digits.length - 4) + tPostDigits.substring(tPostDigits.length - 4)
                 console.log(postid);
                 // add post to post ledger
-                let addPost = "INSERT INTO postledger(username,userId,postId,content) VALUES(" + con.escape(currentUser) + "," + con.escape(user[0].userid) + "," + con.escape(postid) + "," + con.escape(req.body.postText) + ")"
+                let addPost = "INSERT INTO postledger(username,userId,postId,content) VALUES(" + con.escape(req.session.user) + "," + con.escape(user[0].userid) + "," + con.escape(postid) + "," + con.escape(req.body.postText) + ")"
                 con.query(addPost, (err) => {
                     if (err) throw err;
                     console.log(postid, " add to postLedger");
@@ -941,7 +948,7 @@ var profileUser = currentUser,
 app.get("/profile", (req, res) => {
     followFunc("follower")
     followFunc("following")
-    if ((profileUser == currentUser) || (profileUser == currentUser.toUpperCase())) {
+    if ((profileUser == req.session.user) || (profileUser == req.session.user.toUpperCase())) {
         followStatus = false
     } else {
         followStatus = true
@@ -965,15 +972,16 @@ app.get("/profile", (req, res) => {
     }
 })
 
-async function followFunc(data) {
-    return new Promise((resolve, reject) => {
-        // console.log("followFunc parameter and user",data,currentUser);
+function followFunc(data,user=currentUser) {
+    // return new Promise((resolve, reject) => {
+        // console.log("followFunc parameter and user",data,req.session.user);
+        console.log("current user in follow func",user);
         followSql = "SELECT username FROM " + currentUser + "F WHERE " + data + " = true;"
         con.query(followSql, (err, users) => {
             if (err) throw err;
             if (data == "following") {
                 followingUsers = users
-                // console.log(currentUser, "is ",data, users);
+                // console.log(req.session.user, "is ",data, users);
                 // console.log("followingUsers.length",followingUsers.length);
             } else {
                 followerUsers = users
@@ -981,11 +989,11 @@ async function followFunc(data) {
             }
         })
         if (data == "following") {
-            resolve(followingUsers.length)
+            return(followingUsers.length)
         } else {
-            resolve(followerUsers.length)
+            return(followerUsers.length)
         }
-    })
+    // })
 }
 
 // SENDS USER WHOSE PROFILE WE NEED TO DISPLAY
@@ -998,30 +1006,30 @@ app.post('/profile/user', (req, res) => {
 // // // FOLLOW // // //
 
 app.post('/follow', (req, res) => {
-    let checkTable = "SELECT * FROM " + currentUser + "F WHERE username = " + con.escape(profileUser.toLowerCase())
+    let checkTable = "SELECT * FROM " + req.session.user + "F WHERE username = " + con.escape(profileUser.toLowerCase())
     con.query(checkTable, (err, users) => {
         if (users.length) {
             console.log("users.following", users);
             if (users[0].following == 1) {
                 console.log("user already exists");
-                let sql = "UPDATE " + currentUser + "F SET following = false WHERE username = " + con.escape(profileUser.toLowerCase()) + ";"
+                let sql = "UPDATE " + req.session.user + "F SET following = false WHERE username = " + con.escape(profileUser.toLowerCase()) + ";"
                 con.query(sql, (err) => {
                     if (err) throw err;
-                    console.log(sql, currentUser, "unfollowed", profileUser.toLowerCase());
+                    console.log(sql, req.session.user, "unfollowed", profileUser.toLowerCase());
                 })
             } else {
                 console.log("user already exists");
-                let sql = "UPDATE " + currentUser + "F SET following = true WHERE username = " + con.escape(profileUser.toLowerCase()) + ";"
+                let sql = "UPDATE " + req.session.user + "F SET following = true WHERE username = " + con.escape(profileUser.toLowerCase()) + ";"
                 con.query(sql, (err) => {
                     if (err) throw err;
-                    console.log(sql, currentUser, "followed", profileUser.toLowerCase());
+                    console.log(sql, req.session.user, "followed", profileUser.toLowerCase());
                 })
             }
         } else {
-            let sql = "INSERT INTO " + currentUser + "F(username,following) VALUES(" + con.escape(profileUser.toLowerCase()) + ",true)"
+            let sql = "INSERT INTO " + req.session.user + "F(username,following) VALUES(" + con.escape(profileUser.toLowerCase()) + ",true)"
             con.query(sql, (err) => {
                 if (err) throw err;
-                console.log(currentUser, "followed", profileUser.toLowerCase());
+                console.log(req.session.user, "followed", profileUser.toLowerCase());
             })
         }
         followFunc("following")
@@ -1034,33 +1042,33 @@ var liked = false
 app.post('/post/like', (req, res) => {
     console.log(req.body.postId);
     res.send('liked')
-    let checkUser = "SELECT * FROM " + req.body.postId + " WHERE username = " + con.escape(currentUser)
+    let checkUser = "SELECT * FROM " + req.body.postId + " WHERE username = " + con.escape(req.session.user)
     con.query(checkUser, (err, users) => {
         if (err) throw err;
         var likeSql, addPostToP
         if (users.length) {
             console.log("user already interacted with the post");
             if (users[0].liked == true) {
-                likeSql = "UPDATE " + req.body.postId + " SET liked = false WHERE username = " + con.escape(currentUser)
-                console.log(currentUser, "unliked", req.body.postId);
+                likeSql = "UPDATE " + req.body.postId + " SET liked = false WHERE username = " + con.escape(req.session.user)
+                console.log(req.session.user, "unliked", req.body.postId);
                 liked = false
-                addPostToP = "UPDATE " + currentUser + "P SET liked = false WHERE postid = " + con.escape(req.body.postId)
+                addPostToP = "UPDATE " + req.session.user + "P SET liked = false WHERE postid = " + con.escape(req.body.postId)
 
             } else {
-                likeSql = "UPDATE " + req.body.postId + " SET liked = true WHERE username = " + con.escape(currentUser)
-                console.log(currentUser, "liked", req.body.postId);
+                likeSql = "UPDATE " + req.body.postId + " SET liked = true WHERE username = " + con.escape(req.session.user)
+                console.log(req.session.user, "liked", req.body.postId);
                 liked = true
-                addPostToP = "UPDATE " + currentUser + "P SET liked = true WHERE postid = " + con.escape(req.body.postId)
+                addPostToP = "UPDATE " + req.session.user + "P SET liked = true WHERE postid = " + con.escape(req.body.postId)
             }
         } else {
-            likeSql = "INSERT INTO " + req.body.postId + "(username,liked) VALUES(" + con.escape(currentUser) + ", true ) "
-            console.log(currentUser, "inserted into table and liked", req.body.postId);
+            likeSql = "INSERT INTO " + req.body.postId + "(username,liked) VALUES(" + con.escape(req.session.user) + ", true ) "
+            console.log(req.session.user, "inserted into table and liked", req.body.postId);
             liked = true
-            addPostToP = "INSERT INTO " + currentUser + "P(postid) VALUES(" + con.escape(req.body.postId) + ")"
+            addPostToP = "INSERT INTO " + req.session.user + "P(postid) VALUES(" + con.escape(req.body.postId) + ")"
         }
         con.query(addPostToP, (err) => {
             if (err) throw err;
-            console.log("added", req.body.postId, "to", currentUser, "P");
+            console.log("added", req.body.postId, "to", req.session.user, "P");
         })
         con.query(likeSql, (err) => {
             if (err) throw err;
@@ -1075,7 +1083,7 @@ app.post('/post/like', (req, res) => {
 app.post('/post/comment', (req, res) => {
     console.log("comment", req.body);
     // in postid table
-    let sqlPost = "INSERT INTO " + req.body.postid + "P(username,comment) VALUES(" + con.escape(currentUser) + "," + con.escape(req.body.comment) + ")"
+    let sqlPost = "INSERT INTO " + req.body.postid + "P(username,comment) VALUES(" + con.escape(req.session.user) + "," + con.escape(req.body.comment) + ")"
     con.query(sqlPost, (err) => {
         if (err) throw err;
         console.log("inserted into", req.body.postid, "table", req.body.comment);
