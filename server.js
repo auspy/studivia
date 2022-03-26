@@ -343,7 +343,7 @@ var userFeedPosts = [],userFeed
 //         var feedSql = ''
 //         console.log("users i follow", followingUsers, followingUsers.length);
 //         if (followingUsers.length > 0) {
-//             feedSql = "SELECT * FROM postledger WHERE username =" + con.escape(followingUsers[0].username)
+//             feedSql = "SELECT * FROM postLedger WHERE username =" + con.escape(followingUsers[0].username)
 //             // console.log("sql for =1", feedSql);
 //             if (followingUsers.length > 1) {
 //                 for (let i = 1; i < followingUsers.length; i++) {
@@ -374,7 +374,7 @@ function feedPosts(user) {
     var feedSql = ''
     console.log("users i follow", followingUsers, followingUsers.length);
     if (followingUsers.length > 0) {
-        feedSql = "SELECT * FROM postledger WHERE username =" + con.escape(followingUsers[0].username)
+        feedSql = "SELECT * FROM postLedger WHERE username =" + con.escape(followingUsers[0].username)
         // console.log("sql for =1", feedSql);
         if (followingUsers.length > 1) {
             for (let i = 1; i < followingUsers.length; i++) {
@@ -486,7 +486,7 @@ function dashFunc(user=currentUser) {
     let savedSql = "SELECT * FROM " + user + " WHERE saved = 1"
     let uploadSql = "SELECT * FROM " + user + " WHERE uploaded = 1"
     let cartSql = "SELECT * FROM " + user + " WHERE cart = 1"
-    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(user) + "or username = " + con.escape(user) // total posts by user
+    let userPosts = "SELECT * FROM postLedger WHERE userid = " + con.escape(user) + "or username = " + con.escape(user) // total posts by user
 
     con.query(savedSql, (err, savedCount) => {
         if (err) throw err;
@@ -905,8 +905,8 @@ app.post('/new-post', (req, res) => {
     console.log(req.session.user);
     // create postId
     let sql = "SELECT firstname,userid FROM userLedger WHERE username =" + con.escape(req.session.user)
-    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(req.session.user) + "or username = " + con.escape(req.session.user) // total posts by user
-    let totalPosts = "SELECT * FROM postledger"
+    let userPosts = "SELECT * FROM postLedger WHERE userid = " + con.escape(req.session.user) + "or username = " + con.escape(req.session.user) // total posts by user
+    let totalPosts = "SELECT * FROM postLedger"
     con.query(sql, (err, user) => {
         console.log(user, "user");
         if (err) throw err;
@@ -919,7 +919,7 @@ app.post('/new-post', (req, res) => {
                 let postid = req.session.user.substring(0, 3).toUpperCase() + String(user[0].firstname).substring(0, 3).toUpperCase() + digits.substring(digits.length - 4) + tPostDigits.substring(tPostDigits.length - 4)
                 console.log(postid);
                 // add post to post ledger
-                let addPost = "INSERT INTO postledger(username,userId,postId,content) VALUES(" + con.escape(req.session.user) + "," + con.escape(user[0].userid) + "," + con.escape(postid) + "," + con.escape(req.body.postText) + ")"
+                let addPost = "INSERT INTO postLedger(username,userId,postId,content) VALUES(" + con.escape(req.session.user) + "," + con.escape(user[0].userid) + "," + con.escape(postid) + "," + con.escape(req.body.postText) + ")"
                 con.query(addPost, (err) => {
                     if (err) throw err;
                     console.log(postid, " add to postLedger");
@@ -955,7 +955,7 @@ app.get("/profile", (req, res) => {
     }
     console.log("followStatus", followStatus, profileUser);
     if (req.isAuthenticated()) {
-        let sql = "SELECT * FROM postledger WHERE username = " + con.escape(profileUser)
+        let sql = "SELECT * FROM postLedger WHERE username = " + con.escape(profileUser)
         con.query(sql, (err, posts) => {
             if (err) throw err;
             console.log('posts', posts);
