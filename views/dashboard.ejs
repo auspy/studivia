@@ -96,7 +96,7 @@
     <!-- Left sidebar -->
     <div class="dash-left-sidebar">
         <div>
-            <a href="/profile" class="f-r-c dash-btn" id="my-pro-btn" >
+            <a href="/profile" class="f-r-c dash-btn" id="my-pro-btn">
                 <img src="images/icons/profile-img.svg" alt="" height="28px"
                     style="margin: 0px 4.8px 0 2.8px;border: 1px solid #dfdfdf;border-radius: 20px;">
                 <div class="sidebar-heading m-l-10"><%=usernameHtml%></div>
@@ -165,99 +165,89 @@
                     <div class="f-r-c-sb">
                         <div class="image-upload">
                             <label for="file-input">
-                                <img src="images/icons/attach-file-post.svg" alt="" class="m-t-10 m-b-10 m-l-20"/>
+                                <img src="images/icons/attach-file-post.svg" alt="" class="m-t-10 m-b-10 m-l-20" />
                             </label>
-                            <input id="file-input" type="file" class="d-none"/>
-                          </div>
+                            <input id="file-input" type="file" class="d-none" />
+                        </div>
                         <button type="submit" class="m-r-10 basic-bg-border" form="create-post-form">
                             <div class="semi-12 m-r-10 c-heading">Post</div>
-                        <img src="images/icons/post.svg" alt="">
+                            <img src="images/icons/post.svg" alt="">
                         </button>
                     </div>
                 </form>
             </div>
+            <% if(userFeedPostsHtml != []){ %>
+            <% userFeedPostsHtml.forEach((item)=>{ %>
             <div class="post m-t-20">
                 <div class="post-user f-r-c m-l-10 m-t-10">
                     <img src="images/profile-img.png" alt="">
                     <div class="f-c-fs m-l-10">
-                        <div class="semi-14">Username Here</div>
+                        <div class="semi-14"><%=item.username%></div>
+                        <div class="post-id d-none"><%= item.postId%></div>
                         <div class="smallest-text m-t-5">Noteika rating/ some kind of rating</div>
                     </div>
                 </div>
+                <% if(item.files != null){ %>
+                <p class="m-t-15 m-b-20 m-l-20 c-heading big-text"><%= item.content %> </p>
                 <div class="post-img-box m-t-10">
                     <img src="/images/IMG_1188.JPG" alt="">
                 </div>
+                <% } else{ %>
+                <p class="m-t-30 m-b-40 m-l-20 c-heading big-text"><%= item.content %> </p>
+                <% } %>
                 <div class="post-ctas f-r-c-sb m-t-15">
                     <div class="f-r-c">
-                        <button class="m-r-10 m-l-20" type="button"><img src="/images/icons/heart.svg" alt=""></button>
-                        <div class="small-semi m-r-20">231,123 likes</div>
-                        <button class="m-r-20" type="button"><img src="/images/icons/bookmark-post.svg" alt="" ></button>
-                        <button class="m-r-10" type="button"><img src="/images/icons/cart-post.svg" alt=""></button>
+                        <% if(postsLikedHtml[item.postId] == true){ %>
+                        <button class="m-r-10 m-l-20" type="button"><img class="heart-btn"
+                                src="/images/icons/heart-blue.svg" alt=""></button>
+                        <% }else{ %>
+                        <button class="m-r-10 m-l-20" type="button"><img class="heart-btn" src="/images/icons/heart.svg"
+                                alt=""></button>
+                        <% } %>
+                        <div class="small-semi m-r-20 c-para-text"><%=likeCountHtml%> likes</div>
+                        <button class="m-r-20" type="button"><img src="/images/icons/bookmark-post.svg" alt=""></button>
+                        <!-- <button class="m-r-10" type="button"><img src="/images/icons/cart-post.svg" alt=""></button> -->
                     </div>
                     <div class="f-r-c">
-                        <button class="m-r-20" type="button"> <img src="/images/icons/doc-details.svg" alt=""></button>
+                        <!-- <button class="m-r-20" type="button"> <img src="/images/icons/doc-details.svg" alt=""></button> -->
                         <!-- <div class="small-semi m-r-20">Doc Details</div> -->
                         <button class="m-r-20" type="button"><img src="/images/icons/share.svg" alt=""></button>
                     </div>
                 </div>
                 <div class="comment">
-                    <button class="semi-12 m-l-20 m-t-20" type="button">View all 124 comments</button>
+                    <% if (postCommentsHtml != null){ %>
+                    <% let id = postCommentsHtml[item.postId] %>
+                    <% if (Object.keys(id).length){ %>
+                    <button class="semi-12 m-l-20 m-t-20" type="button">View all <%=Object.keys(id).length%>
+                        comments</button>
+                    <% } %>
+                    <% Object.keys(id).forEach((key)=>{%>
                     <div class="user-comment f-r-c m-t-10 m-l-20">
-                        <div class="link m-r-10">NameOfUser</div>
-                        <div class="smallest-text">Comment of user</div>
+                        <div class="link m-r-10"><%=id[key][0]%> </div>
+                        <div class="smallest-text"><%=id[key][1]%></div>
                     </div>
+                    <%}) %>
+                    <%}%> 
+                        
                     <hr class="m-t-15 m-l-20">
                     <div class="f-r-c-sb">
-                        <form action="" method="post" id="comment-form"></form>
+                        <!-- <form action="" method="post" id="comment-form"></form> -->
                         <textarea name="comment" placeholder="Add a comment..." class="regu-14 c-heading m-t-10 m-b-10 m-l-20" form="comment-form"></textarea>
-                        <button class="m-r-20" type="submit" form="comment-form"><img src="images/icons/comment.svg" alt=""></button>
+                        <button class="m-r-20" type="submit" form="comment-form"><img class="comment-btn" src="images/icons/comment.svg" alt=""></button>
                     </div>
                 </div>
             </div>
-            <div class="post m-t-20">
-                <div class="post-user f-r-c m-l-10 m-t-10">
-                    <img src="images/profile-img.png" alt="">
-                    <div class="f-c-fs m-l-10">
-                        <div class="semi-14">Username Here</div>
-                        <div class="smallest-text m-t-5">Noteika rating/ some kind of rating</div>
-                    </div>
-                </div>
-                <div class="post-img-box m-t-10">
-                    <img src="/images/IMG_1188.JPG" alt="">
-                </div>
-                <div class="post-ctas f-r-c-sb m-t-15">
-                    <div class="f-r-c">
-                        <button class="m-r-10 m-l-20" type="button"><img src="/images/icons/heart.svg" alt=""></button>
-                        <div class="small-semi m-r-20">231,123 likes</div>
-                        <button class="m-r-20" type="button"><img src="/images/icons/bookmark-post.svg" alt="" ></button>
-                        <button class="m-r-10" type="button"><img src="/images/icons/cart-post.svg" alt=""></button>
-                    </div>
-                    <div class="f-r-c">
-                        <button class="m-r-20" type="button"> <img src="/images/icons/doc-details.svg" alt=""></button>
-                        <!-- <div class="small-semi m-r-20">Doc Details</div> -->
-                        <button class="m-r-20" type="button"><img src="/images/icons/share.svg" alt=""></button>
-                    </div>
-                </div>
-                <div class="comment">
-                    <button class="semi-12 m-l-20 m-t-20" type="button">View all 124 comments</button>
-                    <div class="user-comment f-r-c m-t-10 m-l-20">
-                        <div class="link m-r-10">NameOfUser</div>
-                        <div class="smallest-text">Comment of user</div>
-                    </div>
-                    <hr class="m-t-15 m-l-20">
-                    <div class="f-r-c-sb">
-                        <form action="" method="post" id="comment-form"></form>
-                        <textarea name="comment" placeholder="Add a comment..." class="regu-14 c-heading m-t-10 m-b-10 m-l-20" form="comment-form"></textarea>
-                        <button class="m-r-20" type="submit" form="comment-form"><img src="images/icons/comment.svg" alt=""></button>
-                    </div>
+        <%}) %>
+                    <%}else{ %>
+                    <h3>NO POSTS YET</h3>
+                    <% } %>
+
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Right-sidebar -->
-    <div class="right-sidebar"> </div>
+            <!-- Right-sidebar -->
+            <div class="right-sidebar"> </div>
 
-    <script src="JS/dashboard.js" charset="utf-8">
-    </script>
-    <%- include('./partials/footer-login'); %>
+            <script src="JS/dashboard.js" charset="utf-8">
+            </script>
+            <%- include('./partials/footer-login'); %>

@@ -1234,6 +1234,10 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
 width: 629px;
 }
 
+/* .post-ctas img{
+    height: 16px;
+} */
+
 .create-post textarea,.create-post hr{
     width: 629px;
 }
@@ -3173,6 +3177,10 @@ height: 247px;
     overflow: hidden;
     max-width: 247px;
     max-height: 167px;
+}
+
+.post p{
+    max-width: 629px;
 }
 
 .follow-box{

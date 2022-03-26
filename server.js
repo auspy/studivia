@@ -13,6 +13,12 @@ const Connection = require("mysql/lib/Connection")
 const flash = require('connect-flash');
 const bcrypt = require('bcrypt');
 const e = require('connect-flash');
+const {
+    resolve
+} = require('path');
+const {
+    reject
+} = require('underscore');
 const saltRounds = 10;
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -28,8 +34,9 @@ app.use(bodyParser.urlencoded({
 // CREATE CONNECTION
 // sql code: karne_kya_he kispe_karna_he uska_nam_kya_he usme_kya_kya_hoga
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
+    host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
+    port: "3306",
+    user: "auspy",
     password: "password",
     database: "studiviaDB"
 })
@@ -106,8 +113,11 @@ passport.use('local', new LocalStrategy({
                     findDocs('uploaded') // to load upload docs of current user on login
                     findDocs('cart')
                     loginStatus = true
-                    followFunc('following')
                     followFunc('follower')
+                    followFunc('following').then(() => {
+                        dashFunc()
+                    })
+
 
                     req.session.regenerate((err) => {}) // to regenrate session
 
@@ -194,12 +204,17 @@ app.post('/register', (req, res, next) => {
                 // to create new table for new user
                 let newUserTable = "CREATE TABLE " + username + "(docID varchar(16) PRIMARY KEY,saved BIT DEFAULT NULL,cart BIT DEFAULT NULL,uploaded BIT DEFAULT NULL,purchased BIT DEFAULT NULL,lastUpdated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)"
                 let userFTable = "CREATE TABLE " + username + "F( `username` VARCHAR(16) NOT NULL , `follower` BOOLEAN NOT NULL DEFAULT FALSE , `following` BOOLEAN NOT NULL DEFAULT FALSE , `lastUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`username`)) ENGINE = InnoDB;"
+                let userPTable = "CREATE TABLE " + username + "P( `postid` VARCHAR(20) NOT NULL , `liked` BOOLEAN NOT NULL DEFAULT FALSE , `shared` BOOLEAN NOT NULL DEFAULT FALSE , `saved` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`postid`(16))) ENGINE = InnoDB;"
                 con.query(newUserTable, function (err) {
                     if (err) throw err;
                 })
                 con.query(userFTable, function (err) {
                     if (err) throw err;
-                    console.log("created dynamic table for", username);
+                    console.log("created follow table for", username);
+                })
+                con.query(userPTable, function (err) {
+                    if (err) throw err;
+                    console.log("created posts table for", username);
                 })
             })
         }
@@ -259,7 +274,7 @@ app.post('/login.html', passport.authenticate('local', {
     }),
     function (req, res) {
         console.log('in dash', currentUser);
-        res.redirect('/dashboard.html')
+        return res.redirect('/dashboard.html')
     });
 
 // // // LISTEN, SERVER START // // //
@@ -286,8 +301,8 @@ app.get('/auth/google/studivia',
         failureRedirect: '/login'
     }),
     function (req, res) {
-        // Successful authentication, redirect home.
         res.redirect('/dashboard.html');
+        // Successful authentication, redirect home.
     });
 
 app.get('/index.html', function (req, res) {
@@ -309,52 +324,213 @@ app.get('/sell-docs.html', function (req, res) {
     })
 })
 
-// app.get('/sell-docs-2.html', function (req, res) {
-//     res.render('sell_docs_2')
-// })
-
-// app.get('/sell-docs-3.html', function (req, res) {
-//     res.render('sell_docs_3')
-// })
-
 app.get('/pricing.html', function (req, res) {
     res.render('pricing')
 })
 
-app.get('/dashboard.html', function (req, res) {
-    if (req.isAuthenticated()) {
-        
-        let savedSql = "SELECT * FROM " + currentUser + " WHERE saved = 1"
-        let uploadSql = "SELECT * FROM " + currentUser + " WHERE uploaded = 1"
-        let cartSql = "SELECT * FROM " + currentUser + " WHERE cart = 1"
-        let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(currentUser) + "or username = " + con.escape(currentUser) // total posts by user
+var userFeedPosts = [],userFeed
 
-        con.query(savedSql, (err, savedCount) => {
+// function feedPosts() {
+//     // gives all the posts of users our current user is following
+//     return new Promise((resolve, reject) => {
+//         var feedSql = ''
+//         console.log("users i follow", followingUsers, followingUsers.length);
+//         if (followingUsers.length > 0) {
+//             feedSql = "SELECT * FROM postledger WHERE username =" + con.escape(followingUsers[0].username)
+//             // console.log("sql for =1", feedSql);
+//             if (followingUsers.length > 1) {
+//                 for (let i = 1; i < followingUsers.length; i++) {
+//                     feedSql = feedSql + " OR username =" + con.escape(followingUsers[i].username)
+//                     console.log("sql for >1", feedSql);
+//                 }
+//             }
+//             // to get posts of profiles followed by user
+//             con.query(feedSql, (err, posts) => {
+//                 console.log('sql in query', feedSql);
+//                 if (err) throw err;
+//                 if (posts.length) {
+//                     userFeedPosts = posts // stores the posts needed to show on dashboard
+//                     console.log("posts added to feed");
+//                     likedStatus() // problem with this is that we have to reload page to get the data. maybe we can use async await to render page when this has finished processing
+//                     displayComments() // display comments 
+//                 } else {
+//                     userFeedPosts = []
+//                 }
+//                 console.log("userFeedPosts", userFeedPosts);
+//             })
+//         }
+//         resolve(userFeedPosts)
+//     })
+// }
+function feedPosts() {
+    // gives all the posts of users our current user is following
+    var feedSql = ''
+    console.log("users i follow", followingUsers, followingUsers.length);
+    if (followingUsers.length > 0) {
+        feedSql = "SELECT * FROM postledger WHERE username =" + con.escape(followingUsers[0].username)
+        // console.log("sql for =1", feedSql);
+        if (followingUsers.length > 1) {
+            for (let i = 1; i < followingUsers.length; i++) {
+                feedSql = feedSql + " OR username =" + con.escape(followingUsers[i].username)
+                console.log("sql for >1", feedSql);
+            }
+        }
+        // to get posts of profiles followed by user
+        con.query(feedSql, (err, posts) => {
+            console.log('sql in query', feedSql);
             if (err) throw err;
-            // console.log('saved count',savedCount,'length',savedCount.length);
-            con.query(uploadSql, (err, uploadCount) => {
-                if (err) throw err;
-                con.query(cartSql, (err, cartCount) => {
-                    if (err) throw err;
-                    con.query(userPosts, (err, postCount) => {
-                        if (err) throw err;
-                        res.render('dashboard', {
-                            usernameHtml: currentUser,
-                            savedHtml: savedCount.length,
-                            uploadHtml: uploadCount.length,
-                            cartHtml: cartCount.length,
-                            postHtml: postCount.length,
-                            followerHtml: followFunc('follower'),
-                            followingHtml: followFunc('following')
-                        })
-                    })
-                })
-            })
+            if (posts.length) {
+                userFeedPosts = posts // stores the posts needed to show on dashboard
+                console.log("posts added to feed");
+                likedStatus() // problem with this is that we have to reload page to get the data. maybe we can use async await to render page when this has finished processing
+                displayComments() // display comments
+            } else {
+                userFeedPosts = []
+            }
+            console.log("userFeedPosts", userFeedPosts);
         })
-        loginStatus = true
+    }
+}
+
+var postsLiked = {},
+    postComments = {} // can later on merge as i get more understanding of json
+
+function likedStatus() {
+    // takes all the posts being shown on feed and gives their like status in a dictionary type datatype
+    postsLiked = {}
+    // forms dictionary of postid: likedStatus
+    for (let i = 0; i < userFeedPosts.length; i++) {
+        let checkLiked = "SELECT * FROM " + userFeedPosts[i].postId + " WHERE username =" + con.escape(currentUser)
+        console.log("posts on feed", userFeedPosts[i]);
+        console.log("id of posts on feed", userFeedPosts[i].postId);
+
+        con.query(checkLiked, (err, rows) => {
+            if (err) throw err;
+            console.log("liked status rows", rows);
+            if (rows.length) {
+                if (rows[0].liked == true) {
+                    postsLiked[String(userFeedPosts[i].postId)] = true //String doesn't matter
+                    // console.log(0,"status true");
+                } else {
+                    postsLiked[userFeedPosts[i].postId] = false
+                    // console.log(0,"status false");
+                }
+            }
+            // else{
+            //     postsLiked = {}
+            // }
+        })
+        postStatusCount(userFeedPosts[i].postId, 'liked')
+    }
+}
+
+var postLikeCount
+
+function postStatusCount(postid, statusName) {
+    postLikeCount = 0
+    // to be used with liked status on dashboard
+    // to count total users who liked/shared/commented on the post
+    let totalLikes = "SELECT * FROM " + postid + " WHERE " + statusName + " = true"
+    con.query(totalLikes, (err, users) => {
+        if (err) throw err;
+        if (users.length) {
+            postLikeCount = users.length
+            console.log("total users who", statusName, postLikeCount);
+        }
+    })
+}
+
+var userComment = {}
+
+async function displayComments() {
+    // return new Promise((resolve,reject)=>{
+    postComments = {}
+    for (let i = 0; i < userFeedPosts.length; i++) {
+        userComment = {}
+        let sql = "SELECT * FROM " + userFeedPosts[i].postId + "P"
+        con.query(sql, (err, comments) => {
+            if (err) throw err;
+            // console.log(comments);
+            if (comments.length) {
+                // agar comments he to aise bhardo
+                for (let j = 0; j < comments.length; j++) {
+                    // this creates a json storage for sno and username,comment
+                    userComment[comments[j].sno] = [comments[j].username, comments[j].comment]
+                }
+                postComments[userFeedPosts[i].postId] = userComment
+
+            } else {
+                // agar comments nhi he to khali array
+                postComments[userFeedPosts[i].postId] = false
+            }
+            // json storage created in above loop is stored as value for postid(key). so now we have all comments with users which can be called for each post using its postid.
+            // console.log("userComment after loop",userComment);
+            // console.log("post comments",postComments);
+        })
+    }
+    // resolve()
+    // })
+
+}
+
+const dashValues = {}
+
+function dashFunc() {
+    let savedSql = "SELECT * FROM " + currentUser + " WHERE saved = 1"
+    let uploadSql = "SELECT * FROM " + currentUser + " WHERE uploaded = 1"
+    let cartSql = "SELECT * FROM " + currentUser + " WHERE cart = 1"
+    let userPosts = "SELECT * FROM postledger WHERE userid = " + con.escape(currentUser) + "or username = " + con.escape(currentUser) // total posts by user
+
+    con.query(savedSql, (err, savedCount) => {
+        if (err) throw err;
+        dashValues["saved"] = savedCount.length
+    })
+
+    con.query(uploadSql, (err, uploadCount) => {
+        if (err) throw err;
+        dashValues["upload"] = uploadCount.length
+    })
+
+    con.query(cartSql, (err, cartCount) => {
+        if (err) throw err;
+        dashValues["cart"] = cartCount.length
+    })
+
+    con.query(userPosts, (err, postCount) => {
+        if (err) throw err;
+        dashValues["posts"] = postCount.length
+
+    })
+}
+
+app.get('/dashboard.html',(req, res) => {
+    if (req.isAuthenticated()) {
+        feedPosts()
+            // console.log("userFeedPosts in dash", userFeedPosts);
+            // if (userFeedPosts == []) {
+            //     postComments = null
+            // }
+            console.log("dashValues", dashValues);
+            // console.log("feed-posts liked status in dash", postsLiked);
+            // console.log("post comments in dash", postComments);
+            // return res.send('nice')
+            res.render('dashboard', {
+                usernameHtml: currentUser,
+                savedHtml: dashValues['saved'],
+                uploadHtml: dashValues['upload'],
+                cartHtml: dashValues['cart'],
+                postHtml: dashValues['posts'],
+                followerHtml: followerUsers.length,
+                followingHtml: followingUsers.length,
+                userFeedPostsHtml: userFeedPosts,
+                postsLikedHtml: postsLiked,
+                likeCountHtml: postLikeCount,
+                postCommentsHtml: postComments
+            })
+            loginStatus = true
     } else {
-        res.redirect('/login.html')
         loginStatus = false
+        return res.redirect('/login.html')
     }
 })
 
@@ -741,6 +917,16 @@ app.post('/new-post', (req, res) => {
                     if (err) throw err;
                     console.log(postid, " add to postLedger");
                 })
+                let postTable = "CREATE TABLE " + postid + " ( `username` VARCHAR(16) NOT NULL , `liked` BOOLEAN NOT NULL DEFAULT FALSE , `shared` BOOLEAN NOT NULL DEFAULT FALSE , `saved` BOOLEAN NOT NULL DEFAULT FALSE , `lastUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`username`)) ENGINE = InnoDB;"
+                let postTableP = "CREATE TABLE " + postid + "P( `sno` INT(5) NOT NULL , `username` VARCHAR(16) NOT NULL , `comment` VARCHAR(500) NOT NULL , `lastUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`sno`)) ENGINE = InnoDB;"
+                con.query(postTable, (err) => {
+                    if (err) throw err;
+                    console.log("created post table for", postid);
+                })
+                con.query(postTableP, (err) => {
+                    if (err) throw err;
+                    console.log("created post table P for", postid);
+                })
             })
         })
     })
@@ -750,7 +936,8 @@ app.post('/new-post', (req, res) => {
 // // // PROFILE // // //
 var profileUser = currentUser,
     followStatus = true,
-    followSql, followingUsers = [],followerUsers = []
+    followSql, followingUsers = [],
+    followerUsers = []
 app.get("/profile", (req, res) => {
     followFunc("follower")
     followFunc("following")
@@ -765,7 +952,7 @@ app.get("/profile", (req, res) => {
         con.query(sql, (err, posts) => {
             if (err) throw err;
             console.log('posts', posts);
-            console.log("followingUsers",followingUsers);
+            console.log("followingUsers", followingUsers);
             res.render('profile', {
                 postsHtml: posts,
                 followStatusHtml: followStatus,
@@ -778,27 +965,27 @@ app.get("/profile", (req, res) => {
     }
 })
 
-function followFunc(data){
-    // console.log("followFunc parameter and user",data,currentUser);
-    followSql = "SELECT username FROM " + currentUser + "F WHERE "+data+" = true;"
-    con.query(followSql, (err, users) => {
-        if (err) throw err;
+async function followFunc(data) {
+    return new Promise((resolve, reject) => {
+        // console.log("followFunc parameter and user",data,currentUser);
+        followSql = "SELECT username FROM " + currentUser + "F WHERE " + data + " = true;"
+        con.query(followSql, (err, users) => {
+            if (err) throw err;
+            if (data == "following") {
+                followingUsers = users
+                // console.log(currentUser, "is ",data, users);
+                // console.log("followingUsers.length",followingUsers.length);
+            } else {
+                followerUsers = users
+                // console.log("followerUsers.length",followerUsers.length);
+            }
+        })
         if (data == "following") {
-            followingUsers = users
-            // console.log(currentUser, "is ",data, users);
-            // console.log("followingUsers.length",followingUsers.length);
-            return followingUsers
+            resolve(followingUsers.length)
         } else {
-            followerUsers = users
-            // console.log("followerUsers.length",followerUsers.length);
-            return followerUsers
+            resolve(followerUsers.length)
         }
     })
-    if (data == "following") {
-        return followingUsers.length
-    } else {
-        return followerUsers.length
-    }
 }
 
 // SENDS USER WHOSE PROFILE WE NEED TO DISPLAY
@@ -837,5 +1024,62 @@ app.post('/follow', (req, res) => {
                 console.log(currentUser, "followed", profileUser.toLowerCase());
             })
         }
+        followFunc("following")
+        followFunc("follower")
     })
 })
+
+// // // LIKE/SAVE POST // // //
+var liked = false
+app.post('/post/like', (req, res) => {
+    console.log(req.body.postId);
+    res.send('liked')
+    let checkUser = "SELECT * FROM " + req.body.postId + " WHERE username = " + con.escape(currentUser)
+    con.query(checkUser, (err, users) => {
+        if (err) throw err;
+        var likeSql, addPostToP
+        if (users.length) {
+            console.log("user already interacted with the post");
+            if (users[0].liked == true) {
+                likeSql = "UPDATE " + req.body.postId + " SET liked = false WHERE username = " + con.escape(currentUser)
+                console.log(currentUser, "unliked", req.body.postId);
+                liked = false
+                addPostToP = "UPDATE " + currentUser + "P SET liked = false WHERE postid = " + con.escape(req.body.postId)
+
+            } else {
+                likeSql = "UPDATE " + req.body.postId + " SET liked = true WHERE username = " + con.escape(currentUser)
+                console.log(currentUser, "liked", req.body.postId);
+                liked = true
+                addPostToP = "UPDATE " + currentUser + "P SET liked = true WHERE postid = " + con.escape(req.body.postId)
+            }
+        } else {
+            likeSql = "INSERT INTO " + req.body.postId + "(username,liked) VALUES(" + con.escape(currentUser) + ", true ) "
+            console.log(currentUser, "inserted into table and liked", req.body.postId);
+            liked = true
+            addPostToP = "INSERT INTO " + currentUser + "P(postid) VALUES(" + con.escape(req.body.postId) + ")"
+        }
+        con.query(addPostToP, (err) => {
+            if (err) throw err;
+            console.log("added", req.body.postId, "to", currentUser, "P");
+        })
+        con.query(likeSql, (err) => {
+            if (err) throw err;
+            console.log(likeSql, "sql used in like query");
+        })
+    })
+})
+
+// // // COMMENT // // //
+
+// GET COMMENT FROM USER
+app.post('/post/comment', (req, res) => {
+    console.log("comment", req.body);
+    // in postid table
+    let sqlPost = "INSERT INTO " + req.body.postid + "P(username,comment) VALUES(" + con.escape(currentUser) + "," + con.escape(req.body.comment) + ")"
+    con.query(sqlPost, (err) => {
+        if (err) throw err;
+        console.log("inserted into", req.body.postid, "table", req.body.comment);
+    })
+})
+
+// problem is feedPosts are not getting list of following users on time which is causing is
