@@ -155,7 +155,7 @@ passport.deserializeUser(function (user, cb) {
 //     },
 //     function (accessToken, refreshToken, profile, cb) {
 
-//         let sql = "SELECT * FROM docsledger WHERE userId = " + profile.id
+//         let sql = "SELECT * FROM docsLedger WHERE userId = " + profile.id
 //         let name = profile.displayName.split(" ")
 //         let firstName = name[0]
 //         let lastName = name[1]
@@ -165,7 +165,7 @@ passport.deserializeUser(function (user, cb) {
 //                 return cb(err);
 //             }
 //             if (!users.length) {
-//                 let insertUser = "INSERT INTO docsledger(userId,firstName,lastName) VALUES(" + con.escape(profile.id) + "," + con.escape(firstName) + "," + con.escape(lastName) + ")"
+//                 let insertUser = "INSERT INTO docsLedger(userId,firstName,lastName) VALUES(" + con.escape(profile.id) + "," + con.escape(firstName) + "," + con.escape(lastName) + ")"
 //                 con.query(insertUser, (err) => {
 //                     console.log('added new user');
 //                 })
@@ -670,7 +670,7 @@ app.use(express.json({
 }))
 app.post('/descLinkClicked', function (req, res) {
     // console.log(req.body);
-    var docNeeded = "SELECT * FROM docsledger WHERE docid = " + con.escape(req.body.docid)
+    var docNeeded = "SELECT * FROM docsLedger WHERE docid = " + con.escape(req.body.docid)
     con.query(docNeeded, function (err, docDesc) {
         if (err) throw err;
         docDescList = docDesc
