@@ -512,6 +512,7 @@ function dashFunc(user=currentUser) {
 
 app.get('/dashboard.html',(req, res) => {
     if (req.isAuthenticated()) {
+        dashFunc()
         feedPosts(req.session.user)
             // console.log("userFeedPosts in dash", userFeedPosts);
             // if (userFeedPosts == []) {
