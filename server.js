@@ -20,7 +20,7 @@ const {
     reject
 } = require('underscore');
 const saltRounds = 10;
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
+// var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 // INITIALIZATION
 const app = express()
@@ -140,34 +140,34 @@ passport.deserializeUser(function (user, cb) {
 });
 
 // // // GOOGLE OAUTH // // //
-passport.use(new GoogleStrategy({
-        clientID: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/auth/google/studivia"
-        // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-    },
-    function (accessToken, refreshToken, profile, cb) {
+// passport.use(new GoogleStrategy({
+//         clientID: process.env.CLIENT_ID,
+//         clientSecret: process.env.CLIENT_SECRET,
+//         callbackURL: "http://localhost:3000/auth/google/studivia"
+//         // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+//     },
+//     function (accessToken, refreshToken, profile, cb) {
 
-        let sql = "SELECT * FROM docsledger WHERE userId = " + profile.id
-        let name = profile.displayName.split(" ")
-        let firstName = name[0]
-        let lastName = name[1]
-        con.query(sql, (err, users) => {
-            if (err) {
-                console.log('google error');
-                return cb(err);
-            }
-            if (!users.length) {
-                let insertUser = "INSERT INTO docsledger(userId,firstName,lastName) VALUES(" + con.escape(profile.id) + "," + con.escape(firstName) + "," + con.escape(lastName) + ")"
-                con.query(insertUser, (err) => {
-                    console.log('added new user');
-                })
-            }
-            console.log('welcome, from google');
-            return cb(null, users, req.flash('message', 'welcome'))
-        })
-    }
-));
+//         let sql = "SELECT * FROM docsledger WHERE userId = " + profile.id
+//         let name = profile.displayName.split(" ")
+//         let firstName = name[0]
+//         let lastName = name[1]
+//         con.query(sql, (err, users) => {
+//             if (err) {
+//                 console.log('google error');
+//                 return cb(err);
+//             }
+//             if (!users.length) {
+//                 let insertUser = "INSERT INTO docsledger(userId,firstName,lastName) VALUES(" + con.escape(profile.id) + "," + con.escape(firstName) + "," + con.escape(lastName) + ")"
+//                 con.query(insertUser, (err) => {
+//                     console.log('added new user');
+//                 })
+//             }
+//             console.log('welcome, from google');
+//             return cb(null, users, req.flash('message', 'welcome'))
+//         })
+//     }
+// ));
 
 
 // // // REGISTER PAGE/ SIGN UP PAGE/SETUP MAIL CHIMP // // //
@@ -290,20 +290,20 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/html/index.html')
 })
 
-app.get('/auth/google', (res, req) => {
-    passport.authenticate('google', {
-        scope: ['profile']
-    });
-})
+// app.get('/auth/google', (res, req) => {
+//     passport.authenticate('google', {
+//         scope: ['profile']
+//     });
+// })
 
-app.get('/auth/google/studivia',
-    passport.authenticate('google', {
-        failureRedirect: '/login'
-    }),
-    function (req, res) {
-        res.redirect('/dashboard.html');
-        // Successful authentication, redirect home.
-    });
+// app.get('/auth/google/studivia',
+//     passport.authenticate('google', {
+//         failureRedirect: '/login'
+//     }),
+//     function (req, res) {
+//         res.redirect('/dashboard.html');
+//         // Successful authentication, redirect home.
+//     });
 
 app.get('/index.html', function (req, res) {
     req.flash('message', 'Success!!');
