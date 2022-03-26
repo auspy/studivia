@@ -278,7 +278,7 @@ app.post('/login.html', passport.authenticate('local', {
     });
 
 // // // LISTEN, SERVER START // // //
-app.listen(process.env.PORT, () => {
+app.listen(8000, () => {
     console.log('server started yes')
 })
 
