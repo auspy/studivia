@@ -33,19 +33,19 @@ app.use(bodyParser.urlencoded({
 
 // CREATE CONNECTION
 // sql code: karne_kya_he kispe_karna_he uska_nam_kya_he usme_kya_kya_hoga
-// var con = mysql.createConnection({
-//     host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
-//     port: "3306",
-//     user: "auspy",
-//     password: "password",
-//     database: "studiviaDB"
-// })
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
+    host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
+    port: "3306",
+    user: "auspy",
     password: "password",
     database: "studiviaDB"
 })
+// var con = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "password",
+//     database: "studiviaDB"
+// })
 
 // CONNECT
 con.connect(function (err) {
