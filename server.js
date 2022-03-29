@@ -13,6 +13,7 @@ const Connection = require("mysql/lib/Connection")
 const flash = require('connect-flash');
 const bcrypt = require('bcrypt');
 const e = require('connect-flash');
+const multer = require('multer')
 const {
     resolve
 } = require('path');
@@ -74,6 +75,42 @@ app.use(passport.authenticate('session'));
 app.use(flash());
 
 var loginStatus = false
+
+// // // UPLOADED/UPLOADING FILES // // //
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // maybe store file based on username
+        cb(null, __dirname+'/uploads')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now()
+        let extArray = file.mimetype.split("/");
+        let extension = extArray[extArray.length - 1];
+        cb(null, file.fieldname + '-' + uniqueSuffix + '.' +extension)
+    }
+})
+
+const upload = multer({
+    storage: storage,
+    // fileFilter: (req, file, cb) => {
+    //     // The function should call `cb` with a boolean
+    //     // to indicate if the file should be accepted
+    //     if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg" || file.mimetype == " application/pdf") {
+    //         cb(null, true);
+    //     } else {
+    //         cb(null, false);
+    //         return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+    //     }
+    //     // You can always pass an error if something goes wrong:
+    //     cb(new Error('I don\'t have a clue!'))
+    // },
+    limits: {
+        fieldNameSize: "150bytes",
+        fieldSize: "15MB"
+    }
+})
+
+
 
 // // // AUTHENTICATION // // //
 
@@ -538,55 +575,68 @@ app.get('/logout', (req, res) => {
 var latestDocId
 var step = 1
 
-app.post('/sell-docs.html', function (req, res) {
-    step = 2
-    // UPLOADED DOC DETAILS
-    var docName = req.body.name
-    var docUniv = req.body.university
-    var docType = req.body.docType
-    var docLang = req.body.langName
-    var docCour = req.body.courseName
-    var docSubj = req.body.subName
-    var docTopic = req.body.topic
-    var docYear = req.body.year
-    var docDesc = req.body.desc
-    var docPrice = req.body.setPrice
-    var docEarn = req.body.earnPer
-    console.log(req.body)
-    console.log(req.body.upDocs)
-    console.log(req.body.upDocs)
-
-    // FOR DOCID : getting last input in docsLedger so that we can increment it whenever new doc is added
-    var docCount
-    var digits = "0000"
-    var lastEntry = "SELECT DocId FROM `docsLedger` ORDER BY `lastUpdated` DESC LIMIT 1;"
-    con.query(lastEntry, function (err, neededId) {
-        if (err) throw err;
-        // to get last 4 digits of DocId
-        var lastId = String(neededId[0].DocId)
-        var last4digits = lastId.substring(lastId.length - 4)
-        var neededNum = parseInt(last4digits) + 1
-
-        // to convert final number into 4 digits and get docID-last-4-digits
-        docCount = (digits.substring(String(neededNum).length) + neededNum)
-        var docId = (docName.substring(0, 3) + docUniv.substring(0, 3) + docSubj.substring(0, 3) + docLang.substring(0, 2) + docCount).toUpperCase()
-        latestDocId = docId
-
-        // ADD DOC TO MAIN LEDGER AND NEWUSER TABLE
-        var addDocToLedger = "INSERT INTO docsLedger(DocName,username,DocId,University,Doc_Type,language,course,subject,topic,year,description,price) VALUES (" + con.escape(docName) + "," + con.escape(req.session.user) + "," + con.escape(docId) + "," + con.escape(docUniv) + "," + con.escape(docType) + "," + con.escape(docLang) + "," + con.escape(docCour) + "," + con.escape(docSubj) + "," + con.escape(docTopic) + "," + con.escape(docYear) + "," + con.escape(docDesc) + "," + con.escape(docPrice) + ")"
-        var addToNewUser = "INSERT INTO " + req.session.user + "(docID, uploaded) VALUES(" + con.escape(docId) + ", 1)"
-        con.query(addDocToLedger, function (err) {
-            if (err) throw err;
-            console.log('added name', docCount)
-        })
-        con.query(addToNewUser, function (err) {
-            if (err) throw err;
-            console.log('added to new user')
-        })
+app.post('/sell-docs.html', upload.single('upDocs'), function (req, res, next) {
+    // upload(req, res, function (err) {
+    //     if (err instanceof multer.MulterError) {
+    //         // A Multer error occurred when uploading.
+    //         console.log('error in multer')
+    //     } else if (err) {
+    //         // An unknown error occurred when uploading.
+    //         console.log('error in post sell-docs')
+    //     }
+        // Everything went fine.
+        console.log(req.file.path);
+        step = 2
+        // UPLOADED DOC DETAILS
+        var docName = req.body.name
+        var docUniv = req.body.university
+        var docType = req.body.docType
+        var docLang = req.body.langName
+        var docCour = req.body.courseName
+        var docSubj = req.body.subName
+        var docTopic = req.body.topic
+        var docYear = req.body.year
+        var docDesc = req.body.desc
+        var docPrice = req.body.setPrice
+        var docEarn = req.body.earnPer
         console.log(req.body)
-    })
+        console.log(req.body.upDocs)
+        console.log(req.body.upDocs)
+        console.log("req.file", req.file.path);
 
-    res.render('sell_docs_2')
+        // FOR DOCID : getting last input in docsLedger so that we can increment it whenever new doc is added
+        var docCount
+        var digits = "0000"
+        var lastEntry = "SELECT DocId FROM `docsLedger` ORDER BY `lastUpdated` DESC LIMIT 1;"
+        con.query(lastEntry, function (err, neededId) {
+            if (err) throw err;
+            // to get last 4 digits of DocId
+            var lastId = String(neededId[0].DocId)
+            var last4digits = lastId.substring(lastId.length - 4)
+            var neededNum = parseInt(last4digits) + 1
+
+            // to convert final number into 4 digits and get docID-last-4-digits
+            docCount = (digits.substring(String(neededNum).length) + neededNum)
+            var docId = (docName.substring(0, 3) + docUniv.substring(0, 3) + docSubj.substring(0, 3) + docLang.substring(0, 2) + docCount).toUpperCase()
+            latestDocId = docId
+
+            // ADD DOC TO MAIN LEDGER AND NEWUSER TABLE
+            var addDocToLedger = "INSERT INTO docsLedger(DocName,username,DocId,University,Doc_Type,language,course,subject,topic,year,description,price,docpath) VALUES (" + con.escape(docName) + "," + con.escape(req.session.user) + "," + con.escape(docId) + "," + con.escape(docUniv) + "," + con.escape(docType) + "," + con.escape(docLang) + "," + con.escape(docCour) + "," + con.escape(docSubj) + "," + con.escape(docTopic) + "," + con.escape(docYear) + "," + con.escape(docDesc) + "," + con.escape(docPrice) + "," + con.escape(req.file.path) + ")"
+            var addToNewUser = "INSERT INTO " + req.session.user + "(docID, uploaded) VALUES(" + con.escape(docId) + ", 1)"
+            con.query(addDocToLedger, function (err) {
+                if (err) throw err;
+                console.log('added name', docCount)
+            })
+            con.query(addToNewUser, function (err) {
+                if (err) throw err;
+                console.log('added to new user')
+            })
+            console.log(req.body)
+        })
+
+        res.render('sell_docs_2')
+    // })
+
 })
 
 // TO GET ANS OF DOC RELATED QUESTIONS
@@ -845,8 +895,8 @@ var savedLikeDocs = {}
 // }
 
 app.get('/my-docs.html', function (req, res) {
-    if(req.isAuthenticated()){
-        console.log("savedArr",savedArr);
+    if (req.isAuthenticated()) {
+        console.log("savedArr", savedArr);
         for (let i = 0; i < savedArr.length; i++) {
             // console.log(neededInfo)
             let sql = "SELECT * FROM " + req.session.user + " WHERE docID =" + con.escape(savedArr[i][0].DocId) + ";"
@@ -860,20 +910,20 @@ app.get('/my-docs.html', function (req, res) {
                 // return res.send('currentUserDocs in',currentUserDocs,"studyMatDocs",studyMatDocs)
             })
         }
-        setTimeout(()=>{
+        setTimeout(() => {
             loginStatus = true
-            console.log("savedLikeDocs",savedLikeDocs,savedLikeDocs[savedArr[0][0].DocId]);
+            console.log("savedLikeDocs", savedLikeDocs);
             res.render('my_docs', {
                 infoList: savedArr,
                 infoList1: uploadArr,
                 savedLikeDocsHtml: savedLikeDocs
             })
-    },300)
-}else{
-    res.redirect("/login.html")
-    loginStatus = false
+        }, 300)
+    } else {
+        res.redirect("/login.html")
+        loginStatus = false
 
-}
+    }
 })
 
 // // // SHOW DOCS IN CART // // //

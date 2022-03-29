@@ -9,7 +9,7 @@
     <div class="step-1-box">
         <%if (loginStatusHtml == true){%>
              <h3>fill details and Upload your study documents</h3>
-             <form action="/sell-docs.html" class="step-form" id="uploadDocDetails" method="post">
+             <form action="/sell-docs.html" class="step-form" id="uploadDocDetails" method="post" enctype="multipart/form-data">
                 <div class="form-left">
                     <div class="name form-item">
                         <label for="name" class="smallest-h">File Name</label>
@@ -31,7 +31,7 @@
                     <div class="university form-item">
                         <div class="smallest-h">University</div>
                         <div class="for-instruc">
-                            <input type="text" placeholder="University name" name="university" pattern="[A-Za-z]{1,40}" maxlength="40" title="Use only characters and enter university the document belongs to or the university you study in" class="search-box" required="required">
+                            <input type="text" placeholder="University name" name="university" maxlength="40" title="Use only characters and enter university the document belongs to or the university you study in" class="search-box" required="required">
                             <div class="step not-selected">
                                 <a href="sell-docs.html">
                                     <div class="step-num tip">
@@ -85,7 +85,7 @@
                         </div>
                         <div class="year form-item">
                             <div class="smallest-h">Topic</div>
-                            <input type="text" placeholder="Topic" name="topic" class="search-box" required="required"  pattern="[A-Za-z]{1,50}" maxlength="50" title="Document topic">
+                            <input type="text" placeholder="Topic" name="topic" class="search-box" required="required" maxlength="50" title="Document topic">
                         </div>
                     </div>
                     <div class="desc form-item">
@@ -128,7 +128,7 @@
                     <div class="up-docs-name form-item">
                         <div class="smallest-h">Upload Documents</div>
                         <div class="for-instruc">
-                            <input type="file" placeholder="Drag and drop file(s) here" name="upDocs" accept=".png, .pdf, .jpeg, .jpg" id="upDocs" class="search-box" multiple>
+                            <input type="file" placeholder="Drag and drop file(s) here" name="upDocs" accept=".png, .pdf, .jpeg, .jpg" id="upDocs" class="search-box" >
                             <div class="step not-selected">
                                 <a href="sell-docs.html">
                                     <div class="step-num tip">
@@ -149,7 +149,7 @@
                             </div>
                             <div class="max-up-size size">
                                 <div class="smallest-text">Max upload size:</div>
-                                <div class="link">50 MB</div>
+                                <div class="link">15 MB</div>
                             </div>
                         </div>
                     </div>
