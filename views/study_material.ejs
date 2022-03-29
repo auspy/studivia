@@ -219,10 +219,23 @@
                 <div class="hover-ctas f-r-c">
                     <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
                             height="16px"></button>
+                    <% if(currentUserDocsHtml[item.DocId][0] == null){ %> 
                     <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg" class="hover-save-doc-img"
                             alt="" height="16px"></button>
+                            <% }else{ %>
+                                <button class="hover-save-doc"><img src="images/icons/bookmark-blue.svg" class="hover-save-doc-img"
+                                    alt="" height="16px"></button>
+                                <% } %>  
+                    <% if(currentUserDocsHtml[item.DocId][1] == null){ %> 
+
                     <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
                             class="hover-add-cart-img" alt="" height="16px"></button>
+                            <% }else{ %>
+                                <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart-blue.svg"
+                                    class="hover-add-cart-img" alt="" height="16px"></button>
+                                <% } %>  
+
+
                 </div>
                 <div class="pdf-img">
                     <img src="images/IMG_1188.JPG" alt="" height="120px">
@@ -1252,6 +1265,7 @@
 </div>
 
 <%- include('./partials/footer'); %>
+<script src="JS/study_mat.js" charset="utf-8"></script>
 </body>
 
 </html>

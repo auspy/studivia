@@ -39,23 +39,25 @@
         </div>
         <div class="filter-item f-c-fs">
             <label for="subjects" class="medi-10">Subjects</label>
-                <input list="subjects" placeholder="Search subjects" name="subject" class="basic-bg-border m-t-5 filter-item-box">
-                <datalist id="subjects">
-                    <option value="COA">Computer Organisation and Architecture</option>
-                    <option value="Maths">Mathematics</option>
-                    <option value="French">French</option>
-                    <option value="C++">C++</option>
-                </datalist>
+            <input list="subjects" placeholder="Search subjects" name="subject"
+                class="basic-bg-border m-t-5 filter-item-box">
+            <datalist id="subjects">
+                <option value="COA">Computer Organisation and Architecture</option>
+                <option value="Maths">Mathematics</option>
+                <option value="French">French</option>
+                <option value="C++">C++</option>
+            </datalist>
         </div>
         <div class="filter-item f-c-fs">
             <label for="courses" class="medi-10">Courses</label>
-                <input list="courses" placeholder="Search courses" name="courses" class="basic-bg-border m-t-5 filter-item-box">
-                <datalist id="courses">
-                    <option value="COA">Computer Organisation and Architecture</option>
-                    <option value="Maths">Mathematics</option>
-                    <option value="French">French</option>
-                    <option value="C++">C++</option>
-                </datalist>
+            <input list="courses" placeholder="Search courses" name="courses"
+                class="basic-bg-border m-t-5 filter-item-box">
+            <datalist id="courses">
+                <option value="COA">Computer Organisation and Architecture</option>
+                <option value="Maths">Mathematics</option>
+                <option value="French">French</option>
+                <option value="C++">C++</option>
+            </datalist>
         </div>
         <div class="filter-item f-c-fs">
             <label for="sort" class="medi-10">Sort</label>
@@ -93,10 +95,20 @@
                 <div class="hover-ctas f-r-c">
                     <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
                             height="16px"></button>
+                    <% if(savedLikeDocsHtml[item[0].DocId][0] == null){ %>
                     <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg" class="hover-save-doc-img"
                             alt="" height="16px"></button>
+                    <% }else{ %>
+                    <button class="hover-save-doc"><img src="images/icons/bookmark-blue.svg" class="hover-save-doc-img"
+                            alt="" height="16px"></button>
+                    <% } %>
+                    <% if(savedLikeDocsHtml[item[0].DocId][1] == null){ %>
                     <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
                             class="hover-add-cart-img" alt="" height="16px"></button>
+                    <% }else{ %>
+                    <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart-blue.svg"
+                            class="hover-add-cart-img" alt="" height="16px"></button>
+                    <% } %>
                 </div>
                 <div class="pdf-img">
                     <img src="images/IMG_1188.JPG" alt="" height="120px">
@@ -184,6 +196,7 @@
     <!-- <button class="sidebar-heading read-more" onclick="readMore('savedDocs-hidden','block')">Read More</button> -->
 </section>
 
+<script src="JS/my_docs.js" charset="utf-8"></script>
 <%- include('./partials/footer'); %>
 </body>
 

@@ -33,19 +33,19 @@ app.use(bodyParser.urlencoded({
 
 // CREATE CONNECTION
 // sql code: karne_kya_he kispe_karna_he uska_nam_kya_he usme_kya_kya_hoga
-var con = mysql.createConnection({
-    host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
-    port: "3306",
-    user: "auspy",
-    password: "password",
-    database: "studiviaDB"
-})
 // var con = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
+//     host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
+//     port: "3306",
+//     user: "auspy",
 //     password: "password",
 //     database: "studiviaDB"
 // })
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "password",
+    database: "studiviaDB"
+})
 
 // CONNECT
 con.connect(function (err) {
@@ -111,24 +111,24 @@ passport.use('local', new LocalStrategy({
                     } else {
                         req.session["user"] = username
                         currentUser = req.session.user
-                    
-                    // reset the arrays so that current user docs can be filled
-                    savedArr = []
-                    uploadArr = []
-                    cartArr = []
-                    findDocs()
-                    findDocs('uploaded') // to load upload docs of current user on login
-                    findDocs('cart')
-                    loginStatus = true
-                    console.log("req.session",req.session,"req.session.user",req.session.user);
-                    followFunc('follower',req.session.user)
-                    followFunc('following',req.session.user)
-                    dashFunc(req.session.user)
-                    
-                    req.session.regenerate((err) => {}) // to regenrate session
 
-                    return cb(null, user[0], req.flash('message', 'welcome'));
-                }
+                        // reset the arrays so that current user docs can be filled
+                        savedArr = []
+                        uploadArr = []
+                        cartArr = []
+                        findDocs()
+                        findDocs('uploaded') // to load upload docs of current user on login
+                        findDocs('cart')
+                        loginStatus = true
+                        console.log("req.session", req.session, "req.session.user", req.session.user);
+                        followFunc('follower', req.session.user)
+                        followFunc('following', req.session.user)
+                        dashFunc(req.session.user)
+
+                        req.session.regenerate((err) => {}) // to regenrate session
+
+                        return cb(null, user[0], req.flash('message', 'welcome'));
+                    }
                 }
             });
         }
@@ -335,40 +335,9 @@ app.get('/pricing.html', function (req, res) {
     res.render('pricing')
 })
 
-var userFeedPosts = [],userFeed
+var userFeedPosts = [],
+    userFeed
 
-// function feedPosts() {
-//     // gives all the posts of users our current user is following
-//     return new Promise((resolve, reject) => {
-//         var feedSql = ''
-//         console.log("users i follow", followingUsers, followingUsers.length);
-//         if (followingUsers.length > 0) {
-//             feedSql = "SELECT * FROM postLedger WHERE username =" + con.escape(followingUsers[0].username)
-//             // console.log("sql for =1", feedSql);
-//             if (followingUsers.length > 1) {
-//                 for (let i = 1; i < followingUsers.length; i++) {
-//                     feedSql = feedSql + " OR username =" + con.escape(followingUsers[i].username)
-//                     console.log("sql for >1", feedSql);
-//                 }
-//             }
-//             // to get posts of profiles followed by user
-//             con.query(feedSql, (err, posts) => {
-//                 console.log('sql in query', feedSql);
-//                 if (err) throw err;
-//                 if (posts.length) {
-//                     userFeedPosts = posts // stores the posts needed to show on dashboard
-//                     console.log("posts added to feed");
-//                     likedStatus() // problem with this is that we have to reload page to get the data. maybe we can use async await to render page when this has finished processing
-//                     displayComments() // display comments 
-//                 } else {
-//                     userFeedPosts = []
-//                 }
-//                 console.log("userFeedPosts", userFeedPosts);
-//             })
-//         }
-//         resolve(userFeedPosts)
-//     })
-// }
 function feedPosts(user) {
     // gives all the posts of users our current user is following
     var feedSql = ''
@@ -482,7 +451,7 @@ function displayComments() {
 
 const dashValues = {}
 
-function dashFunc(user=currentUser) {
+function dashFunc(user = currentUser) {
     let savedSql = "SELECT * FROM " + user + " WHERE saved = 1"
     let uploadSql = "SELECT * FROM " + user + " WHERE uploaded = 1"
     let cartSql = "SELECT * FROM " + user + " WHERE cart = 1"
@@ -510,32 +479,33 @@ function dashFunc(user=currentUser) {
     })
 }
 
-app.get('/dashboard.html',(req, res) => {
+app.get('/dashboard.html', (req, res) => {
     if (req.isAuthenticated()) {
+        console.log("req.flash()", req.flash('message'));
         dashFunc()
         feedPosts(req.session.user)
-            // console.log("userFeedPosts in dash", userFeedPosts);
-            // if (userFeedPosts == []) {
-            //     postComments = null
-            // }
-            console.log("dashValues", dashValues);
-            // console.log("feed-posts liked status in dash", postsLiked);
-            // console.log("post comments in dash", postComments);
-            // return res.send('nice')
-            res.render('dashboard', {
-                usernameHtml: req.session.user,
-                savedHtml: dashValues['saved'],
-                uploadHtml: dashValues['upload'],
-                cartHtml: dashValues['cart'],
-                postHtml: dashValues['posts'],
-                followerHtml: followerUsers.length,
-                followingHtml: followingUsers.length,
-                userFeedPostsHtml: userFeedPosts,
-                postsLikedHtml: postsLiked,
-                likeCountHtml: postLikeCount,
-                postCommentsHtml: postComments
-            })
-            loginStatus = true
+        // console.log("userFeedPosts in dash", userFeedPosts);
+        // if (userFeedPosts == []) {
+        //     postComments = null
+        // }
+        console.log("dashValues", dashValues);
+        // console.log("feed-posts liked status in dash", postsLiked);
+        // console.log("post comments in dash", postComments);
+        // return res.send('nice')
+        res.render('dashboard', {
+            usernameHtml: req.session.user,
+            savedHtml: dashValues['saved'],
+            uploadHtml: dashValues['upload'],
+            cartHtml: dashValues['cart'],
+            postHtml: dashValues['posts'],
+            followerHtml: followerUsers.length,
+            followingHtml: followingUsers.length,
+            userFeedPostsHtml: userFeedPosts,
+            postsLikedHtml: postsLiked,
+            likeCountHtml: postLikeCount,
+            postCommentsHtml: postComments
+        })
+        loginStatus = true
     } else {
         loginStatus = false
         return res.redirect('/login.html')
@@ -641,21 +611,38 @@ app.post('/sell-docs-2.html', function (req, res) {
 // // // STUDY MATERIAL DOCS // // //
 
 // LATEST DOCS
-
+var currentUserDocs = {},
+    studyMatDocs
 app.get('/study_material.html', function (req, res) {
+
     if (req.isAuthenticated()) {
-        // to get values for new pdfs
         var latestDocs = 'SELECT DocId,DocName,Username,Course,University,Doc_Type,Subject,Topic,Price FROM `docsLedger` ORDER BY lastUpdated DESC LIMIT 20;'
         con.query(latestDocs, function (err, neededInfo) {
             if (err) throw err;
+            studyMatDocs = neededInfo
             for (let i = 0; i < neededInfo.length; i++) {
                 // console.log(neededInfo)
-                return res.render("study_material", {
-                    neededInfoList: neededInfo
+                let sql = "SELECT * FROM " + req.session.user + " WHERE docID =" + con.escape(neededInfo[i].DocId) + ";"
+                con.query(sql, (err, doc) => {
+                    if (err) throw err;
+                    if (doc.length) {
+                        currentUserDocs[neededInfo[i].DocId] = [doc[0].saved, doc[0].cart]
+                    } else {
+                        currentUserDocs[neededInfo[i].DocId] = [null, null]
+                    }
+                    loginStatus = true
+                    // return res.send('currentUserDocs in',currentUserDocs,"studyMatDocs",studyMatDocs)
                 })
             }
+            setTimeout(() => {
+                console.log('currentUserDocs in', currentUserDocs, "studyMatDocs", studyMatDocs);
+                res.render("study_material", {
+                    neededInfoList: studyMatDocs,
+                    currentUserDocsHtml: currentUserDocs
+                })
+            }, 300)
         })
-        loginStatus = true
+        // to get values for new pdfs
     } else {
         res.redirect('/login.html')
         loginStatus = false
@@ -728,6 +715,7 @@ function addToSavCarServer(url, savCar) {
                     if (err) throw err;
                     console.log('inserted', req.body.docid, 'to findDocs')
                 })
+                findDocs()
             } else if ((savedColValue[0].saved != null && savedColValue[0].cart != null) || (onClickBothNull && upOrPurNotNull)) {
                 // when saved aur cart dono 1 he and button click hua. so, ab ek ko null karna he
                 if (req.body.extra == 'save-for-later') {
@@ -789,13 +777,13 @@ function addToSavCarServer(url, savCar) {
                     if (err) throw err;
                     console.log('removed', req.body.docid, 'from table')
                 })
+                findDocs()
             }
         })
     })
 }
 
 // // // SHOW SAVED DOCS and UPLOADED DOCS IN MY_DOCS // // //
-
 
 function findDocs(docs = 'saved') {
     if (docs == 'cart') {
@@ -838,11 +826,55 @@ function findDocs(docs = 'saved') {
     })
 }
 
+var savedLikeDocs = {}
+
+// function savedCartDocs(listOfDocs,savInArr={}) {
+//     // not working. causing error req not defined in study_material get route.
+//     for (let i = 0; i < listOfDocs.length; i++) {
+//         // console.log(neededInfo)
+//         let sql = "SELECT * FROM " + req.session.user + " WHERE docID =" + con.escape(neededInfo[i].DocId) + ";"
+//         con.query(sql, (err, doc) => {
+//             if (err) throw err;
+//             if (doc.length) {
+//                 savInArr[listOfDocs[i].DocId] = [doc[0].saved, doc[0].cart]
+//             } else {
+//                 savInArr[listOfDocs[i].DocId] = [null, null]
+//             }
+//             // return res.send('currentUserDocs in',currentUserDocs,"studyMatDocs",studyMatDocs)
+//         })
+//     }
+// }
+
 app.get('/my-docs.html', function (req, res) {
-    return res.render('my_docs', {
-        infoList: savedArr,
-        infoList1: uploadArr
-    })
+    if(req.isAuthenticated()){
+        console.log("savedArr",savedArr);
+        for (let i = 0; i < savedArr.length; i++) {
+            // console.log(neededInfo)
+            let sql = "SELECT * FROM " + req.session.user + " WHERE docID =" + con.escape(savedArr[i][0].DocId) + ";"
+            con.query(sql, (err, doc) => {
+                if (err) throw err;
+                if (doc.length) {
+                    savedLikeDocs[savedArr[i][0].DocId] = [doc[0].saved, doc[0].cart]
+                } else {
+                    savedLikeDocs[savedArr[i][0].DocId] = [null, null]
+                }
+                // return res.send('currentUserDocs in',currentUserDocs,"studyMatDocs",studyMatDocs)
+            })
+        }
+        setTimeout(()=>{
+            loginStatus = true
+            console.log("savedLikeDocs",savedLikeDocs,savedLikeDocs[savedArr[0][0].DocId]);
+            res.render('my_docs', {
+                infoList: savedArr,
+                infoList1: uploadArr,
+                savedLikeDocsHtml: savedLikeDocs
+            })
+    },300)
+}else{
+    res.redirect("/login.html")
+    loginStatus = false
+
+}
 })
 
 // // // SHOW DOCS IN CART // // //
@@ -973,27 +1005,27 @@ app.get("/profile", (req, res) => {
     }
 })
 
-function followFunc(data,user=currentUser) {
+function followFunc(data, user = currentUser) {
     // return new Promise((resolve, reject) => {
-        // console.log("followFunc parameter and user",data,req.session.user);
-        console.log("current user in follow func",user);
-        followSql = "SELECT username FROM " + currentUser + "F WHERE " + data + " = true;"
-        con.query(followSql, (err, users) => {
-            if (err) throw err;
-            if (data == "following") {
-                followingUsers = users
-                // console.log(req.session.user, "is ",data, users);
-                // console.log("followingUsers.length",followingUsers.length);
-            } else {
-                followerUsers = users
-                // console.log("followerUsers.length",followerUsers.length);
-            }
-        })
+    // console.log("followFunc parameter and user",data,req.session.user);
+    console.log("current user in follow func", user);
+    followSql = "SELECT username FROM " + currentUser + "F WHERE " + data + " = true;"
+    con.query(followSql, (err, users) => {
+        if (err) throw err;
         if (data == "following") {
-            return(followingUsers.length)
+            followingUsers = users
+            // console.log(req.session.user, "is ",data, users);
+            // console.log("followingUsers.length",followingUsers.length);
         } else {
-            return(followerUsers.length)
+            followerUsers = users
+            // console.log("followerUsers.length",followerUsers.length);
         }
+    })
+    if (data == "following") {
+        return (followingUsers.length)
+    } else {
+        return (followerUsers.length)
+    }
     // })
 }
 
