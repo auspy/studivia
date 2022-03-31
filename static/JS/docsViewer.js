@@ -39,16 +39,22 @@ loadingTask.promise.then(function(pdf) {
   
       //We'll create a canvas for each page to draw it on
       var canvas = document.createElement( "canvas" );
-    //   canvas.style.display = "block";
+      var pagenum = document.createElement("div")
+      pagenum.classList.add("page-num","f-r-c","m-b-10")
+      pagenum.innerHTML=`
+      ${currPage} <div class="semi-16-c total-pages">/${totalPages}</div>`
+      canvas.classList.add("pdf-page","m-b-30")
+
       var context = canvas.getContext('2d');
       canvas.height = viewport.height;
       canvas.width = viewport.width;
   
       //Draw it on the canvas
       page.render({canvasContext: context, viewport: viewport});
-  
+        
       //Add it to the web page
-      document.getElementById('pdf-view').appendChild( canvas );
+      document.getElementById("pdf-view").appendChild( pagenum );
+      document.getElementById("pdf-view").appendChild( canvas );
   
       //Move to next page
       currPage++;
@@ -82,83 +88,3 @@ function toFetch(newUrl, docId) {
         })
 }
 
-// var loadingTask = pdfjsLib.getDocument(url);
-// loadingTask.promise.then(function(pdf) {
-//   console.log('PDF loaded');
-//   var totalPages = pdf._pdfInfo.numPages
-//   console.log("totalPages",totalPages);
-//   var countPromises = [];
-//   let data = {"totalpages": totalPages}
-//   toFetch('/pdf-details',data)
-  
-  
-//   // Fetch pages
-// // PDFJS has a member variable numPages, so you'd just iterate through them. BUT it's important to remember that getting a page in pdf.js is asynchronous, so the order wouldn't be guaranteed. So you'd need to chain them. 
-//   var pages = []
-//   for (let i = 1; i <= totalPages.length; i++) {
-//     pages = pdf.getPage(i)
-//   }
-//   var pageNumber = 1;
-//   pdf.getPage(pageNumber).then(function(page) {
-//     console.log('Page loaded');
-    
-//     var scale = 1.45;
-//     var viewport = page.getViewport({scale: scale});
-
-//     // Prepare canvas using PDF page dimensions
-//     var canvas = document.getElementsByClassName('the-canvas')[0];
-//     var context = canvas.getContext('2d');
-//     canvas.height = viewport.height;
-//     canvas.width = viewport.width;
-
-//     // Render PDF page into canvas context
-//     var renderContext = {
-//       canvasContext: context,
-//       viewport: viewport
-//     };
-//     var renderTask = page.render(renderContext);
-//     renderTask.promise.then(function () {
-//       console.log('Page rendered');
-//     });
-//   });
-// }, function (reason) {
-//   // PDF loading error
-//   console.error(reason);
-// });
-
-// for (let i = 1; i < pdf._pdfInfo.numPages.length+1; i++) {
-//     var newpage= document.createElement('div')
-//     newpage.classList.add("pdf-page","m-b-15","f-c-c")
-//     newpage.innerHTML =`
-//     <div class="page-num f-r-c m-b-20">
-//     <div class="semi-10">Showing Page:</div>
-//     <div class="semi-16-c f-r-c">${i}<div class="semi-16-c total-pages">/${pdf._pdfInfo.numPages}</div>
-//     </div>
-//       </div>
-//       <canvas class="the-canvas"></canvas>`
-//       document.getElementById("pdf-view").append(newpage)
-    
-//       var pageNumber = i;
-//       // Fetch the first page
-//       pdf.getPage(pageNumber).then(function(page) {
-//         console.log('Page loaded');
-        
-//         var scale = 1.45;
-//         var viewport = page.getViewport({scale: scale});
-    
-//         // Prepare canvas using PDF page dimensions
-//         var canvas = document.getElementsByClassName('the-canvas')[i-1];
-//         var context = canvas.getContext('2d');
-//         canvas.height = viewport.height;
-//         canvas.width = viewport.width;
-    
-//         // Render PDF page into canvas context
-//         var renderContext = {
-//           canvasContext: context,
-//           viewport: viewport
-//         };
-//         var renderTask = page.render(renderContext);
-//         renderTask.promise.then(function () {
-//           console.log('Page rendered');
-//         });
-//       });

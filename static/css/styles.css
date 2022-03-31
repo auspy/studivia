@@ -2647,6 +2647,9 @@ button {
 }
 
 /* PDF VIEWER */
+.pdf-view{
+    max-width: 845px;
+}
 .pdf-page {
     width: 845px;
     /* height: 1250px; */
