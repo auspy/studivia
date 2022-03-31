@@ -21,6 +21,7 @@
             </form>
             <div class="f-r-c desc-tags">
                 <div class="doc-name m-r-15"> <%= documentName %></div>
+                <div id="docpathviewer" class="d-none"> <%= docDescList1.docpath %></div>
                 <div class="btn-bg m-r-15"><button class="docs-desc-bookmark-hover"><img src="images/icons/bookmark.svg"
                             class="docs-desc-hover-img" alt="" onclick="docsDescBtn()"></button></div>
                 <div class="btn-bg m-r-15"><button class="docs-desc-cart-hover"><img src="images/icons/add-to-cart.svg"
@@ -93,15 +94,15 @@
         </section>
 
         <div class="desc-content f-r-fs">
-            <div class="pdf-view m-r-30">
+            <div id="pdf-view" class="pdf-view m-r-30">
                 <div class="pdf-page m-b-15 f-c-c">
                     <div class="page-num f-r-c m-b-20">
                         <div class="semi-10">Showing Page:</div>
                         <div class="semi-16-c f-r-c">1 <div class="semi-16-c total-pages">/12</div>
                         </div>
                     </div>
-                    <img src="images/IMG_1188.JPG" alt="">
-                    <div class="pdf-render"></div>
+                    <canvas class="the-canvas"></canvas>
+                    <!-- <img src="images/IMG_1188.JPG" alt=""> -->
                 </div>
                 <div class="pdf-page m-b-15 f-c-c ">
                     <div class="page-num f-r-c m-b-20">
@@ -294,6 +295,7 @@
     </div>
 
     <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script src="JS/docsViewer.js"></script>
     <%- include('./partials/footer'); %>
 
 </body> 

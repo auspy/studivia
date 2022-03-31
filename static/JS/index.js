@@ -452,7 +452,8 @@ var descLink = document.getElementsByClassName('desc-link')
 for (let i = 0; i < descLink.length; i++) {
     descLink[i].addEventListener('click', function (event) {
         var descLinkId = {
-            "docid": descLink[i].getElementsByClassName('d-none')[0].innerText
+            "docid": descLink[i].getElementsByClassName('d-none')[0].innerText,
+            "docpath": descLink[i].getElementsByClassName('d-none')[1].innerText
         }
         console.log('link clicked');
         // to show view document button
@@ -538,24 +539,3 @@ owner.addEventListener('click', (e) => {
     toFetch('/profile/user', data)
 })
 
-const url = "../uploads/upDocs-1648633273369.pdf"
-
-// // // PDF VIEWER // // //
-let pdfDoc = null,
-    pageNum = 1,
-    pageIsRendering = false,
-    pageNumIsPending = null;
-
-const scale = 1.5,
-    canvas = document.querySelector('.pdf-render')[0];
-    // ctx = canvas.getContext('2d');
-
-// Render the page
-
-const renderPage = num => {}
-
-// Get document
-pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
-    pdfDoc = pdfDoc_;
-    console.log(pdfDoc);
-})

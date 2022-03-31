@@ -33,19 +33,19 @@ app.use(bodyParser.urlencoded({
 })) // url encoded is used to get information from html forms
 
 // CREATE CONNECTION
-var con = mysql.createConnection({
-    host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
-    port: "3306",
-    user: "auspy",
-    password: "password",
-    database: "studiviaDB"
-})
 // var con = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
+//     host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
+//     port: "3306",
+//     user: "auspy",
 //     password: "password",
 //     database: "studiviaDB"
 // })
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "password",
+    database: "studiviaDB"
+})
 
 // CONNECT
 con.connect(function (err) {
@@ -80,13 +80,11 @@ var loginStatus = false
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // maybe store file based on username
-        cb(null, __dirname+'/uploads')
+        cb(null, __dirname+'/static/uploads')
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now()
-        let extArray = file.mimetype.split("/");
-        let extension = extArray[extArray.length - 1];
-        cb(null, file.fieldname + '-' + uniqueSuffix + '.' +extension)
+        cb(null, uniqueSuffix + file.originalname)
     }
 })
 
@@ -106,12 +104,9 @@ const upload = multer({
     // },
     limits: {
         fieldNameSize: "150bytes",
-        fieldSize: "15MB"
+        fieldSize: "50MB"
     }
 })
-
-
-
 
 // // // AUTHENTICATION // // //
 
@@ -666,7 +661,7 @@ var currentUserDocs = {},
 app.get('/study_material.html', function (req, res) {
 
     if (req.isAuthenticated()) {
-        var latestDocs = 'SELECT DocId,DocName,Username,Course,University,Doc_Type,Subject,Topic,Price FROM `docsLedger` ORDER BY lastUpdated DESC LIMIT 20;'
+        var latestDocs = 'SELECT DocId,DocName,Username,Course,University,Doc_Type,Subject,Topic,Price,docpath FROM `docsLedger` ORDER BY lastUpdated DESC LIMIT 20;'
         con.query(latestDocs, function (err, neededInfo) {
             if (err) throw err;
             studyMatDocs = neededInfo
@@ -707,7 +702,7 @@ app.use(express.json({
     limit: '1mb'
 }))
 app.post('/descLinkClicked', function (req, res) {
-    // console.log(req.body);
+    console.log("clicked document details",req.body);
     var docNeeded = "SELECT * FROM docsLedger WHERE docid = " + con.escape(req.body.docid)
     con.query(docNeeded, function (err, docDesc) {
         if (err) throw err;
@@ -719,7 +714,7 @@ app.post('/descLinkClicked', function (req, res) {
 
 // to use data sent by client on button click and create needed page using ejs template
 app.get('/doc-desc', function (req, res) {
-    // console.log('inside',docDescList[0].DocName);
+    // console.log('inside',docDescList);
     return res.render('docsViewer', {
         docDescList1: docDescList[0],
         documentName: docDescList[0].DocName,
@@ -1174,3 +1169,7 @@ app.post('/post/comment', (req, res) => {
 })
 
 // problem is feedPosts are not getting list of following users on time which is causing is
+
+app.post('/pdf-details',(req,res)=>{
+    console.log("pdf-details body",req.body);
+})
