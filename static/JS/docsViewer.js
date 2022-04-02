@@ -17,55 +17,85 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.w
 
 var currPage = 1; //Pages are 1-based not 0-based
 var thePDF = null;
-
+var totalPages
 
 // Asynchronous download of PDF
 var loadingTask = pdfjsLib.getDocument(url);
-loadingTask.promise.then(function(pdf) {
-  console.log('PDF loaded');
-  var thePDF = pdf
-  var totalPages = pdf._pdfInfo.numPages
-  console.log("totalPages",totalPages);
-  let data = {"totalpages": totalPages}
-  toFetch('/pdf-details',data)
-  //Start with first page
-  pdf.getPage( 1 ).then( handlePages );
-  
-  function handlePages(page)
-  {
-      //This gives us the page's dimensions at full scale
-      var scale = 1.45
-      var viewport = page.getViewport({ scale : scale} );
-  
-      //We'll create a canvas for each page to draw it on
-      var canvas = document.createElement( "canvas" );
-      var pagenum = document.createElement("div")
-      pagenum.classList.add("page-num","f-r-c","m-b-10")
-      pagenum.innerHTML=`
-      ${currPage} <div class="semi-16-c total-pages">/${totalPages}</div>`
-      canvas.classList.add("pdf-page","m-b-30")
+loadingTask.promise.then(function (pdf) {
+    console.log('PDF loaded');
+    thePDF = pdf
+    totalPages = pdf._pdfInfo.numPages
+    console.log("totalPages", totalPages);
+    let data = {
+        "totalpages": totalPages
+    }
+    toFetch('/pdf-details', data)
+    //Start with first page
+    pdf.getPage(1).then(handlePages);
 
-      var context = canvas.getContext('2d');
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-  
-      //Draw it on the canvas
-      page.render({canvasContext: context, viewport: viewport});
-        
-      //Add it to the web page
-      document.getElementById("pdf-view").appendChild( pagenum );
-      document.getElementById("pdf-view").appendChild( canvas );
-  
-      //Move to next page
-      currPage++;
-      if ( thePDF !== null && currPage <= totalPages )
-      {
-          thePDF.getPage( currPage ).then( handlePages );
-      }
-  }
+    function handlePages(page) {
+        //This gives us the page's dimensions at full scale
+        var scale = 1.45
+        var viewport = page.getViewport({
+            scale: scale
+        });
+
+        //We'll create a canvas for each page to draw it on
+        var canvas = document.createElement("canvas");
+        var pagenum = document.createElement("div")
+        pagenum.classList.add("page-num", "f-r-c", "m-b-10", "regu-14")
+        pagenum.innerHTML = `
+      ${currPage} <div class="semi-14 total-pages">/${totalPages}</div>`
+        canvas.classList.add("pdf-page", "m-b-30", "the-canvas")
+        var wrapcanvas = document.createElement("div")
+        wrapcanvas.classList.add("page")
+
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        //Draw it on the canvas
+        page.render({
+            canvasContext: context,
+            viewport: viewport
+        });
+
+        //Add it to the web page
+        document.getElementById("pdf-view").appendChild(wrapcanvas);
+        var purchase = true
+
+        // to decide number of pages to be shown
+        var showablepages = 2
+        if(totalPages<5){
+            showablepages =1
+        } else if(totalPages<=2){
+            showablepages=0
+        }
+        if (purchase == true) {
+            document.getElementsByClassName("page")[currPage - 1].appendChild(pagenum)
+            document.getElementsByClassName("page")[currPage - 1].appendChild(canvas)
+        } else if(purchase==false && currPage<=showablepages){
+            document.getElementsByClassName("page")[currPage - 1].appendChild(pagenum)
+            document.getElementsByClassName("page")[currPage - 1].appendChild(canvas)
+
+            // to view more
+            if(currPage == showablepages){
+                var viewmore = document.createElement('div')
+                viewmore.innerHTML=`
+                <h3>To view more PURCHASE DOCUMENT or SUBSCRIBE.</h3>`
+                document.getElementById('pdf-view').appendChild(viewmore)
+            }
+        }
+
+        //Move to next page
+        currPage++;
+        if (thePDF !== null && currPage <= totalPages) {
+            thePDF.getPage(currPage).then(handlePages);
+        }
+    }
 }, function (reason) {
-  // PDF loading error
-  console.error(reason);
+    // PDF loading error
+    console.error(reason);
 });
 
 // // // FETCH FUNCTION // // //
@@ -87,4 +117,3 @@ function toFetch(newUrl, docId) {
             console.log('error here is', err);
         })
 }
-

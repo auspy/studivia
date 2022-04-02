@@ -3193,3 +3193,12 @@ height: 247px;
     z-index: 2;
     padding: 10px 20px;
 }
+
+/* RESTRICTION CANVAS PDF */
+
+.restri{
+    background: var(--headings);
+    height: inherit;
+    width: inherit;
+    opacity: 0.7;
+}
