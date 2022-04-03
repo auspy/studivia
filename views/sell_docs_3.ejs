@@ -1,5 +1,46 @@
-<%- include('./partials/header-sellDocs',{step1 : "not-selected",step2 : "not-selected",step3:"selected"}); %>
+<%- include('./partials/header-login',{page:"Sell Documents"}); %>
 
+   <!-- Steps -->
+   <section id="steps" class="m-t-40">
+    <div class="step-box">
+        <div class="step not-selected ">
+            <!-- <a href="sell-docs.html"> -->
+                <div class="step-num">
+                    <div class="bg-1">
+                        <div class="bg-2">
+                            <h4>1</h4>
+                        </div>
+                    </div>
+                </div>
+            <!-- </a> -->
+            <h4>upload</h4>
+        </div>
+        <div class="step not-selected ">
+            <!-- <a href="sell-docs.html"> -->
+                <div class="step-num">
+                    <div class="bg-1">
+                        <div class="bg-2">
+                            <h4>2</h4>
+                        </div>
+                    </div>
+                </div>
+            <!-- </a> -->
+            <h4>questions</h4>
+        </div>
+        <div class="step selected ">
+            <!-- <a href="sell-docs.html"> -->
+                <div class="step-num">
+                    <div class="bg-1">
+                        <div class="bg-2">
+                            <h4>3</h4>
+                        </div>
+                    </div>
+                </div>
+            <!-- </a> -->
+            <h4>finish</h4>
+        </div>
+    </div>
+</section>
 
     <!-- Step-3 Consent -->
     <section id="step-x">
@@ -7,7 +48,7 @@
             <h3>Finish final steps and start earning</h3>
             <div >
                 <h3>Your consent</h3>
-                <form action="/action_page.php" id="step-3">
+                <form action="/sell-docs3" id="step-3" method="post">
                     <div class="f-r-c"><input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
                         <label for="vehicle1">
                             <p> You are the owner of the copyrights covering the uploaded content or have been granted
@@ -24,13 +65,15 @@
                 </form>
             </div>
             <div class="ctas">
-                <button class="simple-blue-button m-left m-r-15">save as draft <img src="images/icons/save-as-draft.svg"
-                        alt=""></button>
-                        <button id="send-veri" form="step-3" class="not-selected-button m-left">send for verification <img src="images/icons/arrow.svg"
+                <form action="/draft" method="post" id="draft">
+                    <button class="simple-blue-button m-left m-r-15" type="submit" form="draft">save as draft <img src="images/icons/save-as-draft.svg"
+                            alt=""></button>
+                </form>
+                        <button id="send-veri" form="step-3" class="not-selected-button m-left" type="submit">send for verification <img src="images/icons/arrow.svg"
                             alt=""></button>
             </div>
         </div>
     </section>
 
 
-<%- include('./partials/footer-sellDocs'); %>
+<%- include('./partials/footer-login'); %>

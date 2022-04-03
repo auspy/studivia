@@ -1,10 +1,53 @@
-<%- include('./partials/header-sellDocs',{step1 : "not-selected",step2 : "selected",step3:"not-selected"}); %>
+
+<%- include('./partials/header-login',{page:"Sell Documents"}); %>
+
+   <!-- Steps -->
+   <section id="steps" class="m-t-40">
+    <div class="step-box">
+        <div class="step not-selected ">
+            <!-- <a href="sell-docs.html"> -->
+                <div class="step-num">
+                    <div class="bg-1">
+                        <div class="bg-2">
+                            <h4>1</h4>
+                        </div>
+                    </div>
+                </div>
+            <!-- </a> -->
+            <h4>upload</h4>
+        </div>
+        <div class="step selected ">
+            <!-- <a href="sell-docs.html"> -->
+                <div class="step-num">
+                    <div class="bg-1">
+                        <div class="bg-2">
+                            <h4>2</h4>
+                        </div>
+                    </div>
+                </div>
+            <!-- </a> -->
+            <h4>questions</h4>
+        </div>
+        <div class="step not-selected ">
+            <!-- <a href="sell-docs.html"> -->
+                <div class="step-num">
+                    <div class="bg-1">
+                        <div class="bg-2">
+                            <h4>3</h4>
+                        </div>
+                    </div>
+                </div>
+            <!-- </a> -->
+            <h4>finish</h4>
+        </div>
+    </div>
+</section>
 
     <!-- Step-2 Questions -->
     <section id="step-x">
         <div class="step-1-box">
             <h3>Answer some questions to help students understand document better</h3>
-            <form action="/sell-docs-2.html" id="step-2" class="step-form" method="post">
+            <form action="/sell-docs-2" id="step-2" class="step-form" method="post">
                 <div class="form-left">
                     <div class="name form-item">
                         <div class="big-text">Question related to document number 1? </div>
@@ -77,13 +120,15 @@
                 </div>
             </form>
             <div class="ctas">
-                <button class="simple-blue-button m-left m-r-15">save as draft <img src="images/icons/save-as-draft.svg"
-                        alt=""></button>
+                <form action="/draft" method="post" id="draft">
+                    <button class="simple-blue-button m-left m-r-15" type="submit" form="draft">save as draft <img src="images/icons/save-as-draft.svg"
+                            alt=""></button>
+                </form>
                 <button id="continue-btn-1" form="step-2" type="submit" value="submit"
                     class="not-selected-button m-left">Continue <img src="images/icons/arrow.svg"
                         alt=""></button>
             </div>
         </div>
     </section>
-
-<%- include('./partials/footer-sellDocs'); %>
+<script src="JS/sell-docs.js"></script> 
+<%- include('./partials/footer-login'); %>

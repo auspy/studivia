@@ -1,18 +1,25 @@
 // // // FETCH FUNCTION // // //
 window.onload = function () {}
 
-function toFetch(newUrl, docId) {
+function toFetch(newUrl, details) {
+    var formBody = [];
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
     fetch(newUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
             redirect: 'follow',
-            body: JSON.stringify(docId)
+            body: formBody
         })
         .then(response => response)
         .then(docId => {
-            console.log('response data?', docId)
+            console.log('response data?', details)
         })
         .catch(err => {
             console.log('error here is', err);
@@ -77,3 +84,29 @@ userPass.addEventListener('change', (e) => {
     }
 })
 
+var code = document.getElementById('sendCode')
+
+code.addEventListener('click',(e)=>{
+    let data= {"email": mail.value,
+"sent":"yes"}
+    console.log(mail.value);
+    toFetch("/register/code",data)
+})
+
+var mail = document.querySelector('input[name="userMail"]')
+var verify =document.querySelector('input[name="verify"]')
+
+var verifybtn = document.getElementById('verify-btn')
+verifybtn.addEventListener('click',(e)=>{
+    var details = {
+        'userotp': document.querySelector('input[name="verify"]').value
+    };
+    console.log(document.querySelector('input[name="verify"]').value);
+    toFetch("/register/verify",details)
+})
+
+// verify.addEventListener('change',(e)=>{
+//     let data = { "otp" : e.target.value }
+//     console.log(e.target.value);
+//     toFetch("/register/verify",data)
+// })

@@ -14,6 +14,8 @@ const flash = require('connect-flash');
 const bcrypt = require('bcrypt');
 const e = require('connect-flash');
 const multer = require('multer')
+const otpGenerator = require('otp-generator')
+const nodemailer = require("nodemailer");
 const {
     resolve
 } = require('path');
@@ -22,6 +24,14 @@ const {
 } = require('underscore');
 const saltRounds = 10;
 // var GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+const {
+    google
+} = require("googleapis")
+const CLIENT_ID = '1097006599803-fcbi72qsh19a5qaerbe7gao16g2bv2uf.apps.googleusercontent.com'
+const CLIENT_SECRET = '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'
+const REDIRECT_URL = 'https://developers.google.com/oauthplayground'
+const REFRESH_TOKEN = '1//04UNbZIgfjWRqCgYIARAAGAQSNwF-L9Ir0kW6qH1pPOyHPuCBZwN55GuO91mil6xa8UEzTZBoDWpZYgdZ2UwXW0BlMlCXdYbhljo'
 
 // INITIALIZATION
 const app = express()
@@ -80,7 +90,7 @@ var loginStatus = false
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // maybe store file based on username
-        cb(null, __dirname+'/static/uploads')
+        cb(null, __dirname + '/static/uploads')
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now()
@@ -208,8 +218,112 @@ passport.deserializeUser(function (user, cb) {
 //     }
 // ));
 
+const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
+oAuth2Client.setCredentials({
+    refresh_token: REFRESH_TOKEN
+})
+
+async function sendMail(sendTo, data) {
+    try {
+        const accessToken = await oAuth2Client.getAccessToken()
+
+        const transport = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                type: "OAuth2",
+                user: "studivia.study@gmail.com",
+                clientId: CLIENT_ID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken: accessToken
+            }
+        })
+
+        const mailOptions = {
+            from: 'STUDIVIA <studivia.study@gmail.com>',
+            to: sendTo,
+            subject: 'testing nodemailer',
+            text: data,
+        }
+
+        const result = await transport.sendMail(mailOptions)
+        return result
+
+    } catch (error) {
+        return error
+    }
+}
+
+// sendMail(user[0].Email).then(result => console.log('Email sent...',result))
+// .catch((error)=> console.log(error.message))
 
 // // // REGISTER PAGE/ SIGN UP PAGE/SETUP MAIL CHIMP // // //
+var verifyinput, newotp
+app.post('/register/code', (req, res) => {
+    // generate new otp
+    newotp = otpGenerator.generate(6, {
+        upperCaseAlphabets: false,
+        specialChars: false,
+        lowerCaseAlphabets: false
+    })
+    console.log("userEmail", req.body.email, "newotp", newotp);
+    userEmail = req.body.email
+
+    // send otp to user email
+    sendMail(userEmail, "your otp is"+newotp).then(result => console.log('Email sent...', result))
+        .catch((error) => console.log(error.message))
+
+    // save otp to table for 5 mins and then delete
+    let sqladd = "INSERT INTO otpLedger(otp) VALUES(" + con.escape(newotp) + ")"
+    con.query(sqladd, (err) => {
+        if (err) throw err;
+        console.log("otp added to table");
+    })
+
+    // let gettime = "SELECT timeadded FROM otpLedger WHERE otp ="+con.escape(newotp)
+    // con.query(gettime,(err,time)=>{
+    //     if (err) throw err;
+    //     console.log("time",time);
+    // })
+    var currentDate = new Date()
+    var expiryDate = new Date(currentDate.getTime() - 2 * 6000)
+    // console.log("expiryDate",expiryDate);
+    let deleteotp = "DELETE FROM otpLedger WHERE valid = false or timeadded < " + con.escape(expiryDate)
+    con.query(deleteotp, (err) => {
+        if (err) throw err;
+        // console.log("otp validity time expired");
+    })
+})
+var otpvalidity = false
+app.post('/register/verify', (req, res) => {
+    otpvalidity = false
+    let sql = "SELECT otp FROM otpLedger where valid = true"
+
+    con.query(sql, (err, otps) => {
+        if (err) throw err;
+        console.log("otps", otps);
+        console.log("otp", req.body.userotp);
+
+        verifyinput = req.body.userotp
+
+        for (let i = 0; i < otps.length; i++) {
+            if (verifyinput != otps[i].otp) {
+                otpvalidity = false
+            } else {
+                otpvalidity = true
+            }
+        }
+        if (otpvalidity == true) {
+            console.log("verified email");
+            let sql = "UPDATE otpLedger SET valid = false WHERE otp = " + con.escape(verifyinput)
+            con.query(sql, (err) => {
+                console.log("removed used otp from database");
+            })
+        } else {
+            console.log("invalid otp, try again");
+        }
+    })
+})
 
 app.post('/register', (req, res, next) => {
     var username = req.body.username
@@ -228,34 +342,40 @@ app.post('/register', (req, res, next) => {
                 res.redirect('/register')
             }
         } else {
-            // console.log(req.body);
-            bcrypt.hash(req.body.userPass, saltRounds, function (err, hash) {
-                if (err) throw err;
-                // console.log('register form details', req.body);
-                let year = Number(req.body.userGradYear.substring(0, 4))
-                // to add user to user ledger
-                let sql = "INSERT INTO userLedger(firstname,lastname,email,password,username,university,graduation_year,course) VALUES(" + con.escape(req.body.firstName) + "," + con.escape(req.body.lastName) + "," + con.escape(email) + "," + con.escape(hash) + "," + con.escape(req.body.username) + "," + con.escape(req.body.userUniv) + "," + con.escape(year) + "," + con.escape(req.body.userCourse) + ")"
-                con.query(sql, function (err) {
+            if (otpvalidity == true) {
+                console.log(req.body);
+                bcrypt.hash(req.body.userPass, saltRounds, function (err, hash) {
                     if (err) throw err;
-                    console.log('added to user ledger');
-                    res.redirect('/login.html') // we can add a if else in login and use a var to describe situation. like if coming after login we will ask them to login to get started. on writing wrong password we will show error.
+                    // console.log('register form details', req.body);
+                    let year = Number(req.body.userGradYear.substring(0, 4))
+                    // to add user to user ledger
+                    let sql = "INSERT INTO userLedger(firstname,lastname,email,password,username,university,graduation_year,course) VALUES(" + con.escape(req.body.firstName) + "," + con.escape(req.body.lastName) + "," + con.escape(email) + "," + con.escape(hash) + "," + con.escape(req.body.username) + "," + con.escape(req.body.userUniv) + "," + con.escape(year) + "," + con.escape(req.body.userCourse) + ")"
+                    con.query(sql, function (err) {
+                        if (err) throw err;
+                        console.log('added to user ledger');
+                        res.redirect('/login.html') // we can add a if else in login and use a var to describe situation. like if coming after login we will ask them to login to get started. on writing wrong password we will show error.
+                    })
+                    // to create new table for new user
+                    let newUserTable = "CREATE TABLE " + username + "(docID varchar(16) PRIMARY KEY,saved BIT DEFAULT NULL,cart BIT DEFAULT NULL,uploaded BIT DEFAULT NULL,purchased BIT DEFAULT NULL,lastUpdated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)"
+                    let userFTable = "CREATE TABLE " + username + "F( `username` VARCHAR(16) NOT NULL , `follower` BOOLEAN NOT NULL DEFAULT FALSE , `following` BOOLEAN NOT NULL DEFAULT FALSE , `lastUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`username`)) ENGINE = InnoDB;"
+                    let userPTable = "CREATE TABLE " + username + "P( `postid` VARCHAR(20) NOT NULL , `liked` BOOLEAN NOT NULL DEFAULT FALSE , `shared` BOOLEAN NOT NULL DEFAULT FALSE , `saved` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`postid`(16))) ENGINE = InnoDB;"
+                    con.query(newUserTable, function (err) {
+                        if (err) throw err;
+                    })
+                    con.query(userFTable, function (err) {
+                        if (err) throw err;
+                        console.log("created follow table for", username);
+                    })
+                    con.query(userPTable, function (err) {
+                        if (err) throw err;
+                        console.log("created posts table for", username);
+                    })
+
                 })
-                // to create new table for new user
-                let newUserTable = "CREATE TABLE " + username + "(docID varchar(16) PRIMARY KEY,saved BIT DEFAULT NULL,cart BIT DEFAULT NULL,uploaded BIT DEFAULT NULL,purchased BIT DEFAULT NULL,lastUpdated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)"
-                let userFTable = "CREATE TABLE " + username + "F( `username` VARCHAR(16) NOT NULL , `follower` BOOLEAN NOT NULL DEFAULT FALSE , `following` BOOLEAN NOT NULL DEFAULT FALSE , `lastUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`username`)) ENGINE = InnoDB;"
-                let userPTable = "CREATE TABLE " + username + "P( `postid` VARCHAR(20) NOT NULL , `liked` BOOLEAN NOT NULL DEFAULT FALSE , `shared` BOOLEAN NOT NULL DEFAULT FALSE , `saved` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`postid`(16))) ENGINE = InnoDB;"
-                con.query(newUserTable, function (err) {
-                    if (err) throw err;
-                })
-                con.query(userFTable, function (err) {
-                    if (err) throw err;
-                    console.log("created follow table for", username);
-                })
-                con.query(userPTable, function (err) {
-                    if (err) throw err;
-                    console.log("created posts table for", username);
-                })
-            })
+            } else {
+                console.log('invalid otp, try again');
+                res.redirect('/register')
+            }
         }
     })
 
@@ -569,7 +689,6 @@ app.get('/logout', (req, res) => {
 // // // ON UPLOADING A DOC // // //
 
 var latestDocId
-var step = 1
 
 app.post('/sell-docs.html', upload.single('upDocs'), function (req, res, next) {
     // upload(req, res, function (err) {
@@ -580,63 +699,61 @@ app.post('/sell-docs.html', upload.single('upDocs'), function (req, res, next) {
     //         // An unknown error occurred when uploading.
     //         console.log('error in post sell-docs')
     //     }
-        // Everything went fine.
-        console.log(req.file.path);
-        step = 2
-        // UPLOADED DOC DETAILS
-        var docName = req.body.name
-        var docUniv = req.body.university
-        var docType = req.body.docType
-        var docLang = req.body.langName
-        var docCour = req.body.courseName
-        var docSubj = req.body.subName
-        var docTopic = req.body.topic
-        var docYear = req.body.year
-        var docDesc = req.body.desc
-        var docPrice = req.body.setPrice
-        var docEarn = req.body.earnPer
-        console.log(req.body)
-        console.log(req.body.upDocs)
-        console.log(req.body.upDocs)
-        console.log("req.file", req.file.path);
+    // Everything went fine.
+    console.log(req.file.path);
+    // UPLOADED DOC DETAILS
+    var docName = req.body.name
+    var docUniv = req.body.university
+    var docType = req.body.docType
+    var docLang = req.body.langName
+    var docCour = req.body.courseName
+    var docSubj = req.body.subName
+    var docTopic = req.body.topic
+    var docYear = req.body.year
+    var docDesc = req.body.desc
+    var docPrice = req.body.setPrice
+    var docEarn = req.body.earnPer
+    console.log(req.body)
+    console.log(req.body.upDocs)
+    console.log(req.body.upDocs)
+    console.log("req.file", req.file.path);
 
-        // FOR DOCID : getting last input in docsLedger so that we can increment it whenever new doc is added
-        var docCount
-        var digits = "0000"
-        var lastEntry = "SELECT DocId FROM `docsLedger` ORDER BY `lastUpdated` DESC LIMIT 1;"
-        con.query(lastEntry, function (err, neededId) {
+    // FOR DOCID : getting last input in docsLedger so that we can increment it whenever new doc is added
+    var docCount
+    var digits = "0000"
+    var lastEntry = "SELECT DocId FROM `docsLedger` ORDER BY `lastUpdated` DESC LIMIT 1;"
+    con.query(lastEntry, function (err, neededId) {
+        if (err) throw err;
+        // to get last 4 digits of DocId
+        var lastId = String(neededId[0].DocId)
+        var last4digits = lastId.substring(lastId.length - 4)
+        var neededNum = parseInt(last4digits) + 1
+
+        // to convert final number into 4 digits and get docID-last-4-digits
+        docCount = (digits.substring(String(neededNum).length) + neededNum)
+        var docId = (docName.substring(0, 3) + docUniv.substring(0, 3) + docSubj.substring(0, 3) + docLang.substring(0, 2) + docCount).toUpperCase()
+        latestDocId = docId
+
+        // ADD DOC TO MAIN LEDGER AND NEWUSER TABLE
+        var addDocToLedger = "INSERT INTO docsLedger(DocName,username,DocId,University,Doc_Type,language,course,subject,topic,year,description,price,docpath) VALUES (" + con.escape(docName) + "," + con.escape(req.session.user) + "," + con.escape(docId) + "," + con.escape(docUniv) + "," + con.escape(docType) + "," + con.escape(docLang) + "," + con.escape(docCour) + "," + con.escape(docSubj) + "," + con.escape(docTopic) + "," + con.escape(docYear) + "," + con.escape(docDesc) + "," + con.escape(docPrice) + "," + con.escape(req.file.path) + ")"
+        var addToNewUser = "INSERT INTO " + req.session.user + "(docID, uploaded) VALUES(" + con.escape(docId) + ", 1)"
+        con.query(addDocToLedger, function (err) {
             if (err) throw err;
-            // to get last 4 digits of DocId
-            var lastId = String(neededId[0].DocId)
-            var last4digits = lastId.substring(lastId.length - 4)
-            var neededNum = parseInt(last4digits) + 1
-
-            // to convert final number into 4 digits and get docID-last-4-digits
-            docCount = (digits.substring(String(neededNum).length) + neededNum)
-            var docId = (docName.substring(0, 3) + docUniv.substring(0, 3) + docSubj.substring(0, 3) + docLang.substring(0, 2) + docCount).toUpperCase()
-            latestDocId = docId
-
-            // ADD DOC TO MAIN LEDGER AND NEWUSER TABLE
-            var addDocToLedger = "INSERT INTO docsLedger(DocName,username,DocId,University,Doc_Type,language,course,subject,topic,year,description,price,docpath) VALUES (" + con.escape(docName) + "," + con.escape(req.session.user) + "," + con.escape(docId) + "," + con.escape(docUniv) + "," + con.escape(docType) + "," + con.escape(docLang) + "," + con.escape(docCour) + "," + con.escape(docSubj) + "," + con.escape(docTopic) + "," + con.escape(docYear) + "," + con.escape(docDesc) + "," + con.escape(docPrice) + "," + con.escape(req.file.path) + ")"
-            var addToNewUser = "INSERT INTO " + req.session.user + "(docID, uploaded) VALUES(" + con.escape(docId) + ", 1)"
-            con.query(addDocToLedger, function (err) {
-                if (err) throw err;
-                console.log('added name', docCount)
-            })
-            con.query(addToNewUser, function (err) {
-                if (err) throw err;
-                console.log('added to new user')
-            })
-            console.log(req.body)
+            console.log('added name', docCount)
         })
-
-        res.render('sell_docs_2')
+        con.query(addToNewUser, function (err) {
+            if (err) throw err;
+            console.log('added to new user')
+        })
+        console.log(req.body)
+    })
+    res.render('sell_docs_2')
     // })
 
 })
 
 // TO GET ANS OF DOC RELATED QUESTIONS
-app.post('/sell-docs-2.html', function (req, res) {
+app.post('/sell-docs-2', function (req, res) {
     var ans1 = req.body.docQues1
     var ans2 = req.body.docQues2
     var ans3 = req.body.docQues3
@@ -653,15 +770,35 @@ app.post('/sell-docs-2.html', function (req, res) {
     res.render('sell_docs_3')
 })
 
+app.post('/draft',(req,res)=>{
+    findDocs('uploaded')
+    res.redirect('/my-docs.html')
+})
+
+// SEND FOR VERIFICATION
+
+app.post('/sell-docs3',(req,res)=>{
+    // send data to verification team
+    sendMail("studivia.study@gmail.com", "new document added to be verified"+latestDocId).then((result) =>{
+        console.log('Email sent to verification team...', result)
+        res.redirect("/my-docs.html")
+    })
+        .catch((error) => {
+            console.log(error.message)
+            res.redirect("/dashboard.html")
+        })
+    
+})
+
+
 // // // STUDY MATERIAL DOCS // // //
 
 // LATEST DOCS
 var currentUserDocs = {},
     studyMatDocs
 app.get('/study_material.html', function (req, res) {
-
     if (req.isAuthenticated()) {
-        var latestDocs = 'SELECT DocId,DocName,Username,Course,University,Doc_Type,Subject,Topic,Price,docpath FROM `docsLedger` ORDER BY lastUpdated DESC LIMIT 20;'
+        var latestDocs = 'SELECT DocId,DocName,Username,Course,University,Doc_Type,Subject,Topic,Price,docpath FROM `docsLedger` WHERE verified = true ORDER BY lastUpdated DESC LIMIT 20;'
         con.query(latestDocs, function (err, neededInfo) {
             if (err) throw err;
             studyMatDocs = neededInfo
@@ -702,7 +839,7 @@ app.use(express.json({
     limit: '1mb'
 }))
 app.post('/descLinkClicked', function (req, res) {
-    console.log("clicked document details",req.body);
+    console.log("clicked document details", req.body);
     var docNeeded = "SELECT * FROM docsLedger WHERE docid = " + con.escape(req.body.docid)
     con.query(docNeeded, function (err, docDesc) {
         if (err) throw err;
@@ -1170,6 +1307,6 @@ app.post('/post/comment', (req, res) => {
 
 // problem is feedPosts are not getting list of following users on time which is causing is
 
-app.post('/pdf-details',(req,res)=>{
-    console.log("pdf-details body",req.body);
+app.post('/pdf-details', (req, res) => {
+    console.log("pdf-details body", req.body);
 })
