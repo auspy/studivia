@@ -186,9 +186,11 @@ var stcikyHeader = _.throttle(() => {
     if (window.pageYOffset > 575) {
         header.classList.add("sticky")
         subHeader.classList.add("content")
+        document.getElementsByClassName('back-top-btn')[0].classList.add("back-top-btn-sticky")
     } else {
         header.classList.remove("sticky")
         subHeader.classList.remove("content")
+        document.getElementsByClassName('back-top-btn')[0].classList.remove("back-top-btn-sticky")
     }
 }, );
 

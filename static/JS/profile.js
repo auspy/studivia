@@ -41,3 +41,30 @@ function toFetch(newUrl, docId) {
         })
 }
 
+// more button hover styles
+let moreBtns = document.getElementsByClassName('more-btn')
+
+for (let i = 0; i < moreBtns.length; i++) {
+    moreBtns[i].addEventListener('mouseover',(e)=>{
+        e.target.src = 'http://localhost:8000/images/icons/more-btn-hover.svg'
+
+    })
+    moreBtns[i].addEventListener('mouseout',(e)=>{
+        e.target.src = 'http://localhost:8000/images/icons/more-btn.svg'
+
+    })  
+    moreBtns[i].addEventListener('click',(e)=>{
+        e.target.parentElement.parentElement.getElementsByClassName('more-options')[0].classList.toggle('d-none')
+    })  
+}
+
+let deletePosts = document.getElementsByClassName('delete-post')
+
+for (let i = 0; i < deletePosts.length; i++) {
+    deletePosts[i].addEventListener('click',(e)=>{
+        e.target.parentElement.parentElement.remove()
+        console.log(e.target.parentElement.parentElement.getElementsByClassName('d-none')[0]);
+        let data = {"data" : e.target.parentElement.parentElement.getElementsByClassName('d-none')[0].innerText}
+        toFetch('/profile/post/delete',data)
+    })
+}

@@ -270,7 +270,7 @@ app.post('/register/code', (req, res) => {
     userEmail = req.body.email
 
     // send otp to user email
-    sendMail(userEmail, "your otp is"+newotp).then(result => console.log('Email sent...', result))
+    sendMail(userEmail, "your otp is" + newotp).then(result => console.log('Email sent...', result))
         .catch((error) => console.log(error.message))
 
     // save otp to table for 5 mins and then delete
@@ -477,12 +477,6 @@ app.get('/rankings.html', function (req, res) {
     res.sendFile(__dirname + '/html/rankings.html')
 })
 
-app.get('/sell-docs.html', function (req, res) {
-    res.render('sell_docs', {
-        loginStatusHtml: loginStatus
-    })
-})
-
 app.get('/pricing.html', function (req, res) {
     res.render('pricing')
 })
@@ -671,9 +665,13 @@ app.get('/contact-us.html', function (req, res) {
 })
 
 app.get('/checkout.html', function (req, res) {
-    res.render('checkout', {
-        page: 'Checkout'
-    })
+    if (req.isAuthenticated()) {       
+        res.render('checkout', {
+            page: 'Checkout'
+        })
+    }else{
+        res.redirect('/login.html')
+    }
 })
 
 app.get('/logout', (req, res) => {
@@ -689,6 +687,18 @@ app.get('/logout', (req, res) => {
 // // // ON UPLOADING A DOC // // //
 
 var latestDocId
+// , fileSize = 0
+// app.use(bodyParser.json());
+// app.post('/sell-docs/size',(req,res)=>{
+//     console.log("size",req.body.size);
+//     fileSize = req.body.size
+// })
+
+app.get('/sell-docs.html', function (req, res) {
+    res.render('sell_docs', {
+        loginStatusHtml: loginStatus
+    })
+})
 
 app.post('/sell-docs.html', upload.single('upDocs'), function (req, res, next) {
     // upload(req, res, function (err) {
@@ -770,24 +780,24 @@ app.post('/sell-docs-2', function (req, res) {
     res.render('sell_docs_3')
 })
 
-app.post('/draft',(req,res)=>{
+app.post('/draft', (req, res) => {
     findDocs('uploaded')
     res.redirect('/my-docs.html')
 })
 
 // SEND FOR VERIFICATION
 
-app.post('/sell-docs3',(req,res)=>{
+app.post('/sell-docs3', (req, res) => {
     // send data to verification team
-    sendMail("studivia.study@gmail.com", "new document added to be verified"+latestDocId).then((result) =>{
-        console.log('Email sent to verification team...', result)
-        res.redirect("/my-docs.html")
-    })
+    sendMail("studivia.study@gmail.com", "new document added to be verified" + latestDocId).then((result) => {
+            console.log('Email sent to verification team...', result)
+            res.redirect("/my-docs.html")
+        })
         .catch((error) => {
             console.log(error.message)
             res.redirect("/dashboard.html")
         })
-    
+
 })
 
 
@@ -852,6 +862,7 @@ app.post('/descLinkClicked', function (req, res) {
 // to use data sent by client on button click and create needed page using ejs template
 app.get('/doc-desc', function (req, res) {
     // console.log('inside',docDescList);
+    if (req.isAuthenticated()) {
     return res.render('docsViewer', {
         docDescList1: docDescList[0],
         documentName: docDescList[0].DocName,
@@ -862,6 +873,9 @@ app.get('/doc-desc', function (req, res) {
         year: docDescList[0].Year,
         type: docDescList[0].Doc_Type
     })
+}else{
+    res.redirect('/login.html')
+}
 })
 
 // // // ADD TO CART OR SAVED DOCS // // //
@@ -1160,16 +1174,17 @@ var profileUser = currentUser,
     followStatus = true,
     followSql, followingUsers = [],
     followerUsers = []
+
 app.get("/profile", (req, res) => {
-    followFunc("follower")
-    followFunc("following")
-    if ((profileUser == req.session.user) || (profileUser == req.session.user.toUpperCase())) {
-        followStatus = false
-    } else {
-        followStatus = true
-    }
-    console.log("followStatus", followStatus, profileUser);
     if (req.isAuthenticated()) {
+        followFunc("follower")
+        followFunc("following")
+        if ((profileUser == req.session.user) || (profileUser == req.session.user.toUpperCase())) {
+            followStatus = false
+        } else {
+            followStatus = true
+        }
+        console.log("followStatus", followStatus, profileUser);
         let sql = "SELECT * FROM postLedger WHERE username = " + con.escape(profileUser)
         con.query(sql, (err, posts) => {
             if (err) throw err;
@@ -1210,6 +1225,26 @@ function followFunc(data, user = currentUser) {
     }
     // })
 }
+
+// DELETE POST
+app.post('/profile/post/delete',(req,res)=>{
+    console.log(req.body);
+    let sql= "DELETE FROM postLedger WHERE postId ="+con.escape(req.body.data)
+    let table = "DROP TABLE "+req.body.data
+    let tableP = "DROP TABLE "+req.body.data+"P"
+    con.query(sql,(err)=>{
+        if(err)throw err;
+        console.log("deleted post ",req.body.data," from postLedger");
+    })
+    con.query(table,(err)=>{
+        if(err)throw err;
+        console.log("droped table ",req.body.data);
+    })
+    con.query(tableP,(err)=>{
+        if(err)throw err;
+        console.log("droped table ",req.body.data,"P");
+    })
+})
 
 // SENDS USER WHOSE PROFILE WE NEED TO DISPLAY
 app.post('/profile/user', (req, res) => {
@@ -1313,39 +1348,45 @@ app.post('/pdf-details', (req, res) => {
 
 // // // SUBJECTS AND COURSES PAGES // // //
 let topic
-app.post('/topic',(req,res)=>{
-    console.log("req.body",req.body.subject);
+app.post('/topic', (req, res) => {
+    console.log("req.body", req.body.subject);
     topic = req.body.subject
     topic = topic.split(' ')
-    console.log(topic,topic.length);
+    console.log(topic, topic.length);
 })
 
-app.get('/topic',(req,res)=>{
-    let pre = "%"
-    let post = "%"
-    let sql = "SELECT * FROM docsLedger WHERE (Subject LIKE '"+pre+topic[0]+post+"'"
-    if(topic.length>1){
-        for (let i = 1; i < topic.length; i++) {
-            sql= sql+" AND Subject LIKE '" + pre + topic[i] +post+"'"
+app.get('/topic', (req, res) => {
+    if (req.isAuthenticated()) {
+        let pre = "%"
+        let post = "%"
+        let sql = "SELECT * FROM docsLedger WHERE (Subject LIKE '" + pre + topic[0] + post + "'"
+        if (topic.length > 1) {
+            for (let i = 1; i < topic.length; i++) {
+                sql = sql + " AND Subject LIKE '" + pre + topic[i] + post + "'"
+            }
+            sql = sql + ") OR (Topic LIKE '" + pre + topic[0] + post + "'"
+            for (let i = 1; i < topic.length; i++) {
+                sql = sql + " AND Topic LIKE '" + pre + topic[i] + post + "'"
+            }
+            sql = sql + ") OR (Course LIKE '" + pre + topic[0] + post + "'"
+            for (let i = 1; i < topic.length; i++) {
+                sql = sql + " AND Course LIKE '" + pre + topic[i] + post + "'"
+            }
+            sql = sql + ");"
+        } else {
+            sql = sql + ") OR (Topic LIKE '" + pre + topic[0] + post + "'"
+            sql = sql + ") OR (Course LIKE '" + pre + topic[0] + post + "');"
         }
-        sql = sql+") OR (Topic LIKE '" + pre + topic[0] +post+"'"
-        for (let i = 1; i < topic.length; i++) {
-            sql= sql+" AND Topic LIKE '" + pre + topic[i] +post+"'"
-        }
-        sql = sql+") OR (Course LIKE '" + pre + topic[0] +post+"'"
-        for (let i = 1; i < topic.length; i++) {
-            sql= sql+" AND Course LIKE '" + pre + topic[i] +post+"'"
-        }
-        sql = sql+");"
+    
+        con.query(sql, (err, docs) => {
+            if (err) throw err;
+            console.log(sql);
+            console.log("docs", docs);
+            res.render('topic', {
+                docsHtml: docs
+            })
+        })
     }else{
-        sql = sql+") OR (Topic LIKE '" + pre + topic[0] +post+"'"
-        sql = sql+") OR (Course LIKE '" + pre + topic[0] +post+"');"
+        res.redirect('/login.html')
     }
-
-    con.query(sql,(err,docs)=>{
-        if(err)throw err;
-        console.log(sql);
-        console.log("docs",docs);
-        res.render('topic',{docsHtml:docs})
-    })
 })

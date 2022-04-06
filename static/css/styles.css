@@ -648,10 +648,26 @@ logo {
     color: #fff;
 }
 
-.sticky {
+.sticky, .back-top-btn-sticky{
     position: fixed !important;
     transition: position 1000ms ease-in;
-    top: 0;
+}
+
+.sticky{
+    top:0;
+}
+
+.back-top-btn-sticky{
+    bottom: 10px;
+    left: calc(50% - 1200px/2 + 1065px);
+    opacity: 0.4;
+}
+
+.back-top-btn:hover{
+    opacity: 1;
+    /* background-color: var(--blue); */
+    /* color: white;
+    border: none; */
 }
 
 .content {
@@ -2276,7 +2292,7 @@ button {
     border: 1px solid #D5D5D5;
     box-sizing: border-box;
     border-radius: 5px;
-    width: 1200px;
+padding: 0 20px;
     height: 30px;
     color: var(--headings);
 }
@@ -3174,6 +3190,7 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
 border-radius: 5px;
 width: 359px;
 height: 247px;
+position: relative;
 }
 
 .pro-post p{
@@ -3203,3 +3220,33 @@ height: 247px;
     opacity: 0.7;
 }
 
+/* MORE BUTTON */
+
+.more-btn{
+    background: none;
+    filter: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 20px;
+}
+
+.more-btn:hover{
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.more-options{
+    background: #FFFFFF;
+    position: absolute;
+    right: 34px;
+    top: 10px;
+width: 71px;
+padding: 12px 0 12px 10px;
+box-shadow: 4px 8px 15px rgba(0, 0, 0, 0.07);
+}
+
+.more-options button{
+    background: none;
+    color: var(--headings);
+    text-transform: capitalize;
+}

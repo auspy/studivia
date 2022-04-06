@@ -21,7 +21,12 @@
     <div class="f-r-c m-t-30">
         <% postsHtml.forEach((item)=>{ %>
         <div class="pro-post g-c-c m-r-20">
-            <p class="c-para-text"><%=item.content%></p>
+            <button class="more-btn" type="button"><img src="images/icons/more-btn.svg" alt=""></button>
+            <div class="more-options f-c-c-fs d-none">
+                <button class="semi-10 delete-post" type="button">delete</button>
+            </div>
+            <p class="c-heading"><%=item.content%></p>
+            <div class="d-none"><%=item.postId%></div>
         </div>
         <%}) %>
     </div>
