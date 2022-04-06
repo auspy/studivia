@@ -43,19 +43,19 @@ app.use(bodyParser.urlencoded({
 })) // url encoded is used to get information from html forms
 
 // CREATE CONNECTION
-// var con = mysql.createConnection({
-//     host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
-//     port: "3306",
-//     user: "auspy",
-//     password: "password",
-//     database: "studiviaDB"
-// })
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
+    host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
+    port: "3306",
+    user: "auspy",
     password: "password",
     database: "studiviaDB"
 })
+// var con = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "password",
+//     database: "studiviaDB"
+// })
 
 // CONNECT
 con.connect(function (err) {
