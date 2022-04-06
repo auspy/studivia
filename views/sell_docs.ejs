@@ -11,7 +11,7 @@
              <h3>fill details and Upload your study documents</h3>
              <form action="/sell-docs.html" class="step-form" id="uploadDocDetails" method="post" enctype="multipart/form-data">
                 <div class="form-left">
-                    <div class="name form-item">
+                    <div class="name form-item req-item">
                         <label for="name" class="smallest-h">File Name</label>
                         <div class="for-instruc">
                             <input type="text" placeholder="File Name" name="name" class="search-box" required="required" maxlength="50" title="Write document name within 50 characters">
@@ -28,10 +28,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="university form-item">
+                    <div class="university form-item req-item">
                         <div class="smallest-h">University</div>
                         <div class="for-instruc">
-                            <input type="text" placeholder="University name" name="university" maxlength="40" title="Use only characters and enter university the document belongs to or the university you study in" class="search-box" required="required">
+                            <input type="text" placeholder="University name" name="university" maxlength="50" title="Use only characters and enter university the document belongs to or the university you study in" class="search-box c-heading" required="required" list="universities">
+                            <datalist id="universities">
+                                <option value="SRM-Haryana">SRM University Haryana</option>
+                                <option value="IIT-Delhi">Indian Institute of Technology, Delhi</option>
+                            </datalist>
                             <div class="step not-selected">
                                 <a href="sell-docs.html">
                                     <div class="step-num tip">
@@ -68,22 +72,41 @@
                         </div>
                     </div>
                     <div class="form-2-item">
-                        <div class="year form-item">
+                        <div class="year form-item req-item">
                             <div class="smallest-h">Year of Creation</div>
                             <input type="number" min="1900" max="2099" step="1" placeholder="Year" name="year"
                              class="search-box" required="required" title="Document creation year">
                         </div>
-                        <div class="sub-name form-item">
+                        <div class="sub-name form-item req-item">
                             <div class="smallest-h">Course</div>
-                            <input type="text" placeholder="Course" name="courseName" class="search-box" required="required" pattern="[A-Za-z]{1,25}" maxlength="25" title="Course the document belongs to">
+                            <input type="text" placeholder="Course" name="courseName" class="search-box c-heading" required="required" pattern="[A-Za-z]{1,25}" maxlength="25" title="Course the document belongs to" list="courses">
+                            <datalist id="courses">
+                                <option value="BTech">Bachelors of Technology</option>
+                                <option value="BTech-CSE">Bachelors of Technology - Computer Science</option>
+                            </datalist>
                         </div>
                     </div>
                     <div class="form-2-item">
-                        <div class="sub-name form-item">
+                        <div class="sub-name form-item req-item">
                             <div class="smallest-h">Subject</div>
-                            <input type="text" placeholder="Subject" name="subName" class="search-box" required="required" pattern="[A-Za-z]{1,25}" maxlength="25" title="Subject the document belongs to">
+                            <div class="">
+                                <input type="text" placeholder="Subject" name="subName" class="search-box c-heading" list="subjects" required="required" pattern="[A-Za-z]{1,50}" maxlength="50" title="Subject the document belongs to">
+                                <datalist id="subjects">
+                                    <option value="Computer Organisation and Architecture">COA</option>
+                                    <option value="Maths">Mathematics</option>
+                                    <option value="French">French</option>
+                                    <option value="C++">C++</option>
+                                    <option value="DSA">Data Structures and Algorithms</option>
+                                    <option value="ADA">Analysis and Design of Algorithms</option>
+                                    <option value="OS">Operating Systems</option>
+                                    <option value="Java">Java</option>
+                                    <option value="Python">Python</option>
+                                    <option value="DS">Discrete Structures</option>
+                                    <option value="Chemistry">Chemistry</option>
+                                </datalist>
+                            </div>
                         </div>
-                        <div class="year form-item">
+                        <div class="year form-item req-item">
                             <div class="smallest-h">Topic</div>
                             <input type="text" placeholder="Topic" name="topic" class="search-box" required="required" maxlength="50" title="Document topic">
                         </div>
@@ -106,7 +129,7 @@
                             </div>
                         </div>
                     </div>
-                     <!-- <div class="tags-name form-item">
+                     <!-- <div class="tags-name form-item req-item">
                                 <div class="smallest-h">Tags</div>
                                 <div class="for-instruc">
                                     <input list="subjects" placeholder="Tags" name="tags" class="search-box">
@@ -125,7 +148,7 @@
                             </div> -->
                 </div>
                 <div class="form-right">
-                    <div class="up-docs-name form-item">
+                    <div class="up-docs-name form-item req-item">
                         <div class="smallest-h">Upload Documents</div>
                         <div class="for-instruc">
                             <input type="file" placeholder="Drag and drop file(s) here" name="upDocs" accept=".pdf" id="upDocs" class="search-box" >
@@ -149,12 +172,12 @@
                             </div>
                             <div class="max-up-size size">
                                 <div class="smallest-text">Max upload size:</div>
-                                <div class="link">15 MB</div>
+                                <div class="link">50 MB</div>
                             </div>
                         </div>
                     </div>
                     <div class="form-2-item form-2-item-r">
-                        <div class="set-price form-item">
+                        <div class="set-price form-item req-item">
                             <div class="smallest-h">Price</div>
                             <input type="number" placeholder="Price" name="setPrice" class="search-box" required="required" maxlength="6">
                         </div>
@@ -171,7 +194,7 @@
             <!-- <button class="simple-blue-button m-left">save as draft <img src="images/icons/save-as-draft.svg"
                     alt=""></button> -->
             <button id="continue-btn" form="uploadDocDetails" type="submit" value="Submit"
-                class="not-selected-button m-left">Continue <img src="images/icons/arrow.svg" alt=""></button>
+                class="simple-blue-button m-left">Continue <img src="images/icons/arrow.svg" alt=""></button>
         </div>
         <%}else{%>
             <h3><a href="/login.html">Login</a> to start earning!</h3>

@@ -28,12 +28,12 @@ function toFetch(newUrl, details) {
 
 const username = document.querySelector('input[name="username"]')
 const userPass = document.querySelector('input[name="userPass"]')
-const rSubmit = document.querySelector('input[type="submit"]')
 const heading = document.getElementById('header').getElementsByTagName('h3')[0]
 
 
+
 const userMail = document.querySelector('input[name="userMail"]')
-userMail.addEventListener('change', (e) => {
+userMail.addEventListener('input', (e) => {
     let change = e.target.value
     console.log(change);
     let testingValues = /@(gmail|hotmail|outlook|yahoo|icloud|mail|zoho).(com|org|co.in|co.uk|net|in)/
@@ -51,7 +51,12 @@ userMail.addEventListener('change', (e) => {
             userMail.setCustomValidity('contains character in starting');
         } else {
             userMail.setCustomValidity('')
+            code.disabled = false
+            verifybtn.disabled = false
         }
+    } else{
+        code.disabled = false
+        verifybtn.disabled = false
     }
 })
 
@@ -84,7 +89,8 @@ userPass.addEventListener('change', (e) => {
     }
 })
 
-var code = document.getElementById('sendCode')
+const code = document.getElementById('sendCode')
+code.disabled = true
 
 code.addEventListener('click',(e)=>{
     let data= {"email": mail.value,
@@ -96,7 +102,10 @@ code.addEventListener('click',(e)=>{
 var mail = document.querySelector('input[name="userMail"]')
 var verify =document.querySelector('input[name="verify"]')
 
-var verifybtn = document.getElementById('verify-btn')
+const verifybtn = document.getElementById('verify-btn')
+verifybtn.disabled = true
+
+
 verifybtn.addEventListener('click',(e)=>{
     var details = {
         'userotp': document.querySelector('input[name="verify"]').value
@@ -105,8 +114,15 @@ verifybtn.addEventListener('click',(e)=>{
     toFetch("/register/verify",details)
 })
 
-// verify.addEventListener('change',(e)=>{
-//     let data = { "otp" : e.target.value }
-//     console.log(e.target.value);
-//     toFetch("/register/verify",data)
-// })
+const reqInput = document.querySelectorAll("input[required='required']")
+const rSubmit = document.querySelector('input[type="submit"]')
+rSubmit.disabled = true
+
+for (let i = 0; i < reqInput.length; i++) {
+    reqInput[i].addEventListener('input',()=>{
+        let values = []
+        Array.from(reqInput).forEach(item => values.push(item.validity.valid))
+        rSubmit.disabled = values.includes(false)
+    })
+    
+}

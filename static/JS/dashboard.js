@@ -45,19 +45,51 @@ for (let i = 0; i < likeBtns.length; i++) {
     })
 }
 
-var commentBtns = document.getElementsByClassName('comment-btn')
+var commentBtnsImg = document.getElementsByClassName('comment-btn')
+// var commentBtns = document.getElementsByClassName('comment-real-btn')
 
-for (let i = 0; i < commentBtns.length; i++) {
-    commentBtns[i].addEventListener('click', (e) => {
+
+// // disable comment button
+// for (let i = 0; i < commentBtns.length; i++) {
+//     commentBtns[i].disabled = true
+// }
+
+for (let i = 0; i < commentBtnsImg.length; i++) {
+    commentBtnsImg[i].addEventListener('click', (e) => {
         let commentInput = {
             "comment": e.target.parentElement.parentElement.getElementsByTagName('textarea')[0].value,
-            "postid": e.target.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('post-id')[0].innerText}
+            "postid": e.target.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('post-id')[0].innerText
+        }
         console.log("comment", commentInput);
         toFetch('/post/comment', commentInput)
-        
+
         // setInputToEmpty
-        e.target.parentElement.parentElement.getElementsByTagName('textarea')[0].value  = ""
+        e.target.parentElement.parentElement.getElementsByTagName('textarea')[0].value = ""
 
     })
 
 }
+
+// DISABLE OR ENABLE POST BUTTON
+const posttext = document.querySelector("textarea[name='postText']")
+const postimg = document.getElementById('file-input')
+const postBtn = document.getElementById('post-btn')
+postBtn.disabled = true
+
+posttext.addEventListener('input',()=>{
+    postBtn.disabled = posttext.value == ''
+})
+
+postimg.addEventListener('change',()=>{
+    postBtn.disabled = postimg.value = ''
+})
+
+
+// // DISBALE OR ENABLE COMMENT BUTTONS
+// const commenttext = document.querySelectorAll('input[name="comment"]')
+
+// for (let i = 0; i < commenttext.length; i++) {
+//     commenttext[i].addEventListener('input',()=>{
+//         commentBtns[i].disabled =  commenttext[i].value == ''
+//     })
+// }

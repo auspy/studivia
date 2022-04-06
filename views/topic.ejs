@@ -1,0 +1,57 @@
+<%- include('./partials/header'); %>
+
+<div id="grid-docs">
+    <div class="pdfs d-grid">
+        <% docsHtml.forEach((item)=>{%>
+            <div class="n-pdf-bg pdf-with-user">
+                <div class="doc-desc-link g-c-c d-none semi-10 ">
+                    <a href="/doc-desc">View Document</a>
+                </div>
+                <div class="hover-ctas f-r-c">
+                    <button class="hover-zoom"><img src="images/icons/hover-zoom.svg" class="hover-zoom-img" alt=""
+                            height="16px"></button>
+                    <button class="hover-save-doc"><img src="images/icons/hover-bookmark.svg"
+                            class="hover-save-doc-img" alt="" height="16px"></button>
+                    <button class="hover-add-cart"><img src="images/icons/hover-add-to-cart.svg"
+                            class="hover-add-cart-img" alt="" height="16px"></button>
+                </div>
+                <div class="pdf-img">
+                    <img src="images/IMG_1188.JPG" alt="" height="120px">
+                </div>
+                <div class="tag-box">
+                    <tags style="color: #6463C1 ;"><%= item.Topic%></tags>
+                    <tags style="color: #FF6889;"><%= item.Doc_Type%></tags>
+                    <tags style="color: #FF9C28;"><%= item.Subject.substring(0,3) %></tags>
+                    <tags style="color: #60CD83;"><%= item.Topic%></tags>
+                </div>
+                <a class="desc-link">
+                    <div class="d-none"><%= item.DocId%></div>
+                    <div class="d-none"><%= item.docpath%></div>
+                    <p><%= item.DocName%></p></a>
+                <div class="smallest-text college"><%= item.University %> 
+                    <%if (item.Username!=null){%>
+                        <span>|</span>
+                    <%}%>
+                    <span class="user"><%= item.Username%></span>
+                </div>
+                <div class="small-semi">₹ <%= item.Price %></div>
+                <div class="rating">
+                    <div class="stars">
+                        <img src="images/icons/star.svg" alt="">
+                        <img src="images/icons/star.svg" alt="">
+                        <img src="images/icons/star.svg" alt="">
+                        <img src="images/icons/star.svg" alt="">
+                        <img src="images/icons/star.svg" alt="">
+                    </div>
+                    <a class="smallest-text" href="#">9,125</a>
+                </div>
+                <div class="smallest-h">12 page</div>
+            </div>
+        <%}) %> 
+    </div>
+    <!-- <button class="sidebar-heading read-more">Read More</button> -->
+</div>
+<%- include('./partials/footer-login'); %>
+
+</body> 
+</html>

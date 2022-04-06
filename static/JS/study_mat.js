@@ -23,3 +23,32 @@ for (let i = 0; i < hoverSavDoc.length; i++) {
     })
 }
 
+// // // FETCH FUNCTION // // //
+
+function toFetch(newUrl, docId) {
+    fetch(newUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            body: JSON.stringify(docId)
+        })
+        .then(response => response)
+        .then(docId => {
+            console.log('response data?', docId)
+        })
+        .catch(err => {
+            console.log('error here is', err);
+        })
+}
+
+const pdfSubCou = document.getElementsByClassName('sub-cou')
+
+for (let i = 0; i < pdfSubCou.length; i++) {
+    pdfSubCou[i].addEventListener('click',(e)=>{
+        let data = {"subject" : e.target.innerHTML}
+        toFetch('/topic',data)
+    })
+    
+}

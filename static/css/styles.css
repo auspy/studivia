@@ -304,7 +304,7 @@ button {
     margin-left: 8px;
 }
 
-button:hover {
+button:hover:enabled {
     opacity: 0.7;
     cursor: pointer;
 }
@@ -320,9 +320,10 @@ button:hover {
     box-shadow: 0px 17px 24px rgba(0, 0, 0, 0.05), 0px 8px 20px rgba(0, 0, 0, 0.05), inset 0px 18px 21px rgba(255, 255, 255, 0.1), inset 0px 3px 6px rgba(255, 255, 255, 0.4), inset 0px -2px 6px rgba(36, 42, 48, 0.6);
 }
 
-.not-selected-button {
+.not-selected-button,button:disabled{
     background: #DFDFDF;
     border: 0.5px solid rgba(47, 44, 58, 0.2);
+    filter: none;
 }
 
 /* PAGES SPECIAL */
@@ -379,7 +380,6 @@ button:hover {
 }
 
 /* .................................................. */
-
 
 
 /* TEXT STYLES */
@@ -3202,3 +3202,4 @@ height: 247px;
     width: inherit;
     opacity: 0.7;
 }
+

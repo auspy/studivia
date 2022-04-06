@@ -43,19 +43,19 @@ app.use(bodyParser.urlencoded({
 })) // url encoded is used to get information from html forms
 
 // CREATE CONNECTION
-var con = mysql.createConnection({
-    host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
-    port: "3306",
-    user: "auspy",
-    password: "password",
-    database: "studiviaDB"
-})
 // var con = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
+//     host: "studiviadb.cnreudh8065g.ap-south-1.rds.amazonaws.com",
+//     port: "3306",
+//     user: "auspy",
 //     password: "password",
 //     database: "studiviaDB"
 // })
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "password",
+    database: "studiviaDB"
+})
 
 // CONNECT
 con.connect(function (err) {
@@ -1095,7 +1095,7 @@ app.post('/search', (req, res) => {
     console.log(words, words[1], words.length);
     let pre = "'%"
     let post = "%'"
-    let sql = "SELECT DocId,DocName,Username,Course,year,University,Doc_Type,Subject,Topic,Price FROM docsLedger WHERE docname LIKE " + pre + words[0] + post
+    let sql = "SELECT DocId,DocName,Username,Course,year,University,Doc_Type,Subject,Topic,Price FROM docsLedger WHERE docname LIKE '" + pre + words[0] + post
     if (words.length > 1) {
         for (let i = 1; i < words.length; i++) {
             let addToSql = " OR docname LIKE " + pre + words[i] + post
@@ -1309,4 +1309,43 @@ app.post('/post/comment', (req, res) => {
 
 app.post('/pdf-details', (req, res) => {
     console.log("pdf-details body", req.body);
+})
+
+// // // SUBJECTS AND COURSES PAGES // // //
+let topic
+app.post('/topic',(req,res)=>{
+    console.log("req.body",req.body.subject);
+    topic = req.body.subject
+    topic = topic.split(' ')
+    console.log(topic,topic.length);
+})
+
+app.get('/topic',(req,res)=>{
+    let pre = "%"
+    let post = "%"
+    let sql = "SELECT * FROM docsLedger WHERE (Subject LIKE '"+pre+topic[0]+post+"'"
+    if(topic.length>1){
+        for (let i = 1; i < topic.length; i++) {
+            sql= sql+" AND Subject LIKE '" + pre + topic[i] +post+"'"
+        }
+        sql = sql+") OR (Topic LIKE '" + pre + topic[0] +post+"'"
+        for (let i = 1; i < topic.length; i++) {
+            sql= sql+" AND Topic LIKE '" + pre + topic[i] +post+"'"
+        }
+        sql = sql+") OR (Course LIKE '" + pre + topic[0] +post+"'"
+        for (let i = 1; i < topic.length; i++) {
+            sql= sql+" AND Course LIKE '" + pre + topic[i] +post+"'"
+        }
+        sql = sql+");"
+    }else{
+        sql = sql+") OR (Topic LIKE '" + pre + topic[0] +post+"'"
+        sql = sql+") OR (Course LIKE '" + pre + topic[0] +post+"');"
+    }
+
+    con.query(sql,(err,docs)=>{
+        if(err)throw err;
+        console.log(sql);
+        console.log("docs",docs);
+        res.render('topic',{docsHtml:docs})
+    })
 })
