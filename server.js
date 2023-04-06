@@ -437,8 +437,9 @@ app.post('/login.html', passport.authenticate('local', {
     });
 
 // // // LISTEN, SERVER START // // //
-app.listen(8000, () => {
-    console.log('server started yes')
+const port = 8000
+app.listen(port, () => {
+    console.log('server started yes',port)
 })
 
 // // // ALL PAGES // // //
@@ -1109,7 +1110,7 @@ app.post('/search', (req, res) => {
     console.log(words, words[1], words.length);
     let pre = "'%"
     let post = "%'"
-    let sql = "SELECT DocId,DocName,Username,Course,year,University,Doc_Type,Subject,Topic,Price FROM docsLedger WHERE docname LIKE '" + pre + words[0] + post
+    let sql = "SELECT DocId,DocName,Username,Course,year,University,Doc_Type,Subject,Topic,Price FROM docsLedger WHERE docname LIKE " + pre + words[0] + post
     if (words.length > 1) {
         for (let i = 1; i < words.length; i++) {
             let addToSql = " OR docname LIKE " + pre + words[i] + post
